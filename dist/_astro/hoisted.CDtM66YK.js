@@ -1,0 +1,1 @@
+import"./hoisted.euQ055Fx.js";const t=document.getElementById("menu-toggle"),e=document.getElementById("menu");t.addEventListener("click",()=>{e.classList.toggle("visible"),e.classList.toggle("hidden")});

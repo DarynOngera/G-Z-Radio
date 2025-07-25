@@ -1,0 +1,3 @@
+[build]
+  command = "npm install && npm run build" # Command to build your site
+  publish = "dist" # Directory to publish after building
