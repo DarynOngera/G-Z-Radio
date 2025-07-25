@@ -1,0 +1,17 @@
+# .github/workflows/deploy.yml
+name: Deploy Astro site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: withastro/action@v2
+        with:
+          path: . # your Astro project root
