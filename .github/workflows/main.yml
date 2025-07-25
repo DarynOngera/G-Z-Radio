@@ -12,6 +12,21 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: withastro/action@v2
+      - uses: actions/setup-node@v4
         with:
-          path: .astro
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+
+      - name: Add .nojekyll
+        run: echo > dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
