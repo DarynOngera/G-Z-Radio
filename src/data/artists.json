@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "Ng",
+    "name": "Ng",
+    "image": "/assets/bg.webp",
+    "bio": "A chart-topping artist known for his introspective lyrics and genre-blending sound, inspired by the Toronto scene.",
+    "streamingLinks": {
+      "spotify": "#",
+      "soundcloud": "#",
+      "appleMusic": "#"
+    },
+    "discography": [
+      { "title": "Views from the 6ix", "year": "2016" },
+      { "title": "Scorpion", "year": "2018" }
+    ]
+  },
+  {
+    "slug": "BB",
+    "name": "Busy Bee",
+    "image": "/assets/kedrick.jpg",
+    "bio": "A collective of lyrical martial artists, bringing raw energy and complex wordplay back to the forefront of hip-hop.",
+    "streamingLinks": {
+      "spotify": "#",
+      "soundcloud": "#",
+      "appleMusic": "#"
+    },
+    "discography": [
+      { "title": "Enter the 36 Chambers", "year": "1993" },
+      { "title": "Wu-Tang Forever", "year": "1997" }
+    ]
+  },
+  {
+    "slug": "Lil-Frry",
+    "name": "Lil-Frry",
+    "image": "/assets/wakadinali.jpeg",
+    "bio": "Carrying the torch of West Coast rap with powerful storytelling and a revolutionary spirit.",
+    "streamingLinks": {
+      "spotify": "#",
+      "soundcloud": "#",
+      "appleMusic": "#"
+    },
+    "discography": [
+      { "title": "All Eyez on Me", "year": "1996" },
+      { "title": "The Don Killuminati: The 7 Day Theory", "year": "1996" }
+    ]
+  }
+]

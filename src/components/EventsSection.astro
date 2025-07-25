@@ -1,0 +1,100 @@
+---
+import events from '../data/events.json';
+---
+
+<section id="events" class="events-section fade-in-section parallax-bg">
+  <div class="section-content">
+    <h2>Upcoming Events</h2>
+    <div class="event-list">
+      {events.map(event => (
+        <div class="event-item">
+          <span class="event-date">{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+          <h3 class="event-title">{event.title}</h3>
+          <p class="event-location">{event.location}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .events-section {
+    position: relative;
+    padding: 6rem 2rem;
+    text-align: center;
+    /* Note: Add a placeholder image named 'events-bg.jpg' to public/assets/ */
+    background-image: url('/assets/events-bg.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* Add a dark overlay for text readability */
+  .events-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .section-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .event-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .event-item {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    border-left: 4px solid var(--accent-color-static);
+    text-align: left;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .event-item:hover {
+    transform: translateY(-5px);
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .event-date {
+    font-family: var(--font-heading);
+    color: var(--accent-color-static);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    text-transform: none;
+    letter-spacing: 0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .event-location {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    opacity: 0.8;
+    margin: 0;
+  }
+</style>

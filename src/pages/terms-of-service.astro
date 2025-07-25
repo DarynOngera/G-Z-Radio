@@ -1,0 +1,26 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Terms of Service">
+  <div class="legal-content">
+    <h1>Terms of Service</h1>
+    <p><em>Last updated: {new Date().toLocaleDateString()}</em></p>
+    <p>Welcome to The G'z Radio. This is a placeholder for your terms of service.</p>
+    <p>Please replace this text with your full terms and conditions, outlining the rules and regulations for the use of your website and services.</p>
+    <!-- Add your full terms of service content here -->
+  </div>
+</MainLayout>
+
+<style>
+  .legal-content {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 2rem;
+    color: var(--text-color-muted);
+  }
+  h1 {
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+</style>

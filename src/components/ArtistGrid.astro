@@ -1,0 +1,73 @@
+---
+import artists from '../data/artists.json';
+import ArtistCard from './ArtistCard.astro';
+---
+
+<section id="artists" class="artists-section fade-in-section parallax-bg">
+  <div class="section-content">
+    <h2>Our Artists</h2>
+    <div class="artist-grid">
+      {artists.map(artist => (
+        <ArtistCard 
+          slug={artist.slug} 
+          name={artist.name} 
+          image={artist.image} 
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .artists-section {
+    position: relative;
+    padding: 6rem 2rem;
+    text-align: center;
+    /* Note: Add a placeholder image named 'artists-bg.jpg' to public/assets/ */
+    background-image: url('/assets/bg.webp');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* Add a dark overlay for text readability */
+  .artists-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .section-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .artist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .artists-section {
+      padding: 4rem 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+</style>

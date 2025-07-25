@@ -1,0 +1,103 @@
+---
+// Later, we can fetch dynamic data here if needed
+---
+
+<div class="nav-container">
+  <button id="menu-toggle" aria-label="Open Menu">
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+    </svg>
+  </button>
+  <nav id="menu" class="hidden">
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/#events">Events</a>
+      <a href="/#artists">Artists</a>
+      <a href="/#clothing">Clothing</a>
+    </nav>
+  </nav>
+</div>
+
+<style>
+  .nav-container {
+    position: relative;
+  }
+
+  #menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--secondary-color);
+  }
+
+  #menu-toggle svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  nav {
+    display: none; /* Hidden by default, shown via JS */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #111;
+    border: 1px solid var(--accent-color-static);
+    border-radius: 4px;
+    padding: 1rem;
+    min-width: 150px;
+  }
+
+  nav.hidden {
+    display: none;
+  }
+
+  nav.visible {
+    display: block;
+  }
+
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  nav a {
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  /* Desktop view */
+  @media (min-width: 768px) {
+    #menu-toggle {
+      display: none;
+    }
+    nav, nav.visible, nav.hidden {
+      display: block;
+      position: static;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    nav ul {
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('menu');
+
+  menuToggle.addEventListener('click', () => {
+    menu.classList.toggle('visible');
+    menu.classList.toggle('hidden');
+  });
+</script>

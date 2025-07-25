@@ -1,0 +1,64 @@
+---
+export interface Props {
+  slug: string;
+  name: string;
+  image: string;
+}
+
+const { slug, name, image } = Astro.props;
+---
+
+<a href={`/artists/${slug}`} class="artist-card">
+  <img src={image} alt={`Photo of ${name}`} loading="lazy" />
+  <div class="card-overlay">
+    <h3>{name}</h3>
+  </div>
+</a>
+
+<style>
+  .artist-card {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    aspect-ratio: 1 / 1;
+    /* Note: Add placeholder images to public/assets/ */
+  }
+
+  .artist-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+  }
+
+  .artist-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .artist-card:hover img {
+    transform: scale(1.1);
+  }
+
+  .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 2rem 1rem 1rem;
+    text-align: center;
+  }
+
+  .card-overlay h3 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>

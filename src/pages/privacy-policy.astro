@@ -1,0 +1,26 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Privacy Policy">
+  <div class="legal-content">
+    <h1>Privacy Policy</h1>
+    <p><em>Last updated: {new Date().toLocaleDateString()}</em></p>
+    <p>Your privacy is important to us. This is a placeholder for your privacy policy content.</p>
+    <p>Please replace this text with your full privacy policy, detailing how you collect, use, and protect your users' data.</p>
+    <!-- Add your full privacy policy content here -->
+  </div>
+</MainLayout>
+
+<style>
+  .legal-content {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 2rem;
+    color: var(--text-color-muted);
+  }
+  h1 {
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+</style>

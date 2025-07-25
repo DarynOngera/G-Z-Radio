@@ -1,0 +1,104 @@
+---
+---
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="newsletter-signup">
+      <h4>Join the Movement</h4>
+      <p>Get exclusive updates on drops, events, and new music.</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="consent-check">
+        <input type="checkbox" id="consent" name="consent" required />
+        <label for="consent">I agree to the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms-of-service">Terms of Service</a>.</label>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} The G'z Radio. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: #0a0a0a; /* A darker shade for contrast */
+    color: var(--text-color-muted);
+    padding: 4rem 2rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .newsletter-signup h4 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter-signup p {
+    margin-bottom: 2rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter-form input[type="email"] {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border-radius: 4px;
+    font-family: var(--font-body);
+  }
+
+  .newsletter-form button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background-color: var(--accent-color-static);
+    color: var(--background-color);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .newsletter-form button:hover {
+    background-color: var(--accent-color-hover);
+  }
+
+  .consent-check {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .consent-check a {
+    color: var(--text-color-muted);
+    text-decoration: underline;
+  }
+
+  .consent-check a:hover {
+    color: var(--text-color);
+  }
+
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+  }
+</style>

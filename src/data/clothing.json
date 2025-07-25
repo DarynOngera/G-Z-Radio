@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "gz-radio-hoodie",
+    "name": "G'z Radio Classic Hoodie",
+    "image": "/assets/merch.jpg",
+    "price": "$65.00"
+  },
+  {
+    "slug": "gz-radio-t-shirt",
+    "name": "G'z Radio Logo Tee",
+    "image": "/assets/merch.jpg",
+    "price": "$30.00"
+  },
+  {
+    "slug": "gz-radio-snapback",
+    "name": "G'z Radio Snapback",
+    "image": "/assets/merch.jpg",
+    "price": "$35.00"
+  },
+  {
+    "slug": "gz-radio-beanie",
+    "name": "G'z Radio Beanie",
+    "image": "/assets/merch.jpg",
+    "price": "$25.00"
+  }
+]

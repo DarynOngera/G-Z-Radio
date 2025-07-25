@@ -1,0 +1,226 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Header from '../../components/Header.astro';
+import artists from '../../data/artists.json';
+import SpotifyIcon from '../../components/SpotifyIcon.astro';
+import SoundCloudIcon from '../../components/SoundCloudIcon.astro';
+import AppleMusicIcon from '../../components/AppleMusicIcon.astro';
+
+export async function getStaticPaths() {
+  return artists.map(artist => ({
+    params: { slug: artist.slug },
+    props: { artist },
+  }));
+}
+
+const { artist } = Astro.props;
+---
+
+<MainLayout title={`${artist.name} - The G'z Radio`} showFooter={false}>
+  <Header />
+  <div class="artist-page-container">
+    <div class="artist-profile-grid">
+      <div class="artist-visual">
+        <img src={artist.image} alt={`Photo of ${artist.name}`} />
+        <div class="artist-name-overlay">
+          <h1>{artist.name}</h1>
+        </div>
+      </div>
+      <div class="artist-details">
+        <a href="/" class="back-link">&larr; Back to Main</a>
+        <div class="bio-section fade-in-section">
+          <h2>About</h2>
+          <p>{artist.bio}</p>
+        </div>
+
+        <div class="streaming-section fade-in-section">
+          <h2>Follow On</h2>
+          <div class="streaming-links">
+            {artist.streamingLinks.spotify && artist.streamingLinks.spotify !== '#' && (
+              <a href={artist.streamingLinks.spotify} target="_blank" rel="noopener noreferrer" aria-label="Spotify">
+                <SpotifyIcon />
+              </a>
+            )}
+            {artist.streamingLinks.soundcloud && artist.streamingLinks.soundcloud !== '#' && (
+              <a href={artist.streamingLinks.soundcloud} target="_blank" rel="noopener noreferrer" aria-label="SoundCloud">
+                <SoundCloudIcon />
+              </a>
+            )}
+            {artist.streamingLinks.appleMusic && artist.streamingLinks.appleMusic !== '#' && (
+              <a href={artist.streamingLinks.appleMusic} target="_blank" rel="noopener noreferrer" aria-label="Apple Music">
+                <AppleMusicIcon />
+              </a>
+            )}
+          </div>
+        </div>
+        <div class="discography-section fade-in-section">
+          <h2>Discography</h2>
+          <div class="album-list">
+            {artist.discography.map(album => (
+              <div class="album-item">
+                <h3>{album.title}</h3>
+                <span>{album.year}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  /* Override default body background for this page */
+  :global(body) {
+    background-color: var(--primary-color);
+  }
+
+  .artist-page-container {
+    padding-top: 60px; /* Space for the fixed header */
+  }
+
+  .artist-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    min-height: calc(100vh - 60px);
+  }
+
+  .artist-visual {
+    grid-column: 1 / span 5;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+  }
+
+  .artist-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(80%) contrast(1.1);
+  }
+
+  .artist-name-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  }
+
+  .artist-name-overlay h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--secondary-color);
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    margin: 0;
+  }
+
+  .artist-details {
+    grid-column: 6 / span 7;
+    padding: 3rem;
+    background-color: #111;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    opacity: 0.8;
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: var(--accent-color-static);
+  }
+
+  .bio-section, .discography-section {
+    margin-bottom: 3rem;
+  }
+
+    .streaming-section {
+    margin-bottom: 2rem;
+  }
+
+  .streaming-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .streaming-links a {
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+  }
+
+  .streaming-links a:hover {
+    color: var(--accent-color-static);
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color-static);
+    margin-bottom: 1.5rem;
+  }
+
+  .bio-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    opacity: 0.9;
+  }
+
+  .album-list {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .album-item {
+    background-color: #222;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid transparent;
+    transition: background-color 0.3s ease, border-left-color 0.3s ease;
+  }
+
+  .album-item:hover {
+    background-color: #333;
+    border-left-color: var(--accent-color-static);
+  }
+
+  .album-item h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    text-transform: none;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  .album-item span {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--accent-color-static);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .artist-profile-grid {
+      display: block;
+    }
+    .artist-visual {
+      position: relative;
+      top: 0;
+      height: 60vh;
+    }
+    .artist-details {
+      padding: 2rem;
+    }
+  }
+</style>

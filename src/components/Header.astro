@@ -1,0 +1,33 @@
+---
+import Navigation from './Navigation.astro';
+---
+
+<header>
+  <div class="logo">
+    <a href="/">The G'z Radio</a>
+  </div>
+  <Navigation />
+</header>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: transparent; /* Sits on top of the hero section */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+
+  .logo a {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--accent-color-static);
+    text-transform: uppercase;
+  }
+</style>
