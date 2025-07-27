@@ -62,6 +62,11 @@ import ClothingCard from './ClothingCard.astro';
   }
 
   @media (max-width: 768px) {
+    .clothing-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
     .clothing-section {
       padding: 4rem 1rem;
     }
