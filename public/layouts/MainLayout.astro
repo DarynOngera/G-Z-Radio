@@ -1,0 +1,78 @@
+---
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+	title: string;
+	showFooter?: boolean;
+}
+
+const { title, showFooter = true } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="The G'z Radio Official Website" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="styles/global.css">
+	</head>
+	<body>
+		<slot />
+		{showFooter && <Footer />}
+
+    <script>
+      // Smooth scroll for anchor links
+      const handleSmoothScroll = (e) => {
+        const link = e.currentTarget;
+        const url = new URL(link.href);
+        const targetId = url.hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        // If on the same page and the element exists, smooth scroll
+        if (window.location.pathname === url.pathname && targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        } 
+        // Otherwise, let the browser handle the navigation to the new page
+      };
+
+      document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+        anchor.addEventListener('click', handleSmoothScroll);
+      });
+
+      // On page load, check for a hash and scroll to it
+      window.addEventListener('load', () => {
+        if (window.location.hash) {
+          const targetElement = document.getElementById(window.location.hash.substring(1));
+          if (targetElement) {
+            setTimeout(() => { // Timeout to ensure page is fully rendered
+              targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }
+        }
+      });
+
+      // Intersection observer for fade-in animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          } else {
+            entry.target.classList.remove('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+      });
+    </script>
+	</body>
+</html>
