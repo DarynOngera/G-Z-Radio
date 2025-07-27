@@ -1,3 +1,8 @@
 [build]
-  command = "npm install && npm run build" # Command to build your site
-  publish = "dist" # Directory to publish after building
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/entry"
+  status = 200
