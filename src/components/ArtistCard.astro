@@ -11,12 +11,13 @@ const { slug, name, image } = Astro.props;
 <a href={`/artists/${slug}`} class="artist-card">
   <img src={image} alt={`Photo of ${name}`} loading="lazy" />
   <div class="card-overlay">
-    <h3>{name}</h3>
+    <h3 class="artist-name">{name}</h3>
   </div>
 </a>
 
 <style>
   .artist-card {
+    position: relative;
     display: block;
     position: relative;
     overflow: hidden;
@@ -53,12 +54,33 @@ const { slug, name, image } = Astro.props;
     text-align: center;
   }
 
-  .card-overlay h3 {
+  .artist-name {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
     margin: 0;
-    font-family: var(--font-heading);
+    color: var(--text-color-light);
     font-size: 1.5rem;
-    color: var(--secondary-color);
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
+    z-index: 2;
+  }
+
+  .artist-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+    z-index: 1;
+    border-radius: 0 0 8px 8px;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .artist-card:hover::after {
+    opacity: 0.8;
   }
 </style>
