@@ -1,0 +1,61 @@
+/* 
+  Inspired by the dark, moody, and high-contrast aesthetic of hip-hop culture.
+  Fonts: 'Anton' for bold, impactful headlines and 'Montserrat' for clean, readable body text.
+*/
+
+:root {
+  --primary-color: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+  --secondary-color: #f4f4f4;
+  --accent-color: linear-gradient(45deg, #D4AF37, #E6C673);
+  --accent-color-static: #D4AF37; /* A richer, more authentic gold for text and borders */
+  --font-heading: 'Anton', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+a {
+  color: var(--accent-color-static);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+main {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Enhanced animation for sections fading and sliding in on scroll */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
