@@ -24,10 +24,14 @@ import Navigation from './Navigation.astro';
   }
 
   .logo a {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    text-decoration: none;
-    color: var(--accent-color-static);
-    text-transform: uppercase;
-  }
+     font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
+  font-size: 1.5rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  color: var(--accent-color-static); /* fallback color */
+  display: inline-block;
+  transform: rotate(-2deg) skewX(-5deg);
+   }
 </style>
