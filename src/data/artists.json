@@ -2,46 +2,49 @@
   {
     "slug": "Ng",
     "name": "Ng",
-    "image": "/assets/bg.webp",
+    "image": "/assets/NG.jpg",
     "bio": "A chart-topping artist known for his introspective lyrics and genre-blending sound, inspired by the Toronto scene.",
     "streamingLinks": {
-      "spotify": "#",
+      "spotify": "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
       "soundcloud": "#",
       "appleMusic": "#"
     },
     "discography": [
-      { "title": "Views from the 6ix", "year": "2016" },
-      { "title": "Scorpion", "year": "2018" }
+      { "title": "Sikua na Rada", "year": "2025" },
+      { "title": "No jokes", "year": "2025" },
+      { "title": "DissTab", "year": "2025" }
     ]
   },
   {
     "slug": "BB",
-    "name": "Busy Bee",
-    "image": "/assets/kedrick.jpg",
+    "name": "BusyBee",
+    "image": "/assets/BusyBee.jpg",
     "bio": "A collective of lyrical martial artists, bringing raw energy and complex wordplay back to the forefront of hip-hop.",
     "streamingLinks": {
-      "spotify": "#",
+      "spotify": "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
       "soundcloud": "#",
       "appleMusic": "#"
     },
     "discography": [
-      { "title": "Enter the 36 Chambers", "year": "1993" },
-      { "title": "Wu-Tang Forever", "year": "1997" }
+      { "title": "Sikua na Rada", "year": "2025" },
+      { "title": "No jokes", "year": "2025" },
+      { "title": "DissTab", "year": "2025" }
     ]
   },
   {
     "slug": "Lil-Frry",
-    "name": "Lil-Frry",
-    "image": "/assets/wakadinali.jpeg",
+    "name": "LilFry",
+    "image": "/assets/lilfry.jpg",
     "bio": "Carrying the torch of West Coast rap with powerful storytelling and a revolutionary spirit.",
     "streamingLinks": {
-      "spotify": "#",
+      "spotify": "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
       "soundcloud": "#",
       "appleMusic": "#"
     },
     "discography": [
-      { "title": "All Eyez on Me", "year": "1996" },
-      { "title": "The Don Killuminati: The 7 Day Theory", "year": "1996" }
-    ]
+      { "title": "Sikua na Rada", "year": "2025" },
+      { "title": "No jokes", "year": "2025" },
+      { "title": "DissTab", "year": "2025" }  
+          ]
   }
 ]
