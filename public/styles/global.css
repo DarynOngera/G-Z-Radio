@@ -59,3 +59,17 @@ main {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+
+.rugged-headline {
+  font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
+  font-size: 4rem;
+  color: #D4AF37;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  transform: rotate(-2deg) skewX(-5deg);
+}
