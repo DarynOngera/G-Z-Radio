@@ -1,0 +1,52 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import AudioPlayer from '@/components/AudioPlayer.astro';
+import tracks from '@/data/tracks.json';
+---
+
+<MainLayout title="Listen" showFooter={false}>
+  <section class="listen-section fade-in-section">
+    <a href="/" class="back-link">← Back to Main</a>
+    <h1>Exclusive Streams</h1>
+    <AudioPlayer tracks={tracks} />
+  </section>
+</MainLayout>
+
+<style>
+  .listen-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+  }
+  .back-link {
+    color: var(--accent-color-static);
+    text-decoration: none;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    transition: opacity 0.3s ease;
+  }
+  .back-link:hover {
+    opacity: 0.8;
+  }
+  h1 {
+    color: var(--accent-color-static);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .listen-section {
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>
