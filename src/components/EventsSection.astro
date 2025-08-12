@@ -1,12 +1,14 @@
 ---
-import events from '../data/events.json';
+import eventsData from '../data/events.json';
+import InteractiveCalendar from './InteractiveCalendar.astro';
 ---
 
 <section id="events" class="events-section fade-in-section parallax-bg">
   <div class="section-content">
     <h2>Upcoming Events</h2>
+    <InteractiveCalendar />
     <div class="event-list">
-      {events.map(event => (
+      {eventsData.map(event => (
         <div class="event-item">
           <span class="event-date">{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
           <h3 class="event-title">{event.title}</h3>
@@ -20,7 +22,7 @@ import events from '../data/events.json';
 <style>
   .events-section {
     position: relative;
-    padding: 6rem 2rem;
+    padding: 6rem 0;
     text-align: center;
     /* Note: Add a placeholder image named 'events-bg.jpg' to public/assets/ */
     background-image: url('/assets/events-bg.jpg');
@@ -28,6 +30,9 @@ import events from '../data/events.json';
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 
   /* Add a dark overlay for text readability */
@@ -45,6 +50,9 @@ import events from '../data/events.json';
   .section-content {
     position: relative;
     z-index: 2;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   h2 {
