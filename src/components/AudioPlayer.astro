@@ -1,0 +1,128 @@
+---
+import type { Track } from '../types';
+export interface Props {
+  tracks: Track[];
+}
+const { tracks } = Astro.props;
+---
+
+<div class="audio-player glass">
+  <img id="cover" class="cover" src={tracks[0].cover} alt="Track cover" />
+  <div class="info">
+    <h3 id="track-title">{tracks[0].title}</h3>
+    <p id="track-artist">{tracks[0].artist}</p>
+  </div>
+  <ul class="playlist">
+    {tracks.map((track, i) => (
+      <li class="playlist-item" data-index={i}>{track.title} - {track.artist}</li>
+    ))}
+  </ul>
+  <canvas id="visualizer" width="600" height="100"></canvas>
+  <div class="controls">
+    <button id="prev" aria-label="Previous track" class="control-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6L11 18zm1-12v12l8.5-6L12 6z"/></svg>
+    </button>
+    <button id="play" aria-label="Play / Pause" class="control-btn">
+      <!-- Play icon -->
+      <svg id="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>
+    </button>
+    <button id="next" aria-label="Next track" class="control-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13 6v12l8.5-6L13 6zm-1 12V6L3.5 12 12 18z"/></svg>
+    </button>
+    <input id="progress" type="range" min="0" max="100" value="0" />
+    <input id="volume" type="range" min="0" max="1" step="0.01" value="1" />
+  </div>
+</div>
+
+<!-- embed tracks data for JS -->
+<script type="application/json" id="tracks-data" set:html={JSON.stringify(tracks)}></script>
+<script type="module" src="/js/audio-player.js" defer></script>
+
+<style>
+  .glass {
+    backdrop-filter: blur(10px) saturate(120%);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .cover {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 0 auto 0.75rem;
+    display: block;
+  }
+  .info {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    color: var(--secondary-color);
+  }
+  .info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--accent-color-static);
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .control-btn {
+    background: none;
+    border: none;
+    color: var(--accent-color-static);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+  }
+  .control-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .controls button {
+    background: none;
+    border: none;
+    color: var(--accent-color-static);
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+  .controls input[type="range"] {
+    flex: 1;
+  }
+  .playlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0;
+    max-height: 120px;
+    overflow-y: auto;
+    width: 100%;
+  }
+  .playlist-item {
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    color: var(--secondary-color);
+    transition: background 0.2s;
+    font-size: 0.9rem;
+  }
+  .playlist-item.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent-color-static);
+  }
+  .playlist-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  canvas {
+    width: 100%;
+    height: 60px;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+</style>

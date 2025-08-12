@@ -21,7 +21,7 @@ import ArtistCard from './ArtistCard.astro';
 <style>
   .artists-section {
     position: relative;
-    padding: 6rem 2rem;
+    padding: 6rem 0;
     text-align: center;
     /* Note: Add a placeholder image named 'artists-bg.jpg' to public/assets/ */
     /* background-image: url('/assets/bg3.jpg'); */
@@ -29,6 +29,9 @@ import ArtistCard from './ArtistCard.astro';
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 
   /* Add a dark overlay for text readability */
@@ -46,6 +49,9 @@ import ArtistCard from './ArtistCard.astro';
   .section-content {
     position: relative;
     z-index: 2;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   h2 {
