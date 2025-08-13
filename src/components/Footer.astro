@@ -6,20 +6,98 @@
     <div class="newsletter-signup">
       <h4>Join the Movement</h4>
       <p>Get exclusive updates on drops, events, and new music.</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Enter your email" required />
-        <button type="submit">Subscribe</button>
+      <form id="newsletter-form" class="newsletter-form">
+        <input id="newsletter-email" type="email" placeholder="Enter your email" required />
+        <button id="newsletter-submit" type="submit">Subscribe</button>
       </form>
       <div class="consent-check">
-        <input type="checkbox" id="consent" name="consent" required />
-        <label for="consent">I agree to the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms-of-service">Terms of Service</a>.</label>
+        <input id="newsletter-consent" type="checkbox" name="consent" required />
+        <label for="newsletter-consent">I agree to the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms-of-service">Terms of Service</a>.</label>
       </div>
+      <div id="newsletter-message" class="newsletter-message"></div>
     </div>
     <div class="footer-bottom">
       <p>&copy; {new Date().getFullYear()} The G'z Radio. All Rights Reserved.</p>
     </div>
   </div>
 </footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('newsletter-form');
+    const emailInput = document.getElementById('newsletter-email');
+    const consentCheckbox = document.getElementById('newsletter-consent');
+    const submitBtn = document.getElementById('newsletter-submit');
+    const messageDiv = document.getElementById('newsletter-message');
+
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = emailInput.value.trim();
+      const consent = consentCheckbox.checked;
+
+      // Clear previous messages
+      messageDiv.textContent = '';
+      messageDiv.className = 'newsletter-message';
+
+      // Validate form
+      if (!email) {
+        showMessage('Please enter your email address.', 'error');
+        return;
+      }
+
+      if (!consent) {
+        showMessage('Please agree to receive our newsletter.', 'error');
+        return;
+      }
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing...';
+
+      try {
+        const response = await fetch('/.netlify/functions/newsletter-signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, consent })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showMessage(data.message, 'success');
+          form.reset();
+        } else {
+          showMessage(data.error || 'Something went wrong. Please try again.', 'error');
+        }
+
+      } catch (error) {
+        console.error('Newsletter signup error:', error);
+        showMessage('Network error. Please check your connection and try again.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+      }
+    });
+
+    function showMessage(message, type) {
+      messageDiv.textContent = message;
+      messageDiv.className = `newsletter-message ${type}`;
+      
+      // Auto-hide success messages after 5 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          messageDiv.textContent = '';
+          messageDiv.className = 'newsletter-message';
+        }, 5000);
+      }
+    }
+  });
+</script>
 
 <style>
   .site-footer {
@@ -100,5 +178,34 @@
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 0.9rem;
+  }
+
+  .newsletter-message {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .newsletter-message.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    opacity: 1;
+  }
+  
+  .newsletter-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    opacity: 1;
+  }
+  
+  .newsletter-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 </style>
