@@ -3,7 +3,10 @@ let tracks = JSON.parse(document.getElementById('tracks-data').textContent.trim(
 if (tracks && tracks.default) tracks = tracks.default;
 let current = 0;
 
-const audio = new Audio(tracks[current].src);
+const audio = new Audio();
+audio.preload = 'metadata';
+audio.crossOrigin = 'anonymous';
+audio.src = tracks[current].src;
 const playBtn = document.getElementById('play');
 const iconPlay = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>';
 const iconPause = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>';
@@ -56,19 +59,62 @@ function updateUI() {
   artistEl.textContent = tracks[current].artist;
 }
 
+// Buffer management
+let isBuffering = false;
+let bufferTimeout;
+
+function showBuffering() {
+  isBuffering = true;
+  playBtn.style.opacity = '0.6';
+  playBtn.innerHTML = '<div class="spinner"></div>';
+}
+
+function hideBuffering() {
+  isBuffering = false;
+  playBtn.style.opacity = '1';
+  playBtn.innerHTML = audio.paused ? iconPlay : iconPause;
+}
+
+function preloadNext() {
+  const nextIdx = (current + 1) % tracks.length;
+  const nextAudio = new Audio();
+  nextAudio.preload = 'metadata';
+  nextAudio.src = tracks[nextIdx].src;
+}
+
 function changeTrack(idx) {
   pauseTrack();
   current = idx;
   audio.src = tracks[current].src;
   audio.load();
   updateUI();
+  
+  // Reset buffer state
+  hideBuffering();
+  clearTimeout(bufferTimeout);
+  
+  // Optimize loading
+  audio.load();
   setActive();
   playTrack();
 }
 
 function playTrack() {
+  if (audio.readyState < 3) {
+    showBuffering();
+    bufferTimeout = setTimeout(() => {
+      if (isBuffering) {
+        console.warn('Audio taking longer to load, check network or file size');
+      }
+    }, 3000);
+  }
   if (audioCtx.state === 'suspended') audioCtx.resume();
-  audio.play().catch(err => {
+  audio.play().then(() => {
+    hideBuffering();
+    clearTimeout(bufferTimeout);
+    preloadNext();
+  }).catch(err => {
+    hideBuffering();
     if (err.name !== 'AbortError') console.error(err);
   });
   playBtn.innerHTML = iconPause;
@@ -105,12 +151,41 @@ prevBtn.addEventListener('click', () => {
   changeTrack((current - 1 + tracks.length) % tracks.length);
 });
 
-audio.addEventListener('timeupdate', () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+function refreshProgress() {
+  if (isFinite(audio.duration) && audio.duration > 0) {
+    progress.value = (audio.currentTime / audio.duration) * 100;
+  } else {
+    progress.value = 0;
+  }
+}
+
+audio.addEventListener('timeupdate', refreshProgress);
+
+audio.addEventListener('loadedmetadata', refreshProgress);
+
+// Buffer state listeners
+audio.addEventListener('waiting', showBuffering);
+audio.addEventListener('canplay', hideBuffering);
+audio.addEventListener('canplaythrough', () => {
+  hideBuffering();
+  preloadNext();
+});
+
+// Network optimization
+audio.addEventListener('progress', () => {
+  if (audio.buffered.length > 0) {
+    const buffered = audio.buffered.end(audio.buffered.length - 1);
+    const duration = audio.duration;
+    if (buffered / duration > 0.5) {
+      preloadNext();
+    }
+  }
 });
 
 progress.addEventListener('input', () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
+  if (isFinite(audio.duration) && audio.duration > 0) {
+    audio.currentTime = (progress.value / 100) * audio.duration;
+  }
 });
 
 volume.addEventListener('input', () => {
