@@ -4,8 +4,21 @@ if (tracks && tracks.default) tracks = tracks.default;
 let current = 0;
 
 const audio = new Audio();
-audio.preload = 'metadata';
+audio.preload = 'auto';
 audio.crossOrigin = 'anonymous';
+audio.volume = 1;
+
+// Create audio pool for seamless switching
+const audioPool = new Map();
+function createAudioElement(src) {
+  const audioEl = new Audio();
+  audioEl.preload = 'auto';
+  audioEl.crossOrigin = 'anonymous';
+  audioEl.src = src;
+  return audioEl;
+}
+
+// Initialize with current track
 audio.src = tracks[current].src;
 const playBtn = document.getElementById('play');
 const iconPlay = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>';
@@ -77,36 +90,66 @@ function hideBuffering() {
 
 function preloadNext() {
   const nextIdx = (current + 1) % tracks.length;
-  const nextAudio = new Audio();
-  nextAudio.preload = 'metadata';
-  nextAudio.src = tracks[nextIdx].src;
+  const prevIdx = (current - 1 + tracks.length) % tracks.length;
+  
+  // Preload next and previous tracks
+  [nextIdx, prevIdx].forEach(idx => {
+    const src = tracks[idx].src;
+    if (!audioPool.has(src)) {
+      const audioEl = createAudioElement(src);
+      audioPool.set(src, audioEl);
+      
+      // Start loading in background
+      audioEl.load();
+    }
+  });
 }
 
 function changeTrack(idx) {
   pauseTrack();
   current = idx;
-  audio.src = tracks[current].src;
-  audio.load();
+  
+  const newSrc = tracks[current].src;
+  
+  // Use preloaded audio if available
+  if (audioPool.has(newSrc)) {
+    const preloadedAudio = audioPool.get(newSrc);
+    if (preloadedAudio.readyState >= 3) {
+      // Swap to preloaded audio for instant playback
+      const currentTime = audio.currentTime;
+      audio.src = newSrc;
+      audio.currentTime = 0;
+    } else {
+      audio.src = newSrc;
+      audio.load();
+    }
+  } else {
+    audio.src = newSrc;
+    audio.load();
+  }
+  
   updateUI();
   
   // Reset buffer state
   hideBuffering();
   clearTimeout(bufferTimeout);
   
-  // Optimize loading
-  audio.load();
   setActive();
   playTrack();
 }
 
 function playTrack() {
-  if (audio.readyState < 3) {
+  // Adaptive timeout based on connection quality
+  const timeoutDelay = connectionQuality === 'low' ? 8000 : 
+                      connectionQuality === 'medium' ? 6000 : 4000;
+                      
+  if (audio.readyState < 2) {
     showBuffering();
     bufferTimeout = setTimeout(() => {
       if (isBuffering) {
-        console.warn('Audio taking longer to load, check network or file size');
+        console.info(`Loading audio (${connectionQuality} connection)... Please wait`);
       }
-    }, 3000);
+    }, timeoutDelay);
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
   audio.play().then(() => {
@@ -171,16 +214,58 @@ audio.addEventListener('canplaythrough', () => {
   preloadNext();
 });
 
-// Network optimization
+// Advanced network optimization
 audio.addEventListener('progress', () => {
   if (audio.buffered.length > 0) {
     const buffered = audio.buffered.end(audio.buffered.length - 1);
     const duration = audio.duration;
-    if (buffered / duration > 0.5) {
+    
+    // Preload when 30% buffered (earlier for better UX)
+    if (buffered / duration > 0.3) {
       preloadNext();
     }
   }
 });
+
+// Adaptive quality based on connection
+let connectionQuality = 'high';
+function detectConnection() {
+  if ('connection' in navigator) {
+    const conn = navigator.connection;
+    if (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g') {
+      connectionQuality = 'low';
+    } else if (conn.effectiveType === '3g') {
+      connectionQuality = 'medium';
+    } else {
+      connectionQuality = 'high';
+    }
+  }
+}
+
+// Monitor connection changes
+if ('connection' in navigator) {
+  navigator.connection.addEventListener('change', detectConnection);
+  detectConnection();
+}
+
+// Cleanup unused audio elements
+function cleanupAudioPool() {
+  const currentSrc = tracks[current].src;
+  const nextSrc = tracks[(current + 1) % tracks.length].src;
+  const prevSrc = tracks[(current - 1 + tracks.length) % tracks.length].src;
+  
+  const keepSources = new Set([currentSrc, nextSrc, prevSrc]);
+  
+  for (const [src, audioEl] of audioPool.entries()) {
+    if (!keepSources.has(src)) {
+      audioEl.src = '';
+      audioPool.delete(src);
+    }
+  }
+}
+
+// Cleanup every 30 seconds
+setInterval(cleanupAudioPool, 30000);
 
 progress.addEventListener('input', () => {
   if (isFinite(audio.duration) && audio.duration > 0) {
@@ -193,3 +278,7 @@ volume.addEventListener('input', () => {
 });
 
 updateUI();
+
+// Initialize preloading and connection detection
+preloadNext();
+detectConnection();
