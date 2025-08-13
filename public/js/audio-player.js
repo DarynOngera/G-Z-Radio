@@ -4,16 +4,36 @@ if (tracks && tracks.default) tracks = tracks.default;
 let current = 0;
 
 const audio = new Audio();
-audio.preload = 'auto';
+audio.preload = 'metadata';
 audio.crossOrigin = 'anonymous';
 audio.volume = 1;
+
+// Add error handling for connection issues
+audio.addEventListener('error', (e) => {
+  console.warn('Audio error:', e);
+  hideBuffering();
+  
+  // Retry with different approach for WAV files
+  if (audio.src.includes('.wav')) {
+    setTimeout(() => {
+      audio.load();
+    }, 1000);
+  }
+});
 
 // Create audio pool for seamless switching
 const audioPool = new Map();
 function createAudioElement(src) {
   const audioEl = new Audio();
-  audioEl.preload = 'auto';
+  audioEl.preload = 'metadata'; // Use metadata for preloading to avoid large downloads
   audioEl.crossOrigin = 'anonymous';
+  
+  // Add cache-busting and error handling for problematic files
+  if (src.includes('.wav')) {
+    // WAV files can be problematic with range requests
+    audioEl.preload = 'none';
+  }
+  
   audioEl.src = src;
   return audioEl;
 }
