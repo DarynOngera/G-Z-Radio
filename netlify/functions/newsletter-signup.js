@@ -1,19 +1,49 @@
 exports.handler = async (event, context) => {
+  // Add CORS headers for all responses
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  };
+
+  // Handle preflight requests
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
+  }
+
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
+      headers,
       body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
   try {
-    const { email, consent } = JSON.parse(event.body);
+    // Better error handling for JSON parsing
+    let email, consent;
+    try {
+      const body = JSON.parse(event.body || '{}');
+      email = body.email;
+      consent = body.consent;
+    } catch (parseError) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid JSON in request body' })
+      };
+    }
 
     // Validate input
     if (!email || !consent) {
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ error: 'Email and consent are required' })
       };
     }
@@ -23,6 +53,7 @@ exports.handler = async (event, context) => {
     if (!emailRegex.test(email)) {
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ error: 'Invalid email format' })
       };
     }
@@ -34,6 +65,7 @@ exports.handler = async (event, context) => {
       console.error('BUTTONDOWN_API_KEY not set');
       return {
         statusCode: 500,
+        headers,
         body: JSON.stringify({ error: 'Server configuration error' })
       };
     }
@@ -58,10 +90,7 @@ exports.handler = async (event, context) => {
     if (response.ok) {
       return {
         statusCode: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
+        headers,
         body: JSON.stringify({ 
           success: true, 
           message: 'Successfully subscribed to newsletter!' 
@@ -75,10 +104,7 @@ exports.handler = async (event, context) => {
       if (response.status === 400 && errorData.includes('already exists')) {
         return {
           statusCode: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
+          headers,
           body: JSON.stringify({ 
             success: true, 
             message: 'You are already subscribed!' 
@@ -88,6 +114,7 @@ exports.handler = async (event, context) => {
 
       return {
         statusCode: 500,
+        headers,
         body: JSON.stringify({ error: 'Failed to subscribe. Please try again.' })
       };
     }
@@ -96,6 +123,7 @@ exports.handler = async (event, context) => {
     console.error('Newsletter signup error:', error);
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({ error: 'Internal server error' })
     };
   }
