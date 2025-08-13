@@ -56,9 +56,21 @@ function updateUI() {
   artistEl.textContent = tracks[current].artist;
 }
 
+function changeTrack(idx) {
+  pauseTrack();
+  current = idx;
+  audio.src = tracks[current].src;
+  audio.load();
+  updateUI();
+  setActive();
+  playTrack();
+}
+
 function playTrack() {
   if (audioCtx.state === 'suspended') audioCtx.resume();
-  audio.play();
+  audio.play().catch(err => {
+    if (err.name !== 'AbortError') console.error(err);
+  });
   playBtn.innerHTML = iconPause;
 }
 
@@ -80,29 +92,17 @@ playlistItems.forEach((el) => {
   el.addEventListener('click', () => {
     const idx = Number(el.dataset.index);
     if (!Number.isNaN(idx)) {
-      current = idx;
-      audio.src = tracks[current].src;
-      updateUI();
-      setActive();
-      playTrack();
+      changeTrack(idx);
     }
   });
 });
 
 nextBtn.addEventListener('click', () => {
-  current = (current + 1) % tracks.length;
-  audio.src = tracks[current].src;
-  updateUI();
-  playTrack();
-  setActive();
+  changeTrack((current + 1) % tracks.length);
 });
 
 prevBtn.addEventListener('click', () => {
-  current = (current - 1 + tracks.length) % tracks.length;
-  audio.src = tracks[current].src;
-  updateUI();
-  playTrack();
-  setActive();
+  changeTrack((current - 1 + tracks.length) % tracks.length);
 });
 
 audio.addEventListener('timeupdate', () => {

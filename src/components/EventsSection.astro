@@ -107,6 +107,13 @@ import InteractiveCalendar from './InteractiveCalendar.astro';
   }
 
   @media (max-width: 768px) {
+    .events-section {
+      background-attachment: scroll; /* Fixed attachment can cause issues on mobile */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      min-height: auto;
+    }
+    
     .event-item {
       max-width: 90%;
       margin-left: auto;
