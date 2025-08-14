@@ -9,13 +9,13 @@
     </svg>
   </button>
   <nav id="menu" class="nav-overlay hidden">
-    <nav class="nav-links">
+    <div class="nav-links">
       <a href="/">Home</a>
       <a href="/#events">Events</a>
       <a href="/#artists">Artists</a>
       <a href="/#clothing">Clothing</a>
       <a href="/listen">Listen</a>
-    </nav>
+    </div>
   </nav>
 </div>
 
@@ -44,8 +44,10 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -54,6 +56,11 @@
     align-items: center;
     z-index: 1000;
     transition: opacity 0.3s ease, visibility 0.3s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .nav-overlay.hidden {
     opacity: 0;
     visibility: hidden;
   }
@@ -100,17 +107,31 @@
       display: none;
     }
 
-    .nav-overlay, .nav-overlay.hidden, .nav-overlay.visible {
-      position: static;
-      width: auto;
-      height: auto;
-      background: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      flex-direction: row;
-      opacity: 1;
-      visibility: visible;
-      transition: none;
+    .nav-overlay {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      background: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      flex-direction: row !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transition: none !important;
+    }
+
+    .nav-overlay.hidden,
+    .nav-overlay.visible {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      background: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      flex-direction: row !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transition: none !important;
     }
 
     .nav-links {
@@ -143,12 +164,18 @@
     document.body.style.overflow = '';
   }
 
-  menuToggle.addEventListener('click', () => {
-    const isVisible = menu.classList.toggle('visible');
-    menu.classList.toggle('hidden', !isVisible);
+  function openMenu() {
+    menu.classList.remove('hidden');
+    menu.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
 
-    // Prevent body scroll when menu is open
-    document.body.style.overflow = isVisible ? 'hidden' : '';
+  menuToggle.addEventListener('click', () => {
+    if (menu.classList.contains('visible')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   // Close menu when clicking nav links
