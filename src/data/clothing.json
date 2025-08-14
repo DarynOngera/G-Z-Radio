@@ -1,26 +1,87 @@
 [
   {
+    "id": "gz-hoodie-001",
     "slug": "gz-radio-hoodie",
     "name": "G'z Radio Classic Hoodie",
-    "image": "/assets/merch.jpg",
-    "price": "$65.00"
+    "description": "Premium heavyweight hoodie with embroidered G'z Radio logo. Perfect for those cold studio sessions.",
+    "price": 65.00,
+    "currency": "USD",
+    "images": [
+      "/assets/merch.jpg",
+      "/assets/merch.jpg",
+      "/assets/merch.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "colors": [
+      { "name": "Black", "hex": "#000000" },
+      { "name": "Gold", "hex": "#FFD700" }
+    ],
+    "category": "hoodies",
+    "inStock": true,
+    "stockCount": 25,
+    "features": ["80% Cotton, 20% Polyester", "Kangaroo pocket", "Drawstring hood", "Ribbed cuffs"]
   },
   {
+    "id": "gz-tee-001",
     "slug": "gz-radio-t-shirt",
     "name": "G'z Radio Logo Tee",
-    "image": "/assets/merch.jpg",
-    "price": "$30.00"
+    "description": "Soft cotton tee featuring the iconic G'z Radio logo. Essential for any hip-hop wardrobe.",
+    "price": 30.00,
+    "currency": "USD",
+    "images": [
+      "/assets/merch.jpg",
+      "/assets/merch.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "colors": [
+      { "name": "Black", "hex": "#000000" },
+      { "name": "White", "hex": "#FFFFFF" },
+      { "name": "Gold", "hex": "#FFD700" }
+    ],
+    "category": "t-shirts",
+    "inStock": true,
+    "stockCount": 50,
+    "features": ["100% Premium Cotton", "Screen printed logo", "Pre-shrunk", "Tagless comfort"]
   },
   {
+    "id": "gz-cap-001",
     "slug": "gz-radio-snapback",
     "name": "G'z Radio Snapback",
-    "image": "/assets/merch.jpg",
-    "price": "$35.00"
+    "description": "Classic snapback with 3D embroidered logo. Adjustable fit for maximum comfort and style.",
+    "price": 35.00,
+    "currency": "USD",
+    "images": [
+      "/assets/merch.jpg",
+      "/assets/merch.jpg"
+    ],
+    "sizes": ["One Size"],
+    "colors": [
+      { "name": "Black/Gold", "hex": "#000000" },
+      { "name": "White/Black", "hex": "#FFFFFF" }
+    ],
+    "category": "accessories",
+    "inStock": true,
+    "stockCount": 30,
+    "features": ["Structured crown", "Flat brim", "Snapback closure", "3D embroidered logo"]
   },
   {
+    "id": "gz-beanie-001",
     "slug": "gz-radio-beanie",
     "name": "G'z Radio Beanie",
-    "image": "/assets/merch.jpg",
-    "price": "$25.00"
+    "description": "Cozy knit beanie with woven label. Perfect for winter vibes and studio sessions.",
+    "price": 25.00,
+    "currency": "USD",
+    "images": [
+      "/assets/merch.jpg"
+    ],
+    "sizes": ["One Size"],
+    "colors": [
+      { "name": "Black", "hex": "#000000" },
+      { "name": "Gray", "hex": "#808080" }
+    ],
+    "category": "accessories",
+    "inStock": true,
+    "stockCount": 40,
+    "features": ["Acrylic knit", "Cuffed design", "Woven label", "One size fits most"]
   }
 ]

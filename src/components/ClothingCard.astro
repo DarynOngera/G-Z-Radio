@@ -1,20 +1,59 @@
 ---
-export interface Props {
+interface Props {
+  id: string;
   name: string;
   image: string;
-  price: string;
+  price: number;
+  currency: string;
+  slug: string;
+  inStock: boolean;
+  colors: Array<{name: string; hex: string}>;
+  sizes: string[];
 }
 
-const { name, image, price } = Astro.props;
+const { id, name, image, price, currency, slug, inStock, colors, sizes } = Astro.props as Props;
 ---
 
-<div class="clothing-card fade-in-section">
+<div class="clothing-card fade-in-section" data-product-id={id}>
   <div class="card-image">
     <img src={image} alt={`Photo of ${name}`} loading="lazy" />
+    {!inStock && <div class="out-of-stock-badge">Out of Stock</div>}
   </div>
   <div class="card-info">
     <h3>{name}</h3>
-    <p class="price">{price}</p>
+    <p class="price">${price.toFixed(2)} {currency}</p>
+    
+    <div class="product-options">
+      <div class="size-selector">
+        <label>Size:</label>
+        <select class="size-select">
+          {sizes.map(size => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+      
+      <div class="color-selector">
+        <label>Color:</label>
+        <div class="color-options">
+          {colors.map((color, index) => (
+            <button 
+              class={`color-option ${index === 0 ? 'selected' : ''}`}
+              data-color={color.name}
+              style={`background-color: ${color.hex}`}
+              title={color.name}
+            ></button>
+          ))}
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-product-id={id} disabled={!inStock}>
+        {inStock ? 'Add to Cart' : 'Out of Stock'}
+      </button>
+      <a href={`/product/${slug}`} class="view-details-btn">View Details</a>
+    </div>
   </div>
 </div>
 
@@ -33,11 +72,27 @@ const { name, image, price } = Astro.props;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 
+  .card-image {
+    position: relative;
+  }
+
   .card-image img {
     width: 100%;
-    height: 300px; /* Fixed height for uniform cards */
+    height: 300px;
     object-fit: cover;
     display: block;
+  }
+
+  .out-of-stock-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: bold;
   }
 
   .card-info {
@@ -52,9 +107,114 @@ const { name, image, price } = Astro.props;
   }
 
   .price {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
     color: var(--accent-color-static);
-    font-weight: 700;
-    margin: 0;
+    margin: 0 0 1rem 0;
+  }
+
+  .product-options {
+    margin-bottom: 1.5rem;
+  }
+
+  .size-selector, .color-selector {
+    margin-bottom: 1rem;
+  }
+
+  .size-selector label, .color-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 0.875rem;
+  }
+
+  .size-select {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.25rem;
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+
+  .size-select:focus {
+    outline: none;
+    border-color: var(--accent-color-static);
+  }
+
+  .color-options {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .color-option:hover {
+    transform: scale(1.1);
+  }
+
+  .color-option.selected {
+    border-color: var(--accent-color-static);
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+
+  .add-to-cart-btn {
+    background: var(--accent-color-static);
+    color: #000;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .add-to-cart-btn:hover:not(:disabled) {
+    background: var(--accent-color-hover);
+    transform: translateY(-2px);
+  }
+
+  .add-to-cart-btn:disabled {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-color-muted);
+    cursor: not-allowed;
+  }
+
+  .view-details-btn {
+    background: transparent;
+    color: var(--accent-color-static);
+    border: 1px solid var(--accent-color-static);
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .view-details-btn:hover {
+    background: var(--accent-color-static);
+    color: #000;
+    transform: translateY(-2px);
   }
 </style>
