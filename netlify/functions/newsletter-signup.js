@@ -59,16 +59,9 @@ exports.handler = async (event, context) => {
     }
 
     // Buttondown API integration
-    const BUTTONDOWN_API_KEY = process.env.BUTTONDOWN_API_KEY;
+    const BUTTONDOWN_API_KEY = process.env.BUTTONDOWN_API_KEY || '52ca1fee-4e89-4b46-961e-a10240c1c00f';
     
-    if (!BUTTONDOWN_API_KEY) {
-      console.error('BUTTONDOWN_API_KEY not set');
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ error: 'Server configuration error' })
-      };
-    }
+    console.log('Using API key:', BUTTONDOWN_API_KEY ? 'Found' : 'Missing');
 
     const response = await fetch('https://api.buttondown.email/v1/subscribers', {
       method: 'POST',
