@@ -1,0 +1,364 @@
+---
+// Premium Music Access Gate Component
+---
+
+<div id="premium-gate" class="premium-gate">
+  <div class="premium-content">
+    <div class="premium-icon">🎵</div>
+    <h2>Premium Music Access</h2>
+    <p>Unlock exclusive tracks and high-quality streaming</p>
+    
+    <div class="premium-features">
+      <div class="feature">
+        <span class="feature-icon">✨</span>
+        <span>Unlimited streaming</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🎧</span>
+        <span>High-quality audio</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">📱</span>
+        <span>Mobile & desktop access</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🚫</span>
+        <span>Ad-free experience</span>
+      </div>
+    </div>
+    
+    <div class="pricing-options">
+      <div class="pricing-card active" data-plan="monthly">
+        <div class="plan-header">
+          <h3>Monthly Access</h3>
+          <div class="price">
+            <span class="currency">KSh</span>
+            <span class="amount">299</span>
+            <span class="period">/month</span>
+          </div>
+        </div>
+        <p class="plan-desc">Perfect for casual listeners</p>
+      </div>
+      
+      <div class="pricing-card" data-plan="weekly">
+        <div class="plan-header">
+          <h3>Weekly Access</h3>
+          <div class="price">
+            <span class="currency">KSh</span>
+            <span class="amount">99</span>
+            <span class="period">/week</span>
+          </div>
+        </div>
+        <p class="plan-desc">Try premium features</p>
+      </div>
+    </div>
+    
+    <button id="get-premium-btn" class="premium-btn">
+      <span class="btn-text">Get Premium Access</span>
+      <span class="btn-price">KSh 299/month</span>
+    </button>
+    
+    <div class="premium-footer">
+      <p>Secure payment via M-Pesa • Cancel anytime</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .premium-gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .premium-content {
+    max-width: 500px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(40, 40, 40, 0.9));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .premium-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+  }
+
+  .premium-content h2 {
+    color: var(--accent-color-static);
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  }
+
+  .premium-content p {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .premium-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .feature-icon {
+    font-size: 1.2rem;
+  }
+
+  .feature span:last-child {
+    color: var(--text-color);
+    font-size: 0.9rem;
+  }
+
+  .pricing-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .pricing-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .pricing-card:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .pricing-card.active {
+    border-color: var(--accent-color-static);
+    background: rgba(255, 215, 0, 0.1);
+  }
+
+  .plan-header h3 {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .currency {
+    color: var(--accent-color-static);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .amount {
+    color: var(--accent-color-static);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .period {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+  }
+
+  .plan-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .premium-btn {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .premium-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+  }
+
+  .btn-text {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-price {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .premium-footer {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+  }
+
+  .premium-footer p {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .premium-content {
+      padding: 2rem 1.5rem;
+      margin: 1rem;
+    }
+
+    .premium-content h2 {
+      font-size: 2rem;
+    }
+
+    .premium-features {
+      grid-template-columns: 1fr;
+    }
+
+    .pricing-options {
+      flex-direction: column;
+    }
+
+    .amount {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Premium Gate Management
+  class PremiumGate {
+    constructor() {
+      this.selectedPlan = 'monthly';
+      this.plans = {
+        monthly: { amount: 299, period: 'month', duration: '30 days' },
+        weekly: { amount: 99, period: 'week', duration: '7 days' }
+      };
+      this.init();
+    }
+
+    init() {
+      // Plan selection
+      document.querySelectorAll('.pricing-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const plan = card.dataset.plan;
+          this.selectPlan(plan);
+        });
+      });
+
+      // Premium button
+      const premiumBtn = document.getElementById('get-premium-btn');
+      premiumBtn?.addEventListener('click', () => {
+        this.initiatePremiumPayment();
+      });
+    }
+
+    selectPlan(plan) {
+      this.selectedPlan = plan;
+      
+      // Update UI
+      document.querySelectorAll('.pricing-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.plan === plan);
+      });
+
+      // Update button
+      const planData = this.plans[plan];
+      const btnPrice = document.querySelector('.btn-price');
+      if (btnPrice) {
+        btnPrice.textContent = `KSh ${planData.amount}/${planData.period}`;
+      }
+    }
+
+    initiatePremiumPayment() {
+      const planData = this.plans[this.selectedPlan];
+      
+      if (window.paymentModal) {
+        window.paymentModal.open({
+          type: 'music',
+          amount: planData.amount,
+          duration: planData.duration,
+          title: 'Premium Music Access',
+          items: null
+        });
+      }
+    }
+
+    // Check if user has premium access
+    static hasPremiumAccess() {
+      const premiumData = localStorage.getItem('gz-premium-access');
+      if (!premiumData) return false;
+      
+      try {
+        const data = JSON.parse(premiumData);
+        return new Date(data.expiresAt) > new Date();
+      } catch {
+        return false;
+      }
+    }
+
+    // Grant premium access (called after successful payment)
+    static grantPremiumAccess(duration = '30 days') {
+      const expiresAt = new Date();
+      if (duration === '7 days') {
+        expiresAt.setDate(expiresAt.getDate() + 7);
+      } else {
+        expiresAt.setDate(expiresAt.getDate() + 30);
+      }
+
+      const premiumData = {
+        grantedAt: new Date().toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        plan: duration === '7 days' ? 'weekly' : 'monthly'
+      };
+
+      localStorage.setItem('gz-premium-access', JSON.stringify(premiumData));
+      
+      // Trigger premium access event
+      window.dispatchEvent(new CustomEvent('premium:granted', { detail: premiumData }));
+    }
+  }
+
+  // Initialize premium gate
+  document.addEventListener('DOMContentLoaded', () => {
+    window.premiumGate = new PremiumGate();
+  });
+</script>

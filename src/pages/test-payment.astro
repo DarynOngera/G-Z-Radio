@@ -1,0 +1,404 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="M-Pesa Payment Test">
+  <section class="test-section">
+    <div class="container">
+      <h1>🧪 M-Pesa Sandbox Testing</h1>
+      <p class="test-info">Test the payment gateway with Safaricom sandbox credentials</p>
+      
+      <!-- Test Premium Payment -->
+      <div class="test-card">
+        <h2>🎵 Test Premium Music Payment</h2>
+        <div class="test-options">
+          <button class="test-btn" onclick="testPremiumPayment('weekly')">
+            Test Weekly (KSh 99)
+          </button>
+          <button class="test-btn" onclick="testPremiumPayment('monthly')">
+            Test Monthly (KSh 299)
+          </button>
+          <button class="test-btn" onclick="testPremiumPayment('small')">
+            Test Small Amount (KSh 1)
+          </button>
+        </div>
+      </div>
+
+      <!-- Test Merchandise Payment -->
+      <div class="test-card">
+        <h2>🛍️ Test Merchandise Payment</h2>
+        <div class="test-options">
+          <button class="test-btn" onclick="testMerchandisePayment()">
+            Test Cart Payment (KSh 50)
+          </button>
+        </div>
+      </div>
+
+      <!-- Direct API Test -->
+      <div class="test-card">
+        <h2>🔧 Direct API Test</h2>
+        <div class="api-test-form">
+          <div class="form-group">
+            <label>Phone Number:</label>
+            <input type="text" id="test-phone" value="254708374149" placeholder="254XXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>Amount (KSh):</label>
+            <input type="number" id="test-amount" value="1" min="1">
+          </div>
+          <div class="form-group">
+            <label>Description:</label>
+            <input type="text" id="test-desc" value="Test Payment" placeholder="Payment description">
+          </div>
+          <button class="test-btn primary" onclick="testDirectAPI()">
+            Send STK Push
+          </button>
+        </div>
+      </div>
+
+      <!-- Test Results -->
+      <div class="test-results">
+        <h3>📊 Test Results</h3>
+        <div id="test-output" class="output-area">
+          <p>Click any test button to see results here...</p>
+        </div>
+      </div>
+
+      <!-- Sandbox Info -->
+      <div class="sandbox-info">
+        <h3>📱 Sandbox Test Numbers</h3>
+        <ul>
+          <li><code>254708374149</code> - Success scenario</li>
+          <li><code>254711082300</code> - Success scenario</li>
+          <li><code>254700000000</code> - Timeout scenario</li>
+        </ul>
+        <p><strong>Note:</strong> Use amounts 1, 10, 100, or 1000 for testing</p>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .test-section {
+    min-height: 100vh;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  h1 {
+    color: var(--accent-color-static);
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  }
+
+  .test-info {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .test-card {
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(40, 40, 40, 0.9));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .test-card h2 {
+    color: var(--accent-color-static);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .test-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .test-btn {
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+    color: var(--accent-color-static);
+    border: 1px solid var(--accent-color-static);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .test-btn:hover {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+  }
+
+  .test-btn.primary {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+  }
+
+  .api-test-form {
+    display: grid;
+    gap: 1rem;
+    max-width: 400px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    color: var(--accent-color-static);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .form-group input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: white;
+    font-size: 1rem;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color-static);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+
+  .test-results {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .test-results h3 {
+    color: var(--accent-color-static);
+    margin-bottom: 1rem;
+  }
+
+  .output-area {
+    background: #000;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: monospace;
+    color: #00ff00;
+    min-height: 100px;
+    overflow-y: auto;
+    max-height: 300px;
+  }
+
+  .sandbox-info {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .sandbox-info h3 {
+    color: var(--accent-color-static);
+    margin-bottom: 1rem;
+  }
+
+  .sandbox-info ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sandbox-info li {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+  }
+
+  .sandbox-info code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    color: var(--accent-color-static);
+    font-family: monospace;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .test-options {
+      flex-direction: column;
+    }
+
+    .test-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Test Functions
+  function logOutput(message, type = 'info') {
+    const output = document.getElementById('test-output');
+    const timestamp = new Date().toLocaleTimeString();
+    const color = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#00ff00';
+    
+    output.innerHTML += `<div style="color: ${color}; margin-bottom: 0.5rem;">
+      [${timestamp}] ${message}
+    </div>`;
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function clearOutput() {
+    document.getElementById('test-output').innerHTML = '';
+  }
+
+  window.testPremiumPayment = async function(plan) {
+    clearOutput();
+    logOutput(`🎵 Testing ${plan} premium payment...`);
+    
+    const amounts = {
+      weekly: 99,
+      monthly: 299,
+      small: 1
+    };
+    
+    const duration = plan === 'weekly' ? '7 days' : '30 days';
+    
+    if (window.paymentModal) {
+      logOutput(`Opening payment modal for ${plan} plan (KSh ${amounts[plan]})`);
+      window.paymentModal.open({
+        type: 'music',
+        amount: amounts[plan],
+        duration: duration,
+        title: `Test ${plan.charAt(0).toUpperCase() + plan.slice(1)} Premium Access`,
+        items: null
+      });
+    } else {
+      logOutput('❌ Payment modal not available', 'error');
+    }
+  }
+
+  window.testMerchandisePayment = async function() {
+    clearOutput();
+    logOutput('🛍️ Testing merchandise payment...');
+    
+    const testItems = [
+      {
+        id: 'test-hoodie',
+        name: 'Test Hoodie',
+        price: 30,
+        quantity: 1,
+        size: 'M',
+        color: 'Black'
+      },
+      {
+        id: 'test-tshirt',
+        name: 'Test T-Shirt',
+        price: 20,
+        quantity: 1,
+        size: 'L',
+        color: 'Gold'
+      }
+    ];
+    
+    if (window.paymentModal) {
+      logOutput('Opening payment modal for test merchandise (KSh 50)');
+      window.paymentModal.open({
+        type: 'merchandise',
+        amount: 50,
+        items: testItems,
+        title: 'Test Merchandise Order'
+      });
+    } else {
+      logOutput('❌ Payment modal not available', 'error');
+    }
+  }
+
+  window.testDirectAPI = async function() {
+    clearOutput();
+    logOutput('🔧 Testing direct API call...');
+    
+    const phone = document.getElementById('test-phone').value;
+    const amount = parseInt(document.getElementById('test-amount').value);
+    const description = document.getElementById('test-desc').value;
+    
+    if (!phone || !amount) {
+      logOutput('❌ Please fill in phone number and amount', 'error');
+      return;
+    }
+    
+    // Validate phone format
+    const phoneRegex = /^254[0-9]{9}$/;
+    if (!phoneRegex.test(phone)) {
+      logOutput('❌ Invalid phone format. Use 254XXXXXXXXX', 'error');
+      return;
+    }
+    
+    try {
+      logOutput(`📱 Sending STK push to ${phone} for KSh ${amount}...`);
+      
+      const response = await fetch('/.netlify/functions/payment-gateway', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phone: phone,
+          amount: amount,
+          type: 'test',
+          description: description
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        logOutput('✅ STK push sent successfully!', 'success');
+        logOutput(`📋 Checkout Request ID: ${result.checkoutRequestId}`);
+        logOutput(`📋 Merchant Request ID: ${result.merchantRequestId}`);
+        logOutput('📱 Check your phone to complete the payment');
+      } else {
+        logOutput(`❌ API Error: ${result.error || 'Unknown error'}`, 'error');
+        if (result.details) {
+          logOutput(`Details: ${JSON.stringify(result.details, null, 2)}`);
+        }
+      }
+    } catch (error) {
+      logOutput(`❌ Network Error: ${error.message}`, 'error');
+    }
+  }
+
+  // Listen for payment events
+  window.addEventListener('payment:success', (event) => {
+    logOutput('🎉 Payment success event received!', 'success');
+    logOutput(`Details: ${JSON.stringify(event.detail, null, 2)}`);
+  });
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    logOutput('🚀 M-Pesa test environment ready');
+    logOutput('💡 Use sandbox test numbers for testing');
+  });
+</script>

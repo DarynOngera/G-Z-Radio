@@ -1,0 +1,548 @@
+---
+// Payment Modal Component for both Music and Merchandise payments
+---
+
+<div id="payment-modal" class="payment-modal hidden">
+  <div class="payment-overlay"></div>
+  <div class="payment-content">
+    <button id="close-payment" class="close-btn">&times;</button>
+    
+    <div class="payment-header">
+      <h2 id="payment-title">Complete Payment</h2>
+      <div class="payment-type-indicator">
+        <span id="payment-type-badge" class="type-badge">Premium Access</span>
+      </div>
+    </div>
+
+    <div class="payment-details">
+      <div id="payment-summary" class="summary-section">
+        <!-- Dynamic content will be inserted here -->
+      </div>
+      
+      <div class="payment-form">
+        <div class="form-group">
+          <label for="phone-number">Phone Number</label>
+          <input 
+            type="tel" 
+            id="phone-number" 
+            placeholder="254712345678"
+            pattern="254[0-9]{9}"
+            maxlength="12"
+            required
+          />
+          <small class="form-hint">Enter your M-Pesa phone number (254XXXXXXXXX)</small>
+        </div>
+        
+        <div class="total-section">
+          <div class="total-row">
+            <span>Total Amount:</span>
+            <span id="payment-total" class="total-amount">KSh 0</span>
+          </div>
+        </div>
+        
+        <button id="initiate-payment" class="payment-btn" disabled>
+          <span class="btn-text">Pay with M-Pesa</span>
+          <span class="btn-loader hidden">Processing...</span>
+        </button>
+        
+        <div class="payment-security">
+          <div class="security-icons">
+            <span class="security-badge">🔒 Secure Payment</span>
+            <span class="mpesa-badge">M-PESA</span>
+          </div>
+          <p class="security-text">Your payment is secured by Safaricom M-Pesa</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .payment-modal.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .payment-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .payment-content {
+    position: relative;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(40, 40, 40, 0.95));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .payment-modal.visible .payment-content {
+    transform: scale(1);
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--accent-color-static);
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+
+  .close-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+  }
+
+  .payment-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .payment-header h2 {
+    color: var(--accent-color-static);
+    font-size: 1.8rem;
+    margin: 0 0 1rem 0;
+    font-weight: 700;
+  }
+
+  .payment-type-indicator {
+    display: flex;
+    justify-content: center;
+  }
+
+  .type-badge {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .form-group input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color-static);
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+  }
+
+  .form-hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+  }
+
+  .total-section {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-row span:first-child {
+    color: var(--text-color);
+    font-weight: 600;
+  }
+
+  .total-amount {
+    color: var(--accent-color-static);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .payment-btn {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .payment-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+  }
+
+  .payment-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .payment-security {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .security-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .security-badge, .mpesa-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .mpesa-badge {
+    background: #00a651;
+    color: white;
+  }
+
+  .security-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .payment-content {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+
+    .payment-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .total-amount {
+      font-size: 1.3rem;
+    }
+
+    .payment-btn {
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* Hidden state */
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Payment Modal Management
+  class PaymentModal {
+    constructor() {
+      this.modal = document.getElementById('payment-modal');
+      this.overlay = this.modal?.querySelector('.payment-overlay');
+      this.closeBtn = document.getElementById('close-payment');
+      this.phoneInput = document.getElementById('phone-number');
+      this.paymentBtn = document.getElementById('initiate-payment');
+      this.titleEl = document.getElementById('payment-title');
+      this.badgeEl = document.getElementById('payment-type-badge');
+      this.summaryEl = document.getElementById('payment-summary');
+      this.totalEl = document.getElementById('payment-total');
+      this.btnText = this.paymentBtn?.querySelector('.btn-text');
+      this.btnLoader = this.paymentBtn?.querySelector('.btn-loader');
+      
+      this.currentPayment = null;
+      this.init();
+    }
+
+    init() {
+      if (!this.modal) return;
+
+      // Event listeners
+      this.closeBtn?.addEventListener('click', () => this.close());
+      this.overlay?.addEventListener('click', () => this.close());
+      this.phoneInput?.addEventListener('input', () => this.validateForm());
+      this.paymentBtn?.addEventListener('click', () => this.processPayment());
+
+      // Phone number formatting
+      this.phoneInput?.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0 && !value.startsWith('254')) {
+          if (value.startsWith('0')) {
+            value = '254' + value.substring(1);
+          } else if (value.startsWith('7') || value.startsWith('1')) {
+            value = '254' + value;
+          }
+        }
+        e.target.value = value.substring(0, 12);
+        this.validateForm();
+      });
+    }
+
+    open(paymentData) {
+      this.currentPayment = paymentData;
+      this.setupPaymentUI(paymentData);
+      this.modal.classList.remove('hidden');
+      setTimeout(() => this.modal.classList.add('visible'), 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      this.modal.classList.remove('visible');
+      setTimeout(() => {
+        this.modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        this.resetForm();
+      }, 300);
+    }
+
+    setupPaymentUI(data) {
+      const { type, amount, items, title } = data;
+      
+      // Update title and badge
+      this.titleEl.textContent = title || 'Complete Payment';
+      this.badgeEl.textContent = type === 'music' ? 'Premium Access' : 'Merchandise';
+      this.badgeEl.className = `type-badge ${type}`;
+      
+      // Update total
+      this.totalEl.textContent = `KSh ${amount.toFixed(2)}`;
+      
+      // Update summary
+      this.updateSummary(data);
+    }
+
+    updateSummary(data) {
+      const { type, items, duration } = data;
+      let summaryHTML = '';
+      
+      if (type === 'music') {
+        summaryHTML = `
+          <h3 style="color: var(--accent-color-static); margin: 0 0 1rem 0;">Premium Music Access</h3>
+          <div class="summary-item">
+            <span>Access Duration:</span>
+            <span>${duration || '30 days'}</span>
+          </div>
+          <div class="summary-item">
+            <span>Features:</span>
+            <span>Unlimited streaming, High quality audio</span>
+          </div>
+        `;
+      } else if (type === 'merchandise') {
+        summaryHTML = `
+          <h3 style="color: var(--accent-color-static); margin: 0 0 1rem 0;">Order Summary</h3>
+        `;
+        items?.forEach(item => {
+          summaryHTML += `
+            <div class="summary-item">
+              <span>${item.name} ${item.size ? `(${item.size})` : ''} ${item.color ? `- ${item.color}` : ''}</span>
+              <span>KSh ${(item.price * item.quantity).toFixed(2)}</span>
+            </div>
+          `;
+        });
+      }
+      
+      this.summaryEl.innerHTML = summaryHTML;
+    }
+
+    validateForm() {
+      const phone = this.phoneInput?.value || '';
+      const isValid = /^254\d{9}$/.test(phone);
+      this.paymentBtn.disabled = !isValid;
+    }
+
+    async processPayment() {
+      if (!this.currentPayment) return;
+      
+      const phone = this.phoneInput.value;
+      const { type, amount, items } = this.currentPayment;
+      
+      // Show loading state
+      this.setLoading(true);
+      
+      try {
+        const response = await fetch('/.netlify/functions/payment-gateway', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            phone,
+            amount,
+            type,
+            items: type === 'merchandise' ? items : null
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          this.showSuccess('Payment request sent! Please check your phone to complete the transaction.');
+          
+          // Trigger payment success event for the payment handler
+          window.dispatchEvent(new CustomEvent('payment:success', {
+            detail: {
+              ...this.currentPayment,
+              checkoutRequestId: result.checkoutRequestId,
+              merchantRequestId: result.merchantRequestId
+            }
+          }));
+          
+          setTimeout(() => this.close(), 3000);
+        } else {
+          this.showError(result.error || 'Payment failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Payment error:', error);
+        this.showError('Network error. Please check your connection and try again.');
+      } finally {
+        this.setLoading(false);
+      }
+    }
+
+    setLoading(loading) {
+      this.paymentBtn.disabled = loading;
+      this.btnText.classList.toggle('hidden', loading);
+      this.btnLoader.classList.toggle('hidden', !loading);
+    }
+
+    showSuccess(message) {
+      // You can implement a toast notification here
+      alert(message);
+    }
+
+    showError(message) {
+      // You can implement a toast notification here
+      alert(message);
+    }
+
+    resetForm() {
+      this.phoneInput.value = '';
+      this.validateForm();
+      this.currentPayment = null;
+    }
+  }
+
+  // Initialize payment modal when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    window.paymentModal = new PaymentModal();
+  });
+</script>
+
+<style>
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-item span:first-child {
+    color: var(--text-color);
+  }
+
+  .summary-item span:last-child {
+    color: var(--accent-color-static);
+    font-weight: 600;
+  }
+
+  .type-badge.music {
+    background: linear-gradient(45deg, #1db954, #1ed760);
+  }
+
+  .type-badge.merchandise {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+  }
+</style>
