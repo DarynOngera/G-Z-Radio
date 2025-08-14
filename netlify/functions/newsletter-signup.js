@@ -70,7 +70,7 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
+        email_address: email,
         tags: ['website-signup'],
         metadata: {
           source: 'gz-radio-website',
