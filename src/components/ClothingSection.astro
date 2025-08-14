@@ -9,9 +9,15 @@ import ClothingCard from './ClothingCard.astro';
     <div class="clothing-grid fade-in-section">
       {clothingData.map(item => (
         <ClothingCard 
+          id={item.id}
           name={item.name} 
-          image={item.image} 
-          price={item.price} 
+          image={item.images[0]} 
+          price={item.price}
+          currency={item.currency}
+          slug={item.slug}
+          inStock={item.inStock}
+          colors={item.colors}
+          sizes={item.sizes}
         />
       ))}
     </div>
