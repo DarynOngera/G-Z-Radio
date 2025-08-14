@@ -278,9 +278,30 @@ class ShoppingCart {
       return;
     }
     
-    // Store cart data for checkout page
-    sessionStorage.setItem('checkout-items', JSON.stringify(this.items));
-    window.location.href = '/checkout';
+    // Prepare items for payment
+    const paymentItems = this.items.map(item => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      size: item.selectedSize,
+      color: item.selectedColor
+    }));
+    
+    const total = this.getTotal();
+    
+    // Open payment modal for merchandise
+    if (window.paymentModal) {
+      window.paymentModal.open({
+        type: 'merchandise',
+        amount: total,
+        items: paymentItems,
+        title: 'Complete Your Order'
+      });
+    } else {
+      console.error('Payment modal not available');
+      alert('Payment system not available. Please try again.');
+    }
   }
 
   // Add listener for cart changes
