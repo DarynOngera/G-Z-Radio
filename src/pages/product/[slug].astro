@@ -1,0 +1,457 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import clothing from '@/data/clothing.json';
+
+export async function getStaticPaths() {
+  return clothing.map((item) => ({
+    params: { slug: item.slug },
+    props: { product: item },
+  }));
+}
+
+const { product } = Astro.props;
+---
+
+<MainLayout title={`${product.name} - G'z Radio Merch`}>
+  <div class="product-detail-page">
+    <div class="container">
+      <div class="product-detail-content">
+        <!-- Product Images -->
+        <div class="product-images">
+          <div class="main-image">
+            <img id="mainProductImage" src={product.images[0]} alt={product.name} />
+          </div>
+          <div class="image-thumbnails">
+            {product.images.map((image, index) => (
+              <button class={`thumbnail ${index === 0 ? 'active' : ''}`} data-image={image}>
+                <img src={image} alt={`${product.name} view ${index + 1}`} />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <h1 class="product-title">{product.name}</h1>
+          <p class="product-price">${product.price.toFixed(2)} {product.currency}</p>
+          <p class="product-description">{product.description}</p>
+
+          <!-- Product Features -->
+          <div class="product-features">
+            <h3>Features:</h3>
+            <ul>
+              {product.features.map(feature => (
+                <li>{feature}</li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Size Selection -->
+          <div class="size-selection">
+            <label>Size:</label>
+            <div class="size-options">
+              {product.sizes.map((size, index) => (
+                <button class={`size-btn ${index === 0 ? 'selected' : ''}`} data-size={size}>
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Color Selection -->
+          <div class="color-selection">
+            <label>Color:</label>
+            <div class="color-options">
+              {product.colors.map((color, index) => (
+                <button 
+                  class={`color-option ${index === 0 ? 'selected' : ''}`}
+                  data-color={color.name}
+                  style={`background-color: ${color.hex}`}
+                  title={color.name}
+                ></button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Stock Info -->
+          <div class="stock-info">
+            {product.inStock ? (
+              <span class="in-stock">✓ In Stock ({product.stockCount} available)</span>
+            ) : (
+              <span class="out-of-stock">✗ Out of Stock</span>
+            )}
+          </div>
+
+          <!-- Actions -->
+          <div class="product-actions">
+            <button 
+              class="add-to-cart-btn primary-btn" 
+              data-product-id={product.id}
+              disabled={!product.inStock}
+            >
+              {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+            <button class="back-btn secondary-btn" onclick="history.back()">
+              ← Back to Shop
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .product-detail-page {
+    min-height: 100vh;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .product-detail-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 2rem;
+  }
+
+  /* Product Images */
+  .product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .main-image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+  }
+
+  .main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .image-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .thumbnail.active {
+    border-color: var(--accent-color-static);
+  }
+
+  .thumbnail:hover {
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Product Info */
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .product-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color-static);
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+
+  .product-price {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+
+  .product-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+
+  .product-features h3 {
+    color: var(--accent-color-static);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+  }
+
+  .product-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product-features li {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.25rem 0;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .product-features li:before {
+    content: "•";
+    color: var(--accent-color-static);
+    position: absolute;
+    left: 0;
+  }
+
+  /* Size Selection */
+  .size-selection label,
+  .color-selection label {
+    display: block;
+    color: var(--accent-color-static);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .size-options {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .size-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+
+  .size-btn:hover,
+  .size-btn.selected {
+    border-color: var(--accent-color-static);
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--accent-color-static);
+  }
+
+  /* Color Selection */
+  .color-options {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .color-option:hover,
+  .color-option.selected {
+    border-color: var(--accent-color-static);
+    transform: scale(1.1);
+  }
+
+  /* Stock Info */
+  .stock-info {
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .in-stock {
+    color: #4ade80;
+    font-weight: 600;
+  }
+
+  .out-of-stock {
+    color: #f87171;
+    font-weight: 600;
+  }
+
+  /* Actions */
+  .product-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .primary-btn {
+    flex: 1;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .primary-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+  }
+
+  .primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .secondary-btn {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    color: var(--accent-color-static);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .secondary-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--accent-color-static);
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .product-detail-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .product-title {
+      font-size: 2rem;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+    }
+
+    .product-actions {
+      flex-direction: column;
+    }
+
+    .image-thumbnails {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Product detail functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainImage = document.getElementById('mainProductImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const addToCartBtn = document.querySelector('.add-to-cart-btn');
+
+    // Image thumbnail functionality
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', () => {
+        const newImageSrc = thumbnail.dataset.image;
+        if (mainImage && newImageSrc) {
+          mainImage.src = newImageSrc;
+          
+          // Update active thumbnail
+          thumbnails.forEach(t => t.classList.remove('active'));
+          thumbnail.classList.add('active');
+        }
+      });
+    });
+
+    // Size selection
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    sizeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizeButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+
+    // Color selection
+    const colorOptions = document.querySelectorAll('.color-option');
+    colorOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        colorOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+      });
+    });
+
+    // Add to cart functionality
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', () => {
+        // Get selected size and color
+        const selectedSize = document.querySelector('.size-btn.selected')?.dataset.size;
+        const selectedColor = document.querySelector('.color-option.selected')?.dataset.color;
+
+        if (!selectedSize || !selectedColor) {
+          alert('Please select both size and color before adding to cart.');
+          return;
+        }
+
+        // Get product data from the page
+        const productData = {
+          id: addToCartBtn.dataset.productId,
+          name: document.querySelector('.product-title').textContent,
+          price: parseFloat(document.querySelector('.product-price').textContent.replace(/[^0-9.]/g, '')),
+          images: [document.getElementById('mainProductImage').src],
+          slug: window.location.pathname.split('/').pop()
+        };
+
+        // Add to cart using the global cart instance
+        if (window.cart) {
+          window.cart.addItem(productData, selectedSize, selectedColor, 1);
+          
+          // Update button temporarily
+          const originalText = addToCartBtn.textContent;
+          addToCartBtn.textContent = 'Added!';
+          addToCartBtn.style.background = 'linear-gradient(45deg, #4ade80, #22c55e)';
+          
+          setTimeout(() => {
+            addToCartBtn.textContent = originalText;
+            addToCartBtn.style.background = 'linear-gradient(45deg, var(--accent-color-static), #ffa500)';
+          }, 2000);
+        } else {
+          console.error('Cart system not available');
+          alert('Cart system not available. Please try again.');
+        }
+      });
+    }
+  });
+</script>

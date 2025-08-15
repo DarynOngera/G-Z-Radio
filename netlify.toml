@@ -5,6 +5,14 @@
 [functions]
   directory = "netlify/functions"
 
+[functions.environment]
+  MPESA_CONSUMER_KEY = ""
+  MPESA_CONSUMER_SECRET = ""
+  MPESA_BUSINESS_SHORTCODE = ""
+  MPESA_PASSKEY = ""
+  MPESA_CALLBACK_URL = ""
+  BUTTONDOWN_API_KEY = ""
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"

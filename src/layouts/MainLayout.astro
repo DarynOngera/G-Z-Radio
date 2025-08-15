@@ -1,5 +1,6 @@
 ---
 import Footer from '../components/Footer.astro';
+import PaymentModal from '../components/PaymentModal.astro';
 
 export interface Props {
 	title: string;
@@ -27,6 +28,7 @@ const { title, showFooter = true } = Astro.props;
 	<body>
 		<slot />
 		{showFooter && <Footer />}
+		<PaymentModal />
 
     <script is:inline>
       // Smooth scroll for anchor links
@@ -80,6 +82,7 @@ const { title, showFooter = true } = Astro.props;
 
     <!-- Cart System -->
     <script is:inline src="/js/cart.js"></script>
+    <script is:inline src="/js/payment-handler.js"></script>
     <script is:inline src="/js/clothing.js"></script>
 	</body>
 </html>

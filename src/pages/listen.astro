@@ -1,6 +1,7 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
 import AudioPlayer from '@/components/AudioPlayer.astro';
+import PremiumGate from '@/components/PremiumGate.astro';
 import tracks from '@/data/tracks.json';
 ---
 
@@ -8,7 +9,20 @@ import tracks from '@/data/tracks.json';
   <section class="listen-section fade-in-section">
     <a href="/" class="back-link">← Back to Main</a>
     <h1>Exclusive Streams</h1>
-    <AudioPlayer tracks={tracks} />
+    
+    <!-- Premium Gate (shown when user doesn't have access) -->
+    <div id="premium-gate-container">
+      <PremiumGate />
+    </div>
+    
+    <!-- Audio Player (shown when user has premium access) -->
+    <div id="audio-player-container" class="hidden">
+      <div class="premium-status">
+        <span class="premium-badge">🎵 Premium Active</span>
+        <span id="premium-expires" class="expires-text"></span>
+      </div>
+      <AudioPlayer tracks={tracks} />
+    </div>
   </section>
 </MainLayout>
 
@@ -40,6 +54,38 @@ import tracks from '@/data/tracks.json';
     text-align: center;
   }
   
+  .premium-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+  }
+
+  .premium-badge {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .expires-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
   @media (max-width: 768px) {
     .listen-section {
       padding: 1rem;
@@ -48,5 +94,71 @@ import tracks from '@/data/tracks.json';
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
     }
+    
+    .premium-status {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
   }
+
+  <script>
+    // Premium Access Management for Listen Page
+    document.addEventListener('DOMContentLoaded', () => {
+      const gateContainer = document.getElementById('premium-gate-container');
+      const playerContainer = document.getElementById('audio-player-container');
+      const expiresEl = document.getElementById('premium-expires');
+
+      function checkPremiumAccess() {
+        const premiumData = localStorage.getItem('gz-premium-access');
+        
+        if (!premiumData) {
+          showPremiumGate();
+          return;
+        }
+
+        try {
+          const data = JSON.parse(premiumData);
+          const expiresAt = new Date(data.expiresAt);
+          const now = new Date();
+
+          if (expiresAt > now) {
+            showAudioPlayer(expiresAt);
+          } else {
+            // Premium expired
+            localStorage.removeItem('gz-premium-access');
+            showPremiumGate();
+          }
+        } catch (error) {
+          console.error('Error checking premium access:', error);
+          showPremiumGate();
+        }
+      }
+
+      function showPremiumGate() {
+        gateContainer?.classList.remove('hidden');
+        playerContainer?.classList.add('hidden');
+      }
+
+      function showAudioPlayer(expiresAt) {
+        gateContainer?.classList.add('hidden');
+        playerContainer?.classList.remove('hidden');
+        
+        // Update expires text
+        if (expiresEl) {
+          const daysLeft = Math.ceil((expiresAt - new Date()) / (1000 * 60 * 60 * 24));
+          expiresEl.textContent = `Expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}`;
+        }
+      }
+
+      // Listen for premium access events
+      window.addEventListener('premium:granted', (event) => {
+        const { expiresAt } = event.detail;
+        showAudioPlayer(new Date(expiresAt));
+      });
+
+      // Initial check
+      checkPremiumAccess();
+    });
+  </script>
 </style>

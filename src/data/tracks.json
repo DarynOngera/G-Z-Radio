@@ -1,16 +1,50 @@
 [
   {
+    "id": "freestab",
     "title": "Freestab",
     "artist": "G'z Radio",
     "src": "/audio/freestab.mp3",
-    "cover": "/assets/cover.jpg"
+    "preview": "/audio/freestab.mp3",
+    "cover": "/assets/cover.jpg",
+    "duration": "3:45",
+    "previewDuration": 30,
+    "genre": "Hip-Hop",
+    "description": "A smooth freestyle track showcasing lyrical prowess"
   },
   {
+    "id": "mazingich",
     "title": "Mazingich",
     "artist": "G'z Radio",
     "src": "/audio/mazingich.wav",
-    "cover": "/assets/icon.jpg"
+    "preview": "/audio/mazingich.wav",
+    "cover": "/assets/icon.jpg",
+    "duration": "4:12",
+    "previewDuration": 30,
+    "genre": "Hip-Hop",
+    "description": "An energetic track with powerful beats and flow"
+  },
+  {
+    "id": "exclusive-1",
+    "title": "Underground Vibes",
+    "artist": "G'z Radio",
+    "src": "/audio/underground-vibes.mp3",
+    "preview": "/audio/underground-vibes-preview.mp3",
+    "cover": "/assets/cover.jpg",
+    "duration": "3:28",
+    "previewDuration": 30,
+    "genre": "Hip-Hop",
+    "description": "Raw underground sound with authentic street vibes"
+  },
+  {
+    "id": "exclusive-2",
+    "title": "Golden Flow",
+    "artist": "G'z Radio",
+    "src": "/audio/golden-flow.mp3",
+    "preview": "/audio/golden-flow-preview.mp3",
+    "cover": "/assets/icon.jpg",
+    "duration": "4:01",
+    "previewDuration": 30,
+    "genre": "Hip-Hop",
+    "description": "Premium track with golden-era hip-hop influences"
   }
-  
-
 ]
