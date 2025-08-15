@@ -311,14 +311,19 @@
     initiatePremiumPayment() {
       const planData = this.plans[this.selectedPlan];
       
+      console.log('🎵 Initiating premium payment:', planData);
+      
       if (window.paymentModal) {
         window.paymentModal.open({
           type: 'music',
           amount: planData.amount,
           duration: planData.duration,
-          title: 'Premium Music Access',
+          title: `${this.selectedPlan.charAt(0).toUpperCase() + this.selectedPlan.slice(1)} Premium Access`,
           items: null
         });
+      } else {
+        console.error('Payment modal not available');
+        alert('Payment system is loading. Please try again in a moment.');
       }
     }
 

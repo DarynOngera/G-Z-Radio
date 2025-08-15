@@ -291,16 +291,18 @@ class ShoppingCart {
     const total = this.getTotal();
     
     // Open payment modal for merchandise
+    console.log('🛍️ Initiating merchandise payment:', { total, itemCount: paymentItems.length });
+    
     if (window.paymentModal) {
       window.paymentModal.open({
         type: 'merchandise',
         amount: total,
         items: paymentItems,
-        title: 'Complete Your Order'
+        title: `Complete Your Order (${paymentItems.length} item${paymentItems.length !== 1 ? 's' : ''})`
       });
     } else {
       console.error('Payment modal not available');
-      alert('Payment system not available. Please try again.');
+      alert('Payment system is loading. Please try again in a moment.');
     }
   }
 

@@ -18,22 +18,28 @@ class PaymentHandler {
   handlePaymentSuccess(paymentData) {
     const { type, amount, duration, items, checkoutRequestId } = paymentData;
 
+    console.log('🎉 Payment success handler called:', paymentData);
+
     if (type === 'music') {
-      this.grantPremiumAccess(duration);
-      this.showSuccessMessage('🎵 Premium access activated! Enjoy unlimited streaming.');
+      this.grantPremiumAccess(duration || '30 days');
+      this.showSuccessMessage(`🎵 Premium access activated! Enjoy unlimited streaming for ${duration || '30 days'}.`);
       
       // Redirect to listen page after success
       setTimeout(() => {
+        console.log('🎵 Redirecting to listen page...');
         window.location.href = '/listen';
-      }, 2000);
+      }, 3000);
       
     } else if (type === 'merchandise') {
       this.processMerchandiseOrder(items, checkoutRequestId);
-      this.showSuccessMessage('🛍️ Order confirmed! You will receive a confirmation SMS shortly.');
+      this.showSuccessMessage(`🛍️ Order confirmed! ${items?.length || 0} item(s) ordered. You will receive a confirmation SMS shortly.`);
       
       // Clear cart after successful payment
       if (window.cart) {
-        window.cart.clearCart();
+        console.log('🛒 Clearing cart after successful payment...');
+        setTimeout(() => {
+          window.cart.clearCart();
+        }, 1000);
       }
     }
 
