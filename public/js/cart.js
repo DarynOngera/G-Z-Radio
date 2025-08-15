@@ -102,6 +102,45 @@ class ShoppingCart {
     this.saveCart();
   }
 
+  // Show success message when item is added to cart
+  showAddedToCartMessage(productName) {
+    // Remove any existing message
+    const existingMessage = document.querySelector('.cart-success-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+
+    // Create success message
+    const message = document.createElement('div');
+    message.className = 'cart-success-message';
+    message.innerHTML = `
+      <div class="success-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+        <span><strong>${productName}</strong> added to cart!</span>
+      </div>
+    `;
+
+    // Add to page
+    document.body.appendChild(message);
+
+    // Animate in
+    setTimeout(() => {
+      message.classList.add('show');
+    }, 10);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      message.classList.add('hide');
+      setTimeout(() => {
+        if (message.parentNode) {
+          message.remove();
+        }
+      }, 300);
+    }, 3000);
+  }
+
   // Create cart button in header
   createCartButton() {
     const nav = document.querySelector('.nav-links');
@@ -320,6 +359,68 @@ class ShoppingCart {
 // Initialize cart when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   window.cart = new ShoppingCart();
+  
+  // Inject CSS for cart success message
+  const style = document.createElement('style');
+  style.textContent = `
+    .cart-success-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #4ade80, #22c55e);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+      z-index: 10000;
+      transform: translateX(400px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-width: 300px;
+    }
+
+    .cart-success-message.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .cart-success-message.hide {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+
+    .success-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .success-content svg {
+      flex-shrink: 0;
+    }
+
+    .success-content span {
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .cart-success-message {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100px);
+      }
+
+      .cart-success-message.show {
+        transform: translateY(0);
+      }
+
+      .cart-success-message.hide {
+        transform: translateY(-100px);
+      }
+    }
+  `;
+  document.head.appendChild(style);
 });
 
 // Export for use in other scripts
