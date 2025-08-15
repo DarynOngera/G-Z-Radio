@@ -26,7 +26,13 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    console.log('Payment gateway called with:', { 
+      method: event.httpMethod, 
+      body: event.body ? 'present' : 'missing' 
+    });
+    
     const { phone, amount, type, items } = JSON.parse(event.body);
+    console.log('Parsed request:', { phone, amount, type, itemCount: items?.length || 0 });
     
     // Validate input
     if (!phone || !amount || !type) {
@@ -52,14 +58,32 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Get M-Pesa credentials  // M-Pesa API configuration
-    const consumerKey = process.env.MPESA_CONSUMER_KEY || 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-    const consumerSecret = process.env.MPESA_CONSUMER_SECRET || 'A49c2c1f2f3c6b2b0d3c0e6e1f2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s';
+    // M-Pesa Sandbox API configuration (using your working credentials)
+    const consumerKey = process.env.MPESA_CONSUMER_KEY || 'pYKnZuuiIZJwiFCzjfHuvm8JyPrInXucAfEMk9vOJ6NRIrhH';
+    const consumerSecret = process.env.MPESA_CONSUMER_SECRET || 'dqAW02BRFLyB2NSacjRKVRQayjDwBureGnUYzmA5Ybi1ehusH6ho92WMpNcNC7aP';
     const businessShortCode = process.env.MPESA_BUSINESS_SHORTCODE || '174379';
     const passkey = process.env.MPESA_PASSKEY || 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-    const callbackUrl = process.env.MPESA_CALLBACK_URL || 'https://mydomain.com/path';
+    // Use deployed site URL for callback if not set in environment
+    const callbackUrl = process.env.MPESA_CALLBACK_URL || `${event.headers.origin || 'https://ongera.netlify.app'}/.netlify/functions/payment-callback`;
+
+    console.log('M-Pesa Configuration:', {
+      hasConsumerKey: !!consumerKey,
+      consumerKeyLength: consumerKey?.length,
+      consumerKeyStart: consumerKey?.substring(0, 10) + '...',
+      hasConsumerSecret: !!consumerSecret,
+      consumerSecretLength: consumerSecret?.length,
+      businessShortCode,
+      hasPasskey: !!passkey,
+      passkeyLength: passkey?.length,
+      callbackUrl
+    });
 
     if (!consumerKey || !consumerSecret || !passkey) {
+      console.error('Missing M-Pesa credentials:', { 
+        hasConsumerKey: !!consumerKey, 
+        hasConsumerSecret: !!consumerSecret, 
+        hasPasskey: !!passkey 
+      });
       return {
         statusCode: 500,
         headers: {
@@ -71,9 +95,15 @@ exports.handler = async (event, context) => {
     }
 
     // Generate access token
+    console.log('Generating M-Pesa access token...');
     const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+    console.log('Generated auth string length:', auth.length);
+    console.log('Auth string preview:', auth.substring(0, 20) + '...');
+    
     // Get access token (using sandbox URL)
     const authUrl = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+    console.log('Calling auth URL:', authUrl);
+    
     const tokenResponse = await fetch(authUrl, {
       method: 'GET',
       headers: {
@@ -81,11 +111,23 @@ exports.handler = async (event, context) => {
       }
     });
 
+    console.log('Token response status:', tokenResponse.status);
+    console.log('Token response headers:', Object.fromEntries(tokenResponse.headers.entries()));
+    
     if (!tokenResponse.ok) {
-      throw new Error('Failed to get access token');
+      const errorText = await tokenResponse.text();
+      console.error('Token request failed:', { 
+        status: tokenResponse.status, 
+        statusText: tokenResponse.statusText,
+        error: errorText,
+        url: authUrl,
+        authHeader: `Basic ${auth.substring(0, 20)}...`
+      });
+      throw new Error(`Failed to get access token: ${tokenResponse.statusText} - ${errorText}`);
     }
 
     const tokenData = await tokenResponse.json();
+    console.log('Token data received:', { hasAccessToken: !!tokenData.access_token });
     const accessToken = tokenData.access_token;
 
     // Generate timestamp and password
@@ -180,7 +222,12 @@ exports.handler = async (event, context) => {
     }
 
   } catch (error) {
-    console.error('Payment gateway error:', error);
+    console.error('Payment gateway error:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
     return {
       statusCode: 500,
       headers: {
@@ -189,7 +236,8 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         success: false,
-        error: 'Internal server error'
+        error: 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       })
     };
   }
