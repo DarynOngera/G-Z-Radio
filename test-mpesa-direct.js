@@ -3,11 +3,11 @@ const https = require('https');
 const crypto = require('crypto');
 
 // M-Pesa Sandbox Credentials
-const CONSUMER_KEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-const CONSUMER_SECRET = 'A49c2c1f2f3c6b2b0d3c0e6e1f2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s';
-const BUSINESS_SHORTCODE = '174379';
-const PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-const CALLBACK_URL = 'https://mydomain.com/path';
+const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
+const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
+const BUSINESS_SHORTCODE = process.env.MPESA_BUSINESS_SHORTCODE;
+const PASSKEY = process.env.MPESA_PASSKEY;
+const CALLBACK_URL = process.env.MPESA_CALLBACK_URL;
 
 // Helper function to make HTTP requests
 function makeRequest(options, data = null) {
