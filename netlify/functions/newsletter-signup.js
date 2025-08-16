@@ -86,7 +86,7 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({ 
           success: true, 
-          message: 'Successfully subscribed to newsletter!' 
+          message: 'We have sent you a confirmation email. Please check your inbox.' 
         })
       };
     } else {
