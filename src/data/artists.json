@@ -6,8 +6,8 @@
     "bio": "The lyrical athlete.",
     "streamingLinks": {
       "spotify": "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
-      "soundcloud": "#",
-      "appleMusic": "#"
+      "soundcloud": "sound",
+      "appleMusic": "apple"
     },
     "discography": [
       { "title": "Sikua na Rada", "year": "2025" },
