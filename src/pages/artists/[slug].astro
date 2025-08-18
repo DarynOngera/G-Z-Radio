@@ -1,6 +1,5 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import Header from '../../components/Header.astro';
 import artists from '../../data/artists.json';
 import SpotifyIcon from '../../components/SpotifyIcon.astro';
 import SoundCloudIcon from '../../components/SoundCloudIcon.astro';
@@ -17,7 +16,7 @@ const { artist } = Astro.props;
 ---
 
 <MainLayout title={`${artist.name} - The G'z Radio`} showFooter={false}>
-  <Header />
+
   <div class="artist-page-container">
     <div class="artist-profile-grid">
       <div class="artist-visual">
@@ -76,7 +75,7 @@ const { artist } = Astro.props;
   }
 
   .artist-page-container {
-    padding-top: 60px; /* Space for the fixed header */
+    padding-top: 0px; /* Space for the fixed header */
   }
 
   .artist-profile-grid {
@@ -88,7 +87,8 @@ const { artist } = Astro.props;
   .artist-visual {
     grid-column: 1 / span 5;
     position: sticky;
-    top: 60px;
+    top: 0px;
+    bottom: 0px;
     height: calc(100vh - 60px);
     overflow: hidden;
   }
