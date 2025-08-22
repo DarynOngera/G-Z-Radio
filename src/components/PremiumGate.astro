@@ -4,18 +4,22 @@ import tracks from '@/data/tracks.json';
 ---
 
 <div id="premium-gate" class="premium-gate">
-  <div class="premium-content">
-    <div class="premium-icon">🎵</div>
+  <div class="premium-header">
+    <div class="premium-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+        <path d="12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+      </svg>
+    </div>
     <h2>Premium Music Access</h2>
     <p>Unlock exclusive tracks and high-quality streaming</p>
+  </div>
+  
+  <!-- Song Previews Section -->
+  <div class="song-previews">
+    <h3>Preview Our Exclusive Tracks</h3>
     
-    <!-- Song Previews Section -->
-    <div class="song-previews">
-      <h3>🎧 Preview Our Exclusive Tracks</h3>
-      
-      <!-- Single Track Player -->
-      <div class="single-track-player">
-        <div class="track-display">
+    <!-- Single Track Player -->
+    <div class="track-display">
           <div class="track-info">
             <h4 class="current-track-title">Freestab</h4>
             <p class="current-track-artist">G'z Radio</p>
@@ -64,32 +68,31 @@ import tracks from '@/data/tracks.json';
               </button>
             </div>
           </div>
-        </div>
-      </div>
-      
-      <p class="preview-note">🔒 Full tracks available with Premium Access • 30s previews only</p>
     </div>
     
-    <div class="premium-features">
+    <p class="preview-note">Full tracks available with Premium Access • 30s previews only</p>
+  </div>
+  
+  <div class="premium-features">
       <div class="feature">
-        <span class="feature-icon">✨</span>
+        <span class="feature-icon">∞</span>
         <span>Unlimited streaming</span>
       </div>
       <div class="feature">
-        <span class="feature-icon">🎧</span>
+        <span class="feature-icon">HD</span>
         <span>High-quality audio</span>
       </div>
       <div class="feature">
-        <span class="feature-icon">📱</span>
+        <span class="feature-icon">⚡</span>
         <span>Mobile & desktop access</span>
       </div>
       <div class="feature">
-        <span class="feature-icon">🚫</span>
+        <span class="feature-icon">✓</span>
         <span>Ad-free experience</span>
       </div>
-    </div>
-    
-    <div class="pricing-options">
+  </div>
+  
+  <div class="pricing-options">
       <div class="pricing-card active" data-plan="monthly">
         <div class="plan-header">
           <h3>Monthly Access</h3>
@@ -113,8 +116,9 @@ import tracks from '@/data/tracks.json';
         </div>
         <p class="plan-desc">Try premium features</p>
       </div>
-    </div>
-    
+  </div>
+  
+  <div class="premium-actions">
     <button id="get-premium-btn" class="premium-btn">
       <span class="btn-text">Get Premium Access</span>
       <span class="btn-price">KSh 299/month</span>
@@ -128,42 +132,41 @@ import tracks from '@/data/tracks.json';
 
 <style>
   .premium-gate {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 2rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
-  .premium-content {
-    max-width: 500px;
-    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(40, 40, 40, 0.9));
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 20px;
-    padding: 3rem 2rem;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  .premium-header {
+    text-align: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
   }
 
   .premium-icon {
-    font-size: 4rem;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+    color: var(--accent-color-static);
   }
 
-  .premium-content h2 {
+  .premium-icon svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .premium-header h2 {
     color: var(--accent-color-static);
     font-size: 2.5rem;
     margin: 0 0 1rem 0;
     font-weight: 700;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
   }
 
-  .premium-content p {
+  .premium-header p {
     color: var(--text-color);
     font-size: 1.2rem;
-    margin-bottom: 2rem;
+    margin: 0;
     opacity: 0.9;
   }
 
@@ -185,7 +188,11 @@ import tracks from '@/data/tracks.json';
   }
 
   .feature-icon {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-color-static);
+    min-width: 24px;
+    text-align: center;
   }
 
   .feature span:last-child {
@@ -211,7 +218,6 @@ import tracks from '@/data/tracks.json';
 
   .pricing-card:hover {
     border-color: rgba(255, 215, 0, 0.5);
-    transform: translateY(-2px);
   }
 
   .pricing-card.active {
@@ -276,8 +282,7 @@ import tracks from '@/data/tracks.json';
   }
 
   .premium-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
   }
 
   .btn-text {
@@ -303,10 +308,8 @@ import tracks from '@/data/tracks.json';
 
   /* Song Previews Styles */
   .song-previews {
-    margin: 2rem 0;
     padding: 2rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 215, 0, 0.2);
   }
 
@@ -318,23 +321,15 @@ import tracks from '@/data/tracks.json';
     font-weight: 600;
   }
 
-  /* Single Track Player Styles */
-  .single-track-player {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
   .track-display {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
     padding: 2rem;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
   }
 
   .track-display:hover {
     border-color: rgba(255, 215, 0, 0.3);
-    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.1);
   }
 
   .track-info {
@@ -347,7 +342,6 @@ import tracks from '@/data/tracks.json';
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
   }
 
   .current-track-artist {
@@ -405,14 +399,12 @@ import tracks from '@/data/tracks.json';
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     font-size: 2rem;
-    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
   }
 
   .main-play-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 30px rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
   }
 
   .main-play-btn:active {
@@ -476,7 +468,6 @@ import tracks from '@/data/tracks.json';
   .nav-btn:hover {
     background: rgba(255, 215, 0, 0.2);
     border-color: rgba(255, 215, 0, 0.6);
-    transform: translateY(-1px);
   }
 
   .nav-btn:disabled {
@@ -508,31 +499,81 @@ import tracks from '@/data/tracks.json';
 
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
-    .premium-content {
-      padding: 2rem 1.5rem;
-      margin: 1rem;
+    .premium-gate {
+      padding: 1rem;
+      gap: 1.5rem;
     }
 
-    .premium-content h2 {
+    .premium-header {
+      padding: 1.5rem 0;
+    }
+
+    .premium-header h2 {
       font-size: 2rem;
     }
 
     .premium-features {
       grid-template-columns: 1fr;
+      margin-bottom: 1.5rem;
     }
 
     .pricing-options {
       flex-direction: column;
     }
 
+    .song-previews {
+      padding: 1.5rem;
+    }
+
+    .track-display {
+      padding: 1.5rem;
+    }
+
     .amount {
       font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .premium-gate {
+      padding: 0.75rem;
+    }
+
+    .premium-header h2 {
+      font-size: 1.75rem;
+    }
+
+    .premium-header p {
+      font-size: 1rem;
+    }
+
+    .song-previews {
+      padding: 1rem;
+    }
+
+    .track-display {
+      padding: 1rem;
+    }
+
+    .current-track-title {
+      font-size: 1.25rem;
+    }
+
+    .main-play-btn {
+      width: 60px;
+      height: 60px;
+    }
+
+    .premium-btn {
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
     }
   }
 </style>
 
 <script>
-  // Premium Gate Management
+  // Premium Gate Component for Music Streaming
+  import tracksData from '../data/tracks.json';
   class PremiumGate {
     constructor() {
       this.selectedPlan = 'monthly';
@@ -634,18 +675,71 @@ class SingleTrackPlayer {
   constructor() {
     this.currentAudio = null;
     this.currentTrackIndex = 0;
-    this.tracks = [
-      { id: 'freestab', title: 'Freestab', artist: 'G\'z Radio', description: 'A smooth freestyle track showcasing lyrical prowess', previewUrl: '/audio/freestab.mp3' },
-      { id: 'mazingich', title: 'Mazingich', artist: 'G\'z Radio', description: 'An energetic track with powerful beats and flow', previewUrl: '/audio/mazingich.wav' },
-      { id: 'exclusive-1', title: 'Underground Vibes', artist: 'G\'z Radio', description: 'Raw underground sound with authentic street vibes', previewUrl: '/audio/freestab.mp3' },
-      { id: 'exclusive-2', title: 'Golden Flow', artist: 'G\'z Radio', description: 'Premium track with golden-era hip-hop influences', previewUrl: '/audio/freestab.mp3' }
-    ];
+    this.isPlaying = false;
+    this.isLoading = false;
+    this.fadeInterval = null;
+    this.previewTimer = null;
+    this.tracks = [];
     this.audioContext = null;
     this.analyser = null;
+    this.gainNode = null;
     this.canvas = null;
     this.canvasContext = null;
     this.animationId = null;
+    this.loadTracks();
     this.init();
+  }
+
+  loadTracks() {
+    // Load tracks from the imported JSON data
+    const tracksData = [
+      {
+        "id": "freestab",
+        "title": "Freestab",
+        "artist": "G'z Radio",
+        "src": "/audio/freestab.mp3",
+        "preview": "/audio/freestab.mp3",
+        "cover": "/assets/cover.jpg",
+        "duration": "3:45",
+        "previewDuration": 30,
+        "genre": "Hip-Hop",
+        "description": "A smooth freestyle track showcasing lyrical prowess"
+      },
+      {
+        "id": "mazingich",
+        "title": "Mazingich",
+        "artist": "G'z Radio",
+        "src": "/audio/mazingich.wav",
+        "preview": "/audio/mazingich.wav",
+        "cover": "/assets/icon.jpg",
+        "duration": "4:12",
+        "previewDuration": 30,
+        "genre": "Hip-Hop",
+        "description": "An energetic track with powerful beats and flow"
+      },
+      {
+        "id": "DISSTAB",
+        "title": "DISSTAB",
+        "artist": "G'z Radio",
+        "src": "/audio/DISSTAB.wav",
+        "preview": "/audio/DISSTAB.wav",
+        "cover": "/assets/cover.jpg",
+        "duration": "3:12",
+        "previewDuration": 30,
+        "genre": "Hip-Hop",
+        "description": "Raw underground sound with authentic street vibes"
+      }
+    ];
+    
+    this.tracks = tracksData.map(track => ({
+      id: track.id,
+      title: track.title,
+      artist: track.artist,
+      description: track.description,
+      previewUrl: track.preview || track.src
+    }));
+    
+    console.log('Loaded tracks:', this.tracks);
   }
 
   init() {
@@ -740,86 +834,105 @@ class SingleTrackPlayer {
   }
 
   togglePlayback() {
-    if (this.currentAudio && !this.currentAudio.paused) {
+    if (this.isLoading) return;
+    
+    if (this.isPlaying) {
       this.pauseTrack();
     } else {
       this.playTrack();
     }
   }
 
-  playTrack() {
+  async playTrack() {
     const track = this.tracks[this.currentTrackIndex];
-    if (!track) return;
+    if (!track || this.isLoading) return;
     
-    // Stop current audio if exists
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio = null;
-    }
+    this.isLoading = true;
+    this.updatePlayButton('loading');
     
-    // Create new audio
-    this.currentAudio = new Audio(track.previewUrl);
-    
-    // Setup audio context for visualization
-    if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      this.analyser = this.audioContext.createAnalyser();
-      this.analyser.fftSize = 256;
-    }
-    
-    // Connect audio to analyser
-    const source = this.audioContext.createMediaElementSource(this.currentAudio);
-    source.connect(this.analyser);
-    this.analyser.connect(this.audioContext.destination);
-    
-    // Setup event listeners
-    this.currentAudio.addEventListener('loadstart', () => {
-      this.updatePlayButton('loading');
-    });
-    
-    this.currentAudio.addEventListener('canplay', () => {
+    try {
+      // Fade out current audio if playing
+      if (this.currentAudio && this.isPlaying) {
+        await this.fadeOut(this.currentAudio);
+      }
+      
+      // Clean up previous audio
+      this.cleanupAudio();
+      
+      // Create new audio with preloading
+      this.currentAudio = new Audio();
+      this.currentAudio.preload = 'auto';
+      this.currentAudio.crossOrigin = 'anonymous';
+      
+      // Setup audio context for visualization
+      await this.setupAudioContext();
+      
+      // Setup event listeners
+      this.setupAudioEventListeners();
+      
+      // Load and play
+      this.currentAudio.src = track.previewUrl;
+      await this.currentAudio.load();
+      
+      // Start with fade in
+      this.currentAudio.volume = 0;
+      await this.currentAudio.play();
+      
+      this.isPlaying = true;
+      this.isLoading = false;
+      
+      // Fade in audio
+      await this.fadeIn(this.currentAudio);
+      
       this.updatePlayButton('playing');
       this.startVisualization();
       this.startTimeTracking();
-    });
-    
-    this.currentAudio.addEventListener('ended', () => {
-      this.stopTrack();
-    });
-    
-    this.currentAudio.addEventListener('error', () => {
-      console.error('Audio failed to load');
-      this.updatePlayButton('error');
-    });
-    
-    // Start playback
-    this.currentAudio.play().catch(error => {
+      
+      // Set 30-second preview timer
+      this.previewTimer = setTimeout(() => {
+        this.stopTrackGracefully();
+      }, 30000);
+      
+    } catch (error) {
       console.error('Playback failed:', error);
+      this.isLoading = false;
+      this.isPlaying = false;
       this.updatePlayButton('error');
-    });
+    }
+  }
+
+  async pauseTrack() {
+    if (!this.currentAudio || !this.isPlaying) return;
     
-    // Limit to 30 seconds
-    setTimeout(() => {
-      if (this.currentAudio && !this.currentAudio.paused) {
-        this.stopTrack();
-      }
-    }, 30000);
+    // Clear preview timer
+    if (this.previewTimer) {
+      clearTimeout(this.previewTimer);
+      this.previewTimer = null;
+    }
+    
+    // Fade out and pause
+    await this.fadeOut(this.currentAudio, 0.3);
+    this.currentAudio.pause();
+    
+    this.isPlaying = false;
+    this.updatePlayButton('paused');
+    this.stopVisualization();
   }
 
-  pauseTrack() {
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.updatePlayButton('paused');
-      this.stopVisualization();
+  async stopTrackGracefully() {
+    if (!this.currentAudio) return;
+    
+    // Clear preview timer
+    if (this.previewTimer) {
+      clearTimeout(this.previewTimer);
+      this.previewTimer = null;
     }
-  }
-
-  stopTrack() {
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
-      this.currentAudio = null;
-    }
+    
+    // Fade out smoothly
+    await this.fadeOut(this.currentAudio);
+    
+    this.cleanupAudio();
+    this.isPlaying = false;
     
     this.updatePlayButton('stopped');
     this.stopVisualization();
@@ -827,19 +940,31 @@ class SingleTrackPlayer {
     this.updateTimeDisplay(0, 30);
   }
 
-  previousTrack() {
-    if (this.currentTrackIndex > 0) {
-      this.stopTrack();
+  async previousTrack() {
+    if (this.currentTrackIndex > 0 && !this.isLoading) {
+      const wasPlaying = this.isPlaying;
+      await this.stopTrackGracefully();
       this.currentTrackIndex--;
       this.updateTrackDisplay();
+      
+      // Auto-play if was playing
+      if (wasPlaying) {
+        setTimeout(() => this.playTrack(), 100);
+      }
     }
   }
 
-  nextTrack() {
-    if (this.currentTrackIndex < this.tracks.length - 1) {
-      this.stopTrack();
+  async nextTrack() {
+    if (this.currentTrackIndex < this.tracks.length - 1 && !this.isLoading) {
+      const wasPlaying = this.isPlaying;
+      await this.stopTrackGracefully();
       this.currentTrackIndex++;
       this.updateTrackDisplay();
+      
+      // Auto-play if was playing
+      if (wasPlaying) {
+        setTimeout(() => this.playTrack(), 100);
+      }
     }
   }
 
@@ -873,6 +998,136 @@ class SingleTrackPlayer {
     }
   }
 
+  // New helper methods for smooth audio transitions
+  async fadeIn(audio, duration = 0.5) {
+    return new Promise((resolve) => {
+      if (!audio) {
+        resolve();
+        return;
+      }
+      
+      const steps = 20;
+      const stepTime = (duration * 1000) / steps;
+      const volumeStep = 1 / steps;
+      let currentStep = 0;
+      
+      const fadeInterval = setInterval(() => {
+        currentStep++;
+        audio.volume = Math.min(currentStep * volumeStep, 1);
+        
+        if (currentStep >= steps) {
+          clearInterval(fadeInterval);
+          resolve();
+        }
+      }, stepTime);
+    });
+  }
+  
+  async fadeOut(audio, duration = 0.5) {
+    return new Promise((resolve) => {
+      if (!audio || audio.volume === 0) {
+        resolve();
+        return;
+      }
+      
+      const initialVolume = audio.volume;
+      const steps = 20;
+      const stepTime = (duration * 1000) / steps;
+      const volumeStep = initialVolume / steps;
+      let currentStep = 0;
+      
+      const fadeInterval = setInterval(() => {
+        currentStep++;
+        audio.volume = Math.max(initialVolume - (currentStep * volumeStep), 0);
+        
+        if (currentStep >= steps || audio.volume <= 0) {
+          clearInterval(fadeInterval);
+          audio.volume = 0;
+          resolve();
+        }
+      }, stepTime);
+    });
+  }
+  
+  async setupAudioContext() {
+    if (!this.audioContext) {
+      try {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.analyser = this.audioContext.createAnalyser();
+        this.gainNode = this.audioContext.createGain();
+        this.analyser.fftSize = 256;
+        
+        // Resume context if suspended
+        if (this.audioContext.state === 'suspended') {
+          await this.audioContext.resume();
+        }
+      } catch (error) {
+        console.warn('Audio context setup failed:', error);
+      }
+    }
+    
+    if (this.currentAudio && this.audioContext) {
+      try {
+        const source = this.audioContext.createMediaElementSource(this.currentAudio);
+        source.connect(this.gainNode);
+        this.gainNode.connect(this.analyser);
+        this.analyser.connect(this.audioContext.destination);
+      } catch (error) {
+        console.warn('Audio routing setup failed:', error);
+      }
+    }
+  }
+  
+  setupAudioEventListeners() {
+    if (!this.currentAudio) return;
+    
+    this.currentAudio.addEventListener('ended', () => {
+      this.stopTrackGracefully();
+    });
+    
+    this.currentAudio.addEventListener('error', (e) => {
+      console.error('Audio error:', e);
+      this.isLoading = false;
+      this.isPlaying = false;
+      this.updatePlayButton('error');
+    });
+    
+    this.currentAudio.addEventListener('stalled', () => {
+      console.warn('Audio stalled, attempting to recover...');
+    });
+    
+    this.currentAudio.addEventListener('waiting', () => {
+      if (this.isPlaying) {
+        this.updatePlayButton('loading');
+      }
+    });
+    
+    this.currentAudio.addEventListener('canplaythrough', () => {
+      if (this.isPlaying) {
+        this.updatePlayButton('playing');
+      }
+    });
+  }
+  
+  cleanupAudio() {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      this.currentAudio.src = '';
+      this.currentAudio = null;
+    }
+    
+    if (this.previewTimer) {
+      clearTimeout(this.previewTimer);
+      this.previewTimer = null;
+    }
+    
+    if (this.fadeInterval) {
+      clearInterval(this.fadeInterval);
+      this.fadeInterval = null;
+    }
+  }
+
   startVisualization() {
     if (!this.analyser || !this.canvasContext) return;
     
@@ -880,7 +1135,7 @@ class SingleTrackPlayer {
     const dataArray = new Uint8Array(bufferLength);
     
     const draw = () => {
-      if (!this.currentAudio || this.currentAudio.paused) return;
+      if (!this.isPlaying) return;
       
       this.animationId = requestAnimationFrame(draw);
       this.analyser.getByteFrequencyData(dataArray);
@@ -922,10 +1177,19 @@ class SingleTrackPlayer {
 
   startTimeTracking() {
     const updateTime = () => {
-      if (this.currentAudio && !this.currentAudio.paused) {
+      if (this.isPlaying && this.currentAudio) {
         const currentTime = this.currentAudio.currentTime;
         const duration = Math.min(this.currentAudio.duration || 30, 30);
         this.updateTimeDisplay(currentTime, duration);
+        
+        // Check if we're near the end for smooth transition
+        if (duration - currentTime < 1 && this.previewTimer) {
+          clearTimeout(this.previewTimer);
+          this.previewTimer = null;
+          this.stopTrackGracefully();
+          return;
+        }
+        
         requestAnimationFrame(updateTime);
       }
     };
