@@ -83,4 +83,42 @@ const { slug, name, image } = Astro.props;
   .artist-card:hover::after {
     opacity: 0.8;
   }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 480px) {
+    .card-overlay {
+      padding: 1.5rem 0.75rem 0.75rem;
+    }
+
+    .artist-name {
+      font-size: 1.25rem;
+      bottom: 0.75rem;
+      left: 0.75rem;
+      right: 0.75rem;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .artist-card:hover {
+      transform: scale(1.02);
+    }
+
+    .artist-card:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  @media (max-width: 360px) {
+    .card-overlay {
+      padding: 1.25rem 0.5rem 0.5rem;
+    }
+
+    .artist-name {
+      font-size: 1.1rem;
+      bottom: 0.5rem;
+      left: 0.5rem;
+      right: 0.5rem;
+      letter-spacing: 0.25px;
+    }
+  }
 </style>
