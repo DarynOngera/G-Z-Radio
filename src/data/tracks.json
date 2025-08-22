@@ -46,17 +46,5 @@
     "previewDuration": 30,
     "genre": "Hip-Hop",
     "description": "Raw underground sound with authentic street vibes"
-  },
-  {
-    "id": "DISSTAB",
-    "title": "DISSTAB",
-    "artist": "G'z Radio",
-    "src": "/audio/DISSTAB.wav",
-    "preview": "/audio/DISSTAB.wav",
-    "cover": "/assets/cover.jpg",
-    "duration": "3:12",
-    "previewDuration": 30,
-    "genre": "Hip-Hop",
-    "description": "Raw underground sound with authentic street vibes"
   }
 ]
