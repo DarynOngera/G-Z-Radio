@@ -6,7 +6,10 @@ import Navigation from './Navigation.astro';
   <div class="logo">
     <a href="/">G'zRadio</a>
   </div>
-  <Navigation />
+  <div class="header-actions">
+    <div id="cart-container" class="cart-container"></div>
+    <Navigation />
+  </div>
 </header>
 
 <style>
@@ -34,4 +37,21 @@ import Navigation from './Navigation.astro';
   display: inline-block;
   transform: rotate(-2deg) skewX(-5deg);
    }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cart-container {
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .header-actions {
+      gap: 0.75rem;
+    }
+  }
 </style>

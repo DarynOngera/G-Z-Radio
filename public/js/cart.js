@@ -143,21 +143,23 @@ class ShoppingCart {
 
   // Create cart button in header
   createCartButton() {
-    const nav = document.querySelector('.nav-links');
-    if (!nav) return;
+    const cartContainer = document.querySelector('#cart-container');
+    if (!cartContainer) return;
 
     const cartButton = document.createElement('button');
     cartButton.id = 'cart-button';
     cartButton.className = 'cart-button';
     cartButton.innerHTML = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="m1 1 4 4 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
       </svg>
       <span class="cart-count">0</span>
     `;
     
     cartButton.addEventListener('click', () => this.toggleCart());
-    nav.appendChild(cartButton);
+    cartContainer.appendChild(cartButton);
   }
 
   // Update cart button count
