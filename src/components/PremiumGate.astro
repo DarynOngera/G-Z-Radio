@@ -776,6 +776,15 @@ class SingleTrackPlayer {
   }
 
   checkExistingPremiumAccess() {
+    // TEMPORARILY DISABLED - Allow free music access
+    console.log('🎵 Paywall temporarily disabled - redirecting to music...');
+    setTimeout(() => {
+      window.location.href = '/listen';
+    }, 100);
+    return;
+
+    // Original premium check code (commented out for temporary disable)
+    /*
     // Only check once to prevent infinite loops
     if (window.premiumAccessChecked) return;
     window.premiumAccessChecked = true;
@@ -815,6 +824,7 @@ class SingleTrackPlayer {
       // Clear corrupted data
       localStorage.removeItem('gz-premium-access');
     }
+    */
   }
 
   showPremiumSuccessMessage(premiumData) {
