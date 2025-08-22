@@ -24,27 +24,39 @@
     "description": "An energetic track with powerful beats and flow"
   },
   {
-    "id": "exclusive-1",
-    "title": "Underground Vibes",
+    "id": "DISSTAB",
+    "title": "DISSTAB",
     "artist": "G'z Radio",
-    "src": "/audio/underground-vibes.mp3",
-    "preview": "/audio/underground-vibes-preview.mp3",
+    "src": "/audio/DISSTAB.wav",
+    "preview": "/audio/DISSTAB.wav",
     "cover": "/assets/cover.jpg",
-    "duration": "3:28",
+    "duration": "3:12",
     "previewDuration": 30,
     "genre": "Hip-Hop",
     "description": "Raw underground sound with authentic street vibes"
   },
   {
-    "id": "exclusive-2",
-    "title": "Golden Flow",
+    "id": "DISSTAB",
+    "title": "DISSTAB",
     "artist": "G'z Radio",
-    "src": "/audio/golden-flow.mp3",
-    "preview": "/audio/golden-flow-preview.mp3",
-    "cover": "/assets/icon.jpg",
-    "duration": "4:01",
+    "src": "/audio/DISSTAB.wav",
+    "preview": "/audio/DISSTAB.wav",
+    "cover": "/assets/cover.jpg",
+    "duration": "3:12",
     "previewDuration": 30,
     "genre": "Hip-Hop",
-    "description": "Premium track with golden-era hip-hop influences"
+    "description": "Raw underground sound with authentic street vibes"
+  },
+  {
+    "id": "DISSTAB",
+    "title": "DISSTAB",
+    "artist": "G'z Radio",
+    "src": "/audio/DISSTAB.wav",
+    "preview": "/audio/DISSTAB.wav",
+    "cover": "/assets/cover.jpg",
+    "duration": "3:12",
+    "previewDuration": 30,
+    "genre": "Hip-Hop",
+    "description": "Raw underground sound with authentic street vibes"
   }
 ]
