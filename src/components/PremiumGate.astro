@@ -776,6 +776,10 @@ class SingleTrackPlayer {
   }
 
   checkExistingPremiumAccess() {
+    // Only check once to prevent infinite loops
+    if (window.premiumAccessChecked) return;
+    window.premiumAccessChecked = true;
+
     const premiumData = localStorage.getItem('gz-premium-access');
     if (!premiumData) return;
 
@@ -786,8 +790,10 @@ class SingleTrackPlayer {
       
       if (expiresAt > now && data.active) {
         console.log('🎵 User already has premium access, redirecting...');
-        // User already has premium access, redirect immediately
-        window.location.href = '/listen';
+        // Add a small delay to prevent immediate redirect loops
+        setTimeout(() => {
+          window.location.href = '/listen';
+        }, 100);
       }
     } catch (error) {
       console.error('Error checking existing premium access:', error);
