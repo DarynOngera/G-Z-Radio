@@ -466,16 +466,9 @@
         if (result.success) {
           this.showSuccess('Payment request sent! Please check your phone to complete the transaction.');
           
-          // Trigger payment success event for the payment handler
-          window.dispatchEvent(new CustomEvent('payment:success', {
-            detail: {
-              ...this.currentPayment,
-              checkoutRequestId: result.checkoutRequestId,
-              merchantRequestId: result.merchantRequestId
-            }
-          }));
+          // Start polling for payment completion instead of immediately triggering success
+          this.startPaymentPolling(result.checkoutRequestId);
           
-          setTimeout(() => this.close(), 3000);
         } else {
           this.showError(result.error || 'Payment failed. Please try again.');
         }
@@ -501,6 +494,52 @@
     showError(message) {
       // You can implement a toast notification here
       alert(message);
+    }
+
+    startPaymentPolling(checkoutRequestId) {
+      let pollCount = 0;
+      const maxPolls = 60; // Poll for 2 minutes (60 * 2 seconds)
+      
+      const pollInterval = setInterval(async () => {
+        pollCount++;
+        
+        try {
+          const response = await fetch(`/.netlify/functions/payment-status?checkoutRequestId=${checkoutRequestId}`);
+          const result = await response.json();
+          
+          if (result.success && result.status === 'completed') {
+            // Payment completed successfully
+            clearInterval(pollInterval);
+            
+            this.showSuccess('Payment completed successfully! Granting access...');
+            
+            // Trigger payment success event with actual payment data
+            window.dispatchEvent(new CustomEvent('payment:success', {
+              detail: {
+                ...this.currentPayment,
+                checkoutRequestId: checkoutRequestId,
+                paymentData: result.payment
+              }
+            }));
+            
+            setTimeout(() => this.close(), 2000);
+            
+          } else if (pollCount >= maxPolls) {
+            // Timeout - stop polling
+            clearInterval(pollInterval);
+            this.showError('Payment confirmation timeout. Please check your M-Pesa messages.');
+            
+          }
+          // Continue polling if status is still pending
+          
+        } catch (error) {
+          console.error('Payment polling error:', error);
+          if (pollCount >= maxPolls) {
+            clearInterval(pollInterval);
+            this.showError('Unable to confirm payment status. Please contact support if payment was deducted.');
+          }
+        }
+      }, 2000); // Poll every 2 seconds
     }
 
     resetForm() {

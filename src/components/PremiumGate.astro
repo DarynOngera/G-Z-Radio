@@ -679,6 +679,7 @@ class SingleTrackPlayer {
     this.animationId = null;
     this.loadTracks();
     this.init();
+    this.setupPremiumListener();
   }
 
   loadTracks() {
@@ -738,6 +739,139 @@ class SingleTrackPlayer {
     this.setupAudioVisualization();
     this.setupControls();
     this.updateTrackDisplay();
+  }
+
+  setupPremiumListener() {
+    // Listen for premium access granted events
+    window.addEventListener('premium:granted', (event) => {
+      console.log('🎵 Premium access granted, hiding paywall...');
+      this.handlePremiumGranted(event.detail);
+    });
+
+    // Check if user already has premium access on load
+    this.checkExistingPremiumAccess();
+  }
+
+  handlePremiumGranted(premiumData) {
+    // Hide the entire premium gate
+    const premiumGate = document.getElementById('premium-gate');
+    if (premiumGate) {
+      // Add success animation
+      premiumGate.style.transition = 'all 0.5s ease';
+      premiumGate.style.transform = 'scale(0.95)';
+      premiumGate.style.opacity = '0.5';
+      
+      setTimeout(() => {
+        premiumGate.style.display = 'none';
+        
+        // Show success message
+        this.showPremiumSuccessMessage(premiumData);
+        
+        // Redirect to listen page after showing success
+        setTimeout(() => {
+          window.location.href = '/listen';
+        }, 2000);
+      }, 500);
+    }
+  }
+
+  checkExistingPremiumAccess() {
+    const premiumData = localStorage.getItem('gz-premium-access');
+    if (!premiumData) return;
+
+    try {
+      const data = JSON.parse(premiumData);
+      const expiresAt = new Date(data.expiresAt);
+      const now = new Date();
+      
+      if (expiresAt > now && data.active) {
+        console.log('🎵 User already has premium access, redirecting...');
+        // User already has premium access, redirect immediately
+        window.location.href = '/listen';
+      }
+    } catch (error) {
+      console.error('Error checking existing premium access:', error);
+    }
+  }
+
+  showPremiumSuccessMessage(premiumData) {
+    const message = document.createElement('div');
+    message.className = 'premium-success-message';
+    message.innerHTML = `
+      <div class="success-content">
+        <div class="success-icon">🎵</div>
+        <h3>Premium Access Activated!</h3>
+        <p>Welcome to unlimited streaming</p>
+        <div class="premium-details">
+          <p>Plan: ${premiumData.plan === 'weekly' ? 'Weekly' : 'Monthly'}</p>
+          <p>Expires: ${new Date(premiumData.expiresAt).toLocaleDateString()}</p>
+        </div>
+        <p class="redirect-note">Redirecting to music library...</p>
+      </div>
+    `;
+
+    // Add styles
+    message.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(40, 40, 40, 0.95));
+      border: 2px solid var(--accent-color-static);
+      border-radius: 16px;
+      padding: 2rem;
+      color: white;
+      z-index: 4000;
+      text-align: center;
+      min-width: 300px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+    `;
+
+    // Style the content
+    const style = document.createElement('style');
+    style.textContent = `
+      .premium-success-message .success-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      .premium-success-message h3 {
+        color: var(--accent-color-static);
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+      }
+      .premium-success-message p {
+        margin-bottom: 1rem;
+        opacity: 0.9;
+      }
+      .premium-success-message .premium-details {
+        background: rgba(255, 215, 0, 0.1);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+      .premium-success-message .premium-details p {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .premium-success-message .redirect-note {
+        font-style: italic;
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+    `;
+    document.head.appendChild(style);
+
+    document.body.appendChild(message);
+
+    // Animate in
+    message.style.opacity = '0';
+    message.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    setTimeout(() => {
+      message.style.transition = 'all 0.3s ease';
+      message.style.opacity = '1';
+      message.style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 100);
   }
 
   setupElements() {

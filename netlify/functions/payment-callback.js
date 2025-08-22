@@ -69,14 +69,24 @@ exports.handler = async (event, context) => {
         ...paymentDetails
       });
 
-      // Here you would:
-      // 1. Update database with payment status
-      // 2. Grant access to premium content (for music payments)
-      // 3. Process order fulfillment (for merchandise payments)
-      // 4. Send confirmation emails/SMS
-      
-      // For now, just log the successful payment
-      console.log('Payment processed successfully');
+      // Store payment data for frontend retrieval
+      const paymentRecord = {
+        checkoutRequestId: CheckoutRequestID,
+        merchantRequestId: MerchantRequestID,
+        status: 'completed',
+        amount: paymentDetails.amount,
+        receiptNumber: paymentDetails.receiptNumber,
+        transactionDate: paymentDetails.transactionDate,
+        phoneNumber: paymentDetails.phoneNumber,
+        timestamp: new Date().toISOString()
+      };
+
+      // In a real app, you'd store this in a database
+      // For now, we'll use a simple in-memory store that the frontend can poll
+      global.completedPayments = global.completedPayments || new Map();
+      global.completedPayments.set(CheckoutRequestID, paymentRecord);
+
+      console.log('Payment processed successfully:', paymentRecord);
 
     } else {
       // Payment failed or was cancelled
