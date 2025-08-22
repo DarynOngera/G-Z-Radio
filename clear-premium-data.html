@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Premium Data - G'z Radio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #ffd700;
+        }
+        button {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 1rem;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .status {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #333;
+        }
+        .success { background: #2d5a2d; }
+        .info { background: #2d4a5a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 G'z Radio Premium Data Manager</h1>
+        <p>Use this tool to clear any stuck premium access data</p>
+        
+        <div id="status" class="status info">
+            Ready to check premium data...
+        </div>
+        
+        <button onclick="checkPremiumData()">Check Premium Data</button>
+        <button onclick="clearPremiumData()">Clear Premium Data</button>
+        <button onclick="clearAllData()">Clear All G'z Radio Data</button>
+        
+        <div id="data-display" style="margin-top: 2rem; text-align: left; font-family: monospace; font-size: 0.9rem;"></div>
+    </div>
+
+    <script>
+        function checkPremiumData() {
+            const premiumData = localStorage.getItem('gz-premium-access');
+            const payments = localStorage.getItem('gz-payments');
+            const orders = localStorage.getItem('gz-orders');
+            
+            const status = document.getElementById('status');
+            const display = document.getElementById('data-display');
+            
+            let html = '<h3>Current Data:</h3>';
+            
+            if (premiumData) {
+                try {
+                    const data = JSON.parse(premiumData);
+                    const expiresAt = new Date(data.expiresAt);
+                    const now = new Date();
+                    const isValid = expiresAt > now && data.active;
+                    
+                    html += `<div style="background: ${isValid ? '#2d5a2d' : '#5a2d2d'}; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">`;
+                    html += `<strong>Premium Access:</strong> ${isValid ? 'ACTIVE' : 'EXPIRED/INACTIVE'}<br>`;
+                    html += `Plan: ${data.plan}<br>`;
+                    html += `Granted: ${new Date(data.grantedAt).toLocaleString()}<br>`;
+                    html += `Expires: ${expiresAt.toLocaleString()}<br>`;
+                    html += `Active Flag: ${data.active}<br>`;
+                    html += `</div>`;
+                    
+                    status.textContent = isValid ? 'Valid premium access found' : 'Expired/inactive premium access found';
+                    status.className = 'status ' + (isValid ? 'success' : 'info');
+                } catch (e) {
+                    html += `<div style="background: #5a2d2d; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">`;
+                    html += `<strong>Premium Access:</strong> CORRUPTED DATA<br>`;
+                    html += `Raw: ${premiumData}<br>`;
+                    html += `</div>`;
+                    status.textContent = 'Corrupted premium data found';
+                    status.className = 'status info';
+                }
+            } else {
+                html += '<div style="background: #333; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">No premium access data</div>';
+                status.textContent = 'No premium access data found';
+                status.className = 'status info';
+            }
+            
+            if (payments) {
+                html += `<div style="background: #333; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">`;
+                html += `<strong>Payment History:</strong> ${JSON.parse(payments).length} records<br>`;
+                html += `</div>`;
+            }
+            
+            if (orders) {
+                html += `<div style="background: #333; padding: 1rem; margin: 0.5rem 0; border-radius: 8px;">`;
+                html += `<strong>Order History:</strong> ${JSON.parse(orders).length} records<br>`;
+                html += `</div>`;
+            }
+            
+            display.innerHTML = html;
+        }
+        
+        function clearPremiumData() {
+            localStorage.removeItem('gz-premium-access');
+            document.getElementById('status').textContent = 'Premium access data cleared';
+            document.getElementById('status').className = 'status success';
+            document.getElementById('data-display').innerHTML = '';
+            console.log('🧹 Premium access data cleared');
+        }
+        
+        function clearAllData() {
+            localStorage.removeItem('gz-premium-access');
+            localStorage.removeItem('gz-payments');
+            localStorage.removeItem('gz-orders');
+            document.getElementById('status').textContent = 'All G\'z Radio data cleared';
+            document.getElementById('status').className = 'status success';
+            document.getElementById('data-display').innerHTML = '';
+            console.log('🧹 All G\'z Radio data cleared');
+        }
+        
+        // Auto-check on load
+        window.addEventListener('load', checkPremiumData);
+    </script>
+</body>
+</html>

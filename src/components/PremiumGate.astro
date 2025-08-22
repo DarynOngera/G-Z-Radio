@@ -781,22 +781,39 @@ class SingleTrackPlayer {
     window.premiumAccessChecked = true;
 
     const premiumData = localStorage.getItem('gz-premium-access');
-    if (!premiumData) return;
+    console.log('🔍 Checking premium data:', premiumData);
+    
+    if (!premiumData) {
+      console.log('🔍 No premium data found');
+      return;
+    }
 
     try {
       const data = JSON.parse(premiumData);
       const expiresAt = new Date(data.expiresAt);
       const now = new Date();
       
+      console.log('🔍 Premium data parsed:', {
+        data,
+        expiresAt: expiresAt.toISOString(),
+        now: now.toISOString(),
+        isExpired: expiresAt <= now,
+        isActive: data.active
+      });
+      
       if (expiresAt > now && data.active) {
-        console.log('🎵 User already has premium access, redirecting...');
-        // Add a small delay to prevent immediate redirect loops
+        console.log('🎵 User has valid premium access, redirecting...');
         setTimeout(() => {
           window.location.href = '/listen';
         }, 100);
+      } else {
+        console.log('🔍 Premium access expired or inactive, clearing data');
+        localStorage.removeItem('gz-premium-access');
       }
     } catch (error) {
       console.error('Error checking existing premium access:', error);
+      // Clear corrupted data
+      localStorage.removeItem('gz-premium-access');
     }
   }
 
