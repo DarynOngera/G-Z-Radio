@@ -43,7 +43,7 @@ import eventsData from '../data/events.json';
 
 <!-- Embed events data for JS -->
 <script type="application/json" id="events-data" set:html={JSON.stringify(eventsData)}></script>
-<script type="module" src="/js/calendar.js" defer></script>
+<script is:inline type="module" src="/js/calendar.js" defer></script>
 
 <style>
   .calendar-btn {

@@ -36,7 +36,7 @@ const { tracks } = Astro.props;
 
 <!-- embed tracks data for JS -->
 <script type="application/json" id="tracks-data" set:html={JSON.stringify(tracks)}></script>
-<script type="module" src="/js/audio-player.js" defer></script>
+<script is:inline type="module" src="/js/audio-player.js" defer></script>
 
 <style>
   .glass {

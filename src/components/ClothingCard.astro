@@ -16,7 +16,14 @@ const { id, name, image, price, currency, slug, inStock, colors, sizes } = Astro
 
 <div class="clothing-card fade-in-section" data-product-id={id}>
   <div class="card-image">
-    <img src={image} alt={`Photo of ${name}`} loading="lazy" />
+    <img 
+      src={image} 
+      alt={`Photo of ${name}`} 
+      loading="lazy"
+      class="product-image"
+      onload="this.classList.add('loaded')"
+      onerror="this.style.objectFit='cover'; this.style.objectPosition='center center'"
+    />
     {!inStock && <div class="out-of-stock-badge">Out of Stock</div>}
   </div>
   <div class="card-info">
@@ -72,6 +79,10 @@ const { id, name, image, price, currency, slug, inStock, colors, sizes } = Astro
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 
+  .clothing-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
   .card-image {
     position: relative;
   }
@@ -80,7 +91,13 @@ const { id, name, image, price, currency, slug, inStock, colors, sizes } = Astro
     width: 100%;
     height: 300px;
     object-fit: cover;
+    object-position: center center;
     display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .card-image img.loaded {
+    opacity: 1;
   }
 
   .out-of-stock-badge {
@@ -304,3 +321,41 @@ const { id, name, image, price, currency, slug, inStock, colors, sizes } = Astro
     }
   }
 </style>
+
+<script>
+  // Simple error handling only - no dynamic positioning to prevent shifts
+  document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.product-image');
+    
+    images.forEach(img => {
+      img.addEventListener('load', function() {
+        this.classList.add('loaded');
+      });
+      
+      // Handle broken images
+      img.addEventListener('error', function() {
+        this.alt = `${this.alt} (Image unavailable)`;
+        
+        // Create a subtle placeholder overlay
+        const placeholder = document.createElement('div');
+        placeholder.className = 'image-placeholder-text';
+        placeholder.textContent = 'Image Not Available';
+        placeholder.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 0.8rem;
+          text-align: center;
+          pointer-events: none;
+          background: rgba(0, 0, 0, 0.3);
+          padding: 0.5rem;
+          border-radius: 0.25rem;
+        `;
+        this.parentElement.style.position = 'relative';
+        this.parentElement.appendChild(placeholder);
+      });
+    });
+  });
+</script>
