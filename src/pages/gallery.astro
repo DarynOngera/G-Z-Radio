@@ -1,0 +1,504 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="Gallery - G'z Radio">
+  <section class="gallery-section fade-in-section">
+    <a href="/" class="back-link">← Back to Main</a>
+    
+    <div class="gallery-header">
+      <h1>Gallery</h1>
+      <div class="header-line"></div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="/assets/Gz.jpg" alt="G'z Radio" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/BusyBee.jpg" alt="BusyBee" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/NG.jpg" alt="NG" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/bb.jpg" alt="Kedrick" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/dreezy.jpg" alt="Wakadinali" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/lilfry.jpg" alt="Lil Fry" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/sikuaNaRada.jpg" alt="Sikua Na Rada" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/japs.jpg" alt="Cover" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/mbogi.jpg" alt="Fashion" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/nijo.jpg" alt="Icon" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/odenyo.jpg" alt="Merchandise" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/bg2.jpg" alt="Background" loading="lazy" />
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+      <span class="lightbox-close">&times;</span>
+      <img id="lightbox-img" src="" alt="" />
+      <div class="lightbox-nav">
+        <button id="prev-btn" class="nav-btn">‹</button>
+        <button id="next-btn" class="nav-btn">›</button>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .gallery-section {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    position: relative;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color-static);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+  }
+
+  .back-link:hover {
+    color: #fff;
+    transform: translateX(-5px);
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .gallery-header h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--accent-color-static);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-line {
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    margin: 1rem auto;
+    border-radius: 2px;
+  }
+
+  .gallery-grid {
+    columns: 4;
+    column-gap: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: #000;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    filter: brightness(0.8) contrast(1.1);
+    display: block;
+  }
+
+  .gallery-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 215, 0, 0.1) 0%,
+      rgba(255, 165, 0, 0.1) 100%
+    );
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(255, 215, 0, 0.1);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.1);
+    filter: brightness(1) contrast(1.2);
+  }
+
+  .gallery-item:hover .overlay {
+    opacity: 1;
+  }
+
+  /* Lightbox Styles */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+  }
+
+  .lightbox.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-content {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    color: var(--accent-color-static);
+    font-size: 3rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    font-weight: 300;
+  }
+
+  .lightbox-close:hover {
+    color: #fff;
+    transform: scale(1.1);
+  }
+
+  #lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .nav-btn {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid var(--accent-color-static);
+    color: var(--accent-color-static);
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    pointer-events: all;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-btn:hover {
+    background: var(--accent-color-static);
+    color: #000;
+    transform: scale(1.1);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .gallery-grid {
+      columns: 3;
+      column-gap: 0.9rem;
+    }
+    
+    .gallery-item {
+      margin-bottom: 0.9rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .gallery-grid {
+      columns: 2;
+      column-gap: 0.8rem;
+    }
+
+    .gallery-item {
+      margin-bottom: 0.8rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .gallery-section {
+      padding: 1rem 0.8rem;
+    }
+
+    .gallery-grid {
+      columns: 2;
+      column-gap: 0.7rem;
+    }
+
+    .gallery-item {
+      margin-bottom: 0.7rem;
+      border-radius: 10px;
+    }
+
+    .gallery-header {
+      margin-bottom: 3rem;
+    }
+
+    .gallery-header h1 {
+      font-size: clamp(2.5rem, 10vw, 4rem);
+    }
+
+    .back-link {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-btn {
+      font-size: 1.5rem;
+      padding: 0.8rem 1rem;
+    }
+
+    .lightbox-close {
+      top: -40px;
+      font-size: 2.5rem;
+    }
+
+    .lightbox-content {
+      width: 95vw;
+      height: 85vh;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .gallery-section {
+      padding: 0.8rem 0.6rem;
+    }
+
+    .gallery-grid {
+      columns: 2;
+      column-gap: 0.6rem;
+    }
+
+    .gallery-item {
+      margin-bottom: 0.6rem;
+      border-radius: 8px;
+    }
+
+    .gallery-header h1 {
+      font-size: clamp(2rem, 12vw, 3.5rem);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-section {
+      padding: 0.6rem 0.5rem;
+    }
+
+    .gallery-grid {
+      columns: 1;
+      column-gap: 0;
+    }
+
+    .gallery-item {
+      margin-bottom: 1rem;
+      border-radius: 12px;
+    }
+
+    .gallery-header {
+      margin-bottom: 2rem;
+    }
+
+    .gallery-header h1 {
+      font-size: clamp(1.8rem, 15vw, 3rem);
+    }
+
+    .back-link {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .nav-btn {
+      font-size: 1.2rem;
+      padding: 0.6rem 0.8rem;
+    }
+
+    .lightbox-close {
+      top: -35px;
+      font-size: 2rem;
+    }
+
+    .lightbox-content {
+      width: 98vw;
+      height: 80vh;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .gallery-section {
+      padding: 0.5rem;
+    }
+
+    .gallery-item {
+      margin-bottom: 0.8rem;
+      border-radius: 10px;
+    }
+
+    .gallery-header h1 {
+      font-size: clamp(1.5rem, 18vw, 2.5rem);
+    }
+
+    .nav-btn {
+      font-size: 1rem;
+      padding: 0.5rem 0.7rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    let currentIndex = 0;
+    let images = [];
+
+    // Collect all images
+    galleryItems.forEach((item, index) => {
+      const img = item.querySelector('img');
+      images.push({
+        src: img.src,
+        alt: img.alt
+      });
+
+      item.addEventListener('click', () => {
+        currentIndex = index;
+        openLightbox();
+      });
+    });
+
+    function openLightbox() {
+      lightbox.classList.add('active');
+      updateLightboxImage();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function updateLightboxImage() {
+      lightboxImg.src = images[currentIndex].src;
+      lightboxImg.alt = images[currentIndex].alt;
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateLightboxImage();
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateLightboxImage();
+    }
+
+    // Event listeners
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', nextImage);
+    prevBtn.addEventListener('click', prevImage);
+
+    // Close on background click
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      
+      switch(e.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          prevImage();
+          break;
+        case 'ArrowRight':
+          nextImage();
+          break;
+      }
+    });
+  });
+</script>
