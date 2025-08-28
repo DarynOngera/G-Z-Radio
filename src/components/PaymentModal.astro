@@ -389,7 +389,7 @@
       
       // Update title and badge
       this.titleEl.textContent = title || 'Complete Payment';
-      this.badgeEl.textContent = type === 'music' ? 'Premium Access' : 'Merchandise';
+      this.badgeEl.textContent = type === 'track' ? 'Track Purchase' : type === 'music' ? 'Premium Access' : 'Merchandise';
       this.badgeEl.className = `type-badge ${type}`;
       
       // Update total
@@ -400,10 +400,26 @@
     }
 
     updateSummary(data) {
-      const { type, items, duration } = data;
+      const { type, items, duration, trackTitle, trackArtist } = data;
       let summaryHTML = '';
       
-      if (type === 'music') {
+      if (type === 'track') {
+        summaryHTML = `
+          <h3 style="color: var(--accent-color-static); margin: 0 0 1rem 0;">Track Purchase</h3>
+          <div class="summary-item">
+            <span>Track:</span>
+            <span>${trackTitle || 'Unknown Track'}</span>
+          </div>
+          <div class="summary-item">
+            <span>Artist:</span>
+            <span>${trackArtist || 'G\'z Radio'}</span>
+          </div>
+          <div class="summary-item">
+            <span>Includes:</span>
+            <span>Full streaming + Download</span>
+          </div>
+        `;
+      } else if (type === 'music') {
         summaryHTML = `
           <h3 style="color: var(--accent-color-static); margin: 0 0 1rem 0;">Premium Music Access</h3>
           <div class="summary-item">
@@ -457,6 +473,7 @@
             phone,
             amount,
             type,
+            trackId: type === 'track' ? this.currentPayment.trackId : null,
             items: type === 'merchandise' ? items : null
           })
         });
@@ -536,6 +553,10 @@
   .summary-item span:last-child {
     color: var(--accent-color-static);
     font-weight: 600;
+  }
+
+  .type-badge.track {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
   }
 
   .type-badge.music {

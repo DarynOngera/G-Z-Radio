@@ -1,0 +1,161 @@
+const clothingData = [
+	{
+		id: "gz-hoodie-001",
+		slug: "gz-hoodie",
+		name: "G'z Radio Hoodie",
+		description: "Premium heavyweight hoodie with embroidered G'z Radio logo. Perfect for those cold studio sessions.",
+		price: 3500,
+		currency: "KES",
+		images: [
+			"/assets/hoodie.jpg",
+			"/assets/hoodie.jpg",
+			"/assets/hoodie.jpg"
+		],
+		sizes: [
+			"S",
+			"M",
+			"L",
+			"XL",
+			"XXL"
+		],
+		colors: [
+			{
+				name: "Black",
+				hex: "#000000"
+			},
+			{
+				name: "Gold",
+				hex: "#FFD700"
+			}
+		],
+		category: "hoodies",
+		inStock: true,
+		stockCount: 25,
+		features: [
+			"80% Cotton, 20% Polyester",
+			"Kangaroo pocket",
+			"Drawstring hood",
+			"Ribbed cuffs"
+		]
+	},
+	{
+		id: "gz-tee-001",
+		slug: "gz-radio-t-shirt",
+		name: "Sikua na Rada",
+		description: "Soft cotton tee featuring the iconic G'z Radio logo. Essential for any hip-hop wardrobe.",
+		price: 1600,
+		currency: "KES",
+		images: [
+			"/assets/sikuaNaRada.jpg",
+			"/assets/sikuaNaRada.jpg"
+		],
+		sizes: [
+			"S",
+			"M",
+			"L",
+			"XL",
+			"XXL"
+		],
+		colors: [
+			{
+				name: "Black",
+				hex: "#000000"
+			},
+			{
+				name: "White",
+				hex: "#FFFFFF"
+			},
+			{
+				name: "Gold",
+				hex: "#FFD700"
+			}
+		],
+		category: "t-shirts",
+		inStock: true,
+		stockCount: 50,
+		features: [
+			"100% Premium Cotton",
+			"Screen printed logo",
+			"Pre-shrunk",
+			"Tagless comfort"
+		]
+	},
+	{
+		id: "gz-tee-002",
+		slug: "gzke-tshirt",
+		name: "G'z Radio T-Shirt",
+		description: "Classic T-Shirt with G'z Radio logo. Adjustable fit for maximum comfort and style.",
+		price: 1600,
+		currency: "KES",
+		images: [
+			"/assets/gzradioB.jpg",
+			"/assets/gzradioB.jpg"
+		],
+		sizes: [
+			"S",
+			"M",
+			"L",
+			"XL",
+			"XXL"
+		],
+		colors: [
+			{
+				name: "Black/Gold",
+				hex: "#000000"
+			},
+			{
+				name: "White/Black",
+				hex: "#FFFFFF"
+			}
+		],
+		category: "t-shirts",
+		inStock: true,
+		stockCount: 30,
+		features: [
+			"100% Premium Cotton",
+			"Screen printed logo",
+			"Pre-shrunk",
+			"Tagless comfort"
+		]
+	},
+	{
+		id: "gz-beanie-001",
+		slug: "gz-radio-beanie",
+		name: "G'z Radio Beanie",
+		description: "Cozy knit beanie with woven label. Perfect for winter vibes and studio sessions.",
+		price: 1600,
+		currency: "KES",
+		images: [
+			"/assets/gzradioW.jpg",
+			"/assets/gzradioW.jpg"
+		],
+		sizes: [
+			"S",
+			"M",
+			"L",
+			"XL",
+			"XXL"
+		],
+		colors: [
+			{
+				name: "Black",
+				hex: "#000000"
+			},
+			{
+				name: "Gray",
+				hex: "#808080"
+			}
+		],
+		category: "accessories",
+		inStock: true,
+		stockCount: 40,
+		features: [
+			"Acrylic knit",
+			"Cuffed design",
+			"Woven label",
+			"One size fits most"
+		]
+	}
+];
+
+export { clothingData as c };

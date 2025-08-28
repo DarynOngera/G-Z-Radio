@@ -66,57 +66,45 @@ import tracks from '@/data/tracks.json';
   
   <div class="premium-features">
       <div class="feature">
-        <span class="feature-icon">∞</span>
-        <span>Unlimited streaming</span>
+        <span class="feature-icon">🎵</span>
+        <span>Full track streaming</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⬇️</span>
+        <span>Download & keep forever</span>
       </div>
       <div class="feature">
         <span class="feature-icon">HD</span>
         <span>High-quality audio</span>
       </div>
       <div class="feature">
-        <span class="feature-icon">⚡</span>
+        <span class="feature-icon">📱</span>
         <span>Mobile & desktop access</span>
-      </div>
-      <div class="feature">
-        <span class="feature-icon">✓</span>
-        <span>Ad-free experience</span>
       </div>
   </div>
   
-  <div class="pricing-options">
-      <div class="pricing-card active" data-plan="monthly">
-        <div class="plan-header">
-          <h3>Monthly Access</h3>
-          <div class="price">
-            <span class="currency">KSh</span>
-            <span class="amount">299</span>
-            <span class="period">/month</span>
-          </div>
+  <div class="current-track-purchase">
+      <div class="purchase-card">
+        <div class="track-purchase-info">
+          <h3 id="purchase-track-title">Freestab</h3>
+          <p id="purchase-track-artist">G'z Radio</p>
         </div>
-        <p class="plan-desc">Perfect for casual listeners</p>
-      </div>
-      
-      <div class="pricing-card" data-plan="weekly">
-        <div class="plan-header">
-          <h3>Weekly Access</h3>
-          <div class="price">
-            <span class="currency">KSh</span>
-            <span class="amount">99</span>
-            <span class="period">/week</span>
-          </div>
+        <div class="purchase-price">
+          <span class="currency">KSh</span>
+          <span class="amount">50</span>
+          <span class="period">per track</span>
         </div>
-        <p class="plan-desc">Try premium features</p>
       </div>
   </div>
   
   <div class="premium-actions">
-    <button id="get-premium-btn" class="premium-btn">
-      <span class="btn-text">Get Premium Access</span>
-      <span class="btn-price">KSh 299/month</span>
+    <button id="buy-track-btn" class="premium-btn">
+      <span class="btn-text">Buy & Download Track</span>
+      <span class="btn-price">KSh 50</span>
     </button>
     
     <div class="premium-footer">
-      <p>Secure payment via M-Pesa • Cancel anytime</p>
+      <p>Secure payment via M-Pesa • Download immediately after payment</p>
     </div>
   </div>
 </div>
@@ -191,36 +179,38 @@ import tracks from '@/data/tracks.json';
     font-size: 0.9rem;
   }
 
-  .pricing-options {
-    display: flex;
-    gap: 1rem;
+  .current-track-purchase {
     margin-bottom: 2rem;
   }
 
-  .pricing-card {
-    flex: 1;
+  .purchase-card {
     background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
     border-radius: 12px;
-    padding: 1.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .pricing-card:hover {
-    border-color: rgba(255, 215, 0, 0.5);
-  }
-
-  .pricing-card.active {
-    border-color: var(--accent-color-static);
-    background: rgba(255, 215, 0, 0.1);
-  }
-
-  .plan-header h3 {
-    color: var(--text-color);
-    font-size: 1.1rem;
+  .track-purchase-info h3 {
+    color: var(--accent-color-static);
+    font-size: 1.3rem;
     margin: 0 0 0.5rem 0;
-    font-weight: 600;
+    font-weight: 700;
+  }
+
+  .track-purchase-info p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .purchase-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
   }
 
   .price {
@@ -584,10 +574,15 @@ import tracks from '@/data/tracks.json';
         });
       });
 
-      // Premium button
-      const premiumBtn = document.getElementById('get-premium-btn');
-      premiumBtn?.addEventListener('click', () => {
-        this.initiatePremiumPayment();
+      // Track purchase button
+      const buyTrackBtn = document.getElementById('buy-track-btn');
+      buyTrackBtn?.addEventListener('click', () => {
+        this.initiateTrackPurchase();
+      });
+
+      // Listen for track changes to update purchase info
+      window.addEventListener('track:changed', (e) => {
+        this.updateTrackPurchaseInfo(e.detail);
       });
     }
 
@@ -607,17 +602,19 @@ import tracks from '@/data/tracks.json';
       }
     }
 
-    initiatePremiumPayment() {
-      const planData = this.plans[this.selectedPlan];
+    initiateTrackPurchase() {
+      const track = this.getCurrentTrack();
       
-      console.log('🎵 Initiating premium payment:', planData);
+      console.log('🎵 Initiating track purchase:', track);
       
       if (window.paymentModal) {
         window.paymentModal.open({
-          type: 'music',
-          amount: planData.amount,
-          duration: planData.duration,
-          title: `${this.selectedPlan.charAt(0).toUpperCase() + this.selectedPlan.slice(1)} Premium Access`,
+          type: 'track',
+          amount: 50,
+          trackId: track.id,
+          title: `Buy "${track.title}"`,
+          trackTitle: track.title,
+          trackArtist: track.artist,
           items: null
         });
       } else {
@@ -626,38 +623,57 @@ import tracks from '@/data/tracks.json';
       }
     }
 
-    // Check if user has premium access
-    static hasPremiumAccess() {
-      const premiumData = localStorage.getItem('gz-premium-access');
-      if (!premiumData) return false;
+    getCurrentTrack() {
+      const trackPlayer = window.singleTrackPlayer;
+      if (trackPlayer && trackPlayer.tracks && trackPlayer.tracks.length > 0) {
+        return trackPlayer.tracks[trackPlayer.currentTrackIndex] || trackPlayer.tracks[0];
+      }
+      return { id: 'freestab', title: 'Freestab', artist: "G'z Radio" };
+    }
+
+    updateTrackPurchaseInfo(track) {
+      const titleEl = document.getElementById('purchase-track-title');
+      const artistEl = document.getElementById('purchase-track-artist');
+      
+      if (titleEl) titleEl.textContent = track.title;
+      if (artistEl) artistEl.textContent = track.artist;
+    }
+
+    // Check if user owns a specific track
+    static hasTrackAccess(trackId) {
+      const ownedTracks = localStorage.getItem('gz-owned-tracks');
+      if (!ownedTracks) return false;
       
       try {
-        const data = JSON.parse(premiumData);
-        return new Date(data.expiresAt) > new Date();
+        const tracks = JSON.parse(ownedTracks);
+        return tracks.includes(trackId);
       } catch {
         return false;
       }
     }
 
-    // Grant premium access (called after successful payment)
-    static grantPremiumAccess(duration = '30 days') {
-      const expiresAt = new Date();
-      if (duration === '7 days') {
-        expiresAt.setDate(expiresAt.getDate() + 7);
-      } else {
-        expiresAt.setDate(expiresAt.getDate() + 30);
-      }
-
-      const premiumData = {
-        grantedAt: new Date().toISOString(),
-        expiresAt: expiresAt.toISOString(),
-        plan: duration === '7 days' ? 'weekly' : 'monthly'
-      };
-
-      localStorage.setItem('gz-premium-access', JSON.stringify(premiumData));
+    // Grant track access (called after successful payment)
+    static grantTrackAccess(trackId) {
+      let ownedTracks = [];
+      const existing = localStorage.getItem('gz-owned-tracks');
       
-      // Trigger premium access event
-      window.dispatchEvent(new CustomEvent('premium:granted', { detail: premiumData }));
+      if (existing) {
+        try {
+          ownedTracks = JSON.parse(existing);
+        } catch {
+          ownedTracks = [];
+        }
+      }
+      
+      if (!ownedTracks.includes(trackId)) {
+        ownedTracks.push(trackId);
+        localStorage.setItem('gz-owned-tracks', JSON.stringify(ownedTracks));
+        
+        // Trigger track access event
+        window.dispatchEvent(new CustomEvent('track:purchased', { 
+          detail: { trackId, ownedTracks } 
+        }));
+      }
     }
   }
 
@@ -822,6 +838,11 @@ class SingleTrackPlayer {
     // Update navigation buttons
     if (this.prevBtn) this.prevBtn.disabled = this.currentTrackIndex === 0;
     if (this.nextBtn) this.nextBtn.disabled = this.currentTrackIndex === this.tracks.length - 1;
+    
+    // Notify about track change for purchase info update
+    window.dispatchEvent(new CustomEvent('track:changed', { 
+      detail: track 
+    }));
   }
 
   togglePlayback() {

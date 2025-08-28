@@ -1,0 +1,79 @@
+const artists = [
+	{
+		slug: "Ng",
+		name: "Ng",
+		image: "/assets/NG.jpg",
+		bio: "The lyrical athlete.",
+		streamingLinks: {
+			spotify: "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
+			soundcloud: "sound",
+			appleMusic: "apple"
+		},
+		discography: [
+			{
+				title: "Sikua na Rada",
+				year: "2025"
+			},
+			{
+				title: "No jokes",
+				year: "2025"
+			},
+			{
+				title: "DissTab",
+				year: "2025"
+			}
+		]
+	},
+	{
+		slug: "BB",
+		name: "BusyBee",
+		image: "/assets/BusyBee.jpg",
+		bio: "A collective of lyrical martial artists, bringing raw energy and complex wordplay back to the forefront of hip-hop.",
+		streamingLinks: {
+			spotify: "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
+			soundcloud: "#",
+			appleMusic: "#"
+		},
+		discography: [
+			{
+				title: "Sikua na Rada",
+				year: "2025"
+			},
+			{
+				title: "No jokes",
+				year: "2025"
+			},
+			{
+				title: "DissTab",
+				year: "2025"
+			}
+		]
+	},
+	{
+		slug: "Lil-Frry",
+		name: "LilFry",
+		image: "/assets/lilfry.jpg",
+		bio: "Carrying the torch of West Coast rap with powerful storytelling and a revolutionary spirit.",
+		streamingLinks: {
+			spotify: "https://open.spotify.com/track/1hQbgZHyQNmo27iTxdz48U?si=0woS3Sj1REqnEmExOGOynQ%0A",
+			soundcloud: "#",
+			appleMusic: "#"
+		},
+		discography: [
+			{
+				title: "Sikua na Rada",
+				year: "2025"
+			},
+			{
+				title: "No jokes",
+				year: "2025"
+			},
+			{
+				title: "DissTab",
+				year: "2025"
+			}
+		]
+	}
+];
+
+export { artists as a };

@@ -5,23 +5,126 @@ import PremiumGate from '@/components/PremiumGate.astro';
 import tracks from '@/data/tracks.json';
 ---
 
-<MainLayout title="Listen" showFooter={false}>
+<MainLayout title="Listen - G'z Radio" showFooter={false}>
   <section class="listen-section fade-in-section">
     <a href="/" class="back-link">← Back to Main</a>
-    <h1>Exclusive Streams</h1>
+    <h1>G'z Radio Music</h1>
+    <p class="section-subtitle">Choose your listening experience</p>
     
-    <!-- Premium Gate (shown when user doesn't have access) -->
-    <div id="premium-gate-container">
-      <PremiumGate />
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button class="tab-btn active" data-tab="online">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+        Stream Free
+        <span class="tab-description">Listen to full tracks online for free</span>
+      </button>
+      <button class="tab-btn" data-tab="offline">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+        Download & Own
+        <span class="tab-description">Buy tracks for offline listening</span>
+      </button>
     </div>
-    
-    <!-- Audio Player (shown when user has premium access) -->
-    <div id="audio-player-container" class="hidden">
-      <div class="premium-status">
-        <span class="premium-badge">🎵 Premium Active</span>
-        <span id="premium-expires" class="expires-text"></span>
+
+    <!-- Online Streaming Section -->
+    <div id="online-section" class="content-section active">
+      <div class="section-header">
+        <h2>🎵 Stream Music Free</h2>
+        <p>Listen to full-length tracks online at no cost</p>
       </div>
-      <AudioPlayer tracks={tracks} />
+      
+      <!-- Free Streaming Player -->
+      <div id="streaming-player-container">
+        <AudioPlayer tracks={tracks} />
+      </div>
+    </div>
+
+    <!-- Offline Download Section -->
+    <div id="offline-section" class="content-section">
+      <div class="section-header">
+        <h2>💾 Own Your Music</h2>
+        <p>Purchase tracks for permanent offline access</p>
+      </div>
+      
+      <div class="download-tracks-list">
+        <!-- Search and Filter Controls -->
+        <div class="list-controls">
+          <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" id="track-search" placeholder="Search tracks..." />
+          </div>
+          <div class="results-info">
+            <span id="tracks-count">{tracks.length} tracks</span>
+          </div>
+        </div>
+
+        <!-- Tracks List Table -->
+        <div class="offline-content">
+          <table class="tracks-table">
+            <thead>
+              <tr>
+                <th class="track-number">#</th>
+                <th class="track-info-col">Track</th>
+                <th class="duration-col">Duration</th>
+                <th class="genre-col">Genre</th>
+                <th class="price-col">Price</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tracks-tbody">
+              {tracks.map((track, index) => (
+                <tr class="track-row" data-track-id={track.id}>
+                  <td class="track-number">{index + 1}</td>
+                  <td class="track-info-col">
+                    <div class="track-info">
+                      <img src={track.cover} alt={`${track.title} cover`} class="track-cover-small" />
+                      <div class="track-details">
+                        <div class="track-title">{track.title}</div>
+                        <div class="track-artist">{track.artist}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="duration-col">{track.duration}</td>
+                  <td class="genre-col">{track.genre}</td>
+                  <td class="price-col">
+                    <span class="price">KSh 50</span>
+                  </td>
+                  <td class="actions-col">
+                    <div class="track-actions">
+                      <button class="play-preview-btn" data-track-index={index} title="30s Preview">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </button>
+                      <button class="download-track-btn" data-track-id={track.id} data-track-title={track.title} data-track-artist={track.artist} title="Buy & Download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container" id="pagination-container">
+          <div class="pagination-info">
+            <span id="pagination-info">Showing 1-{Math.min(10, tracks.length)} of {tracks.length} tracks</span>
+          </div>
+          <div class="pagination-controls" id="pagination-controls">
+            <!-- Pagination buttons will be added by JavaScript -->
+          </div>
+        </div>
+        
+      </div>
     </div>
   </section>
 </MainLayout>
@@ -31,11 +134,13 @@ import tracks from '@/data/tracks.json';
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     padding: 2rem 1.5rem;
     box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
   }
+
   .back-link {
     color: var(--accent-color-static);
     text-decoration: none;
@@ -43,122 +148,821 @@ import tracks from '@/data/tracks.json';
     margin-bottom: 1rem;
     display: inline-block;
     transition: opacity 0.3s ease;
+    align-self: flex-start;
   }
+
   .back-link:hover {
     opacity: 0.8;
   }
+
   h1 {
     color: var(--accent-color-static);
-    margin-bottom: 1rem;
-    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
     text-align: center;
   }
-  
-  .premium-status {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+
+  .section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
     margin-bottom: 2rem;
-    padding: 1rem;
+    font-size: 1.1rem;
+  }
+
+  /* Tab Navigation */
+  .tab-navigation {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .tab-btn.active {
     background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 12px;
+    border-color: var(--accent-color-static);
+    color: var(--accent-color-static);
   }
 
-  .premium-badge {
-    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
-    color: #000;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+  .tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 215, 0, 0.3);
+  }
+
+  .tab-btn svg {
+    opacity: 0.8;
+  }
+
+  .tab-btn.active svg {
+    opacity: 1;
+  }
+
+  .tab-description {
     font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    opacity: 0.8;
+    margin-top: 0.5rem;
   }
 
-  .expires-text {
+  /* Content Sections */
+  .content-section {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .content-section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-header h2 {
+    color: var(--accent-color-static);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+  }
+
+  /* Online Streaming Section */
+  .streaming-info {
+    margin-bottom: 3rem;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .feature-item {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-item:hover {
+    border-color: rgba(255, 215, 0, 0.3);
+    transform: translateY(-5px);
+  }
+
+  .feature-item svg {
+    color: var(--accent-color-static);
+    margin-bottom: 1rem;
+  }
+
+  .feature-item h3 {
+    color: var(--accent-color-static);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .feature-item p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+  }
+
+  /* Offline Download Section */
+  .download-tracks-list {
+    width: 100%;
+  }
+
+  /* List Controls */
+  .list-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .search-box {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+  }
+
+  .search-box svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 0.95rem;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent-color-static);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .results-info {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
+  }
+
+  /* Tracks Table */
+  .tracks-table-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .tracks-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .tracks-table thead {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .tracks-table th {
+    padding: 1rem;
+    text-align: left;
+    color: var(--accent-color-static);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .tracks-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .track-row {
+    transition: background-color 0.2s ease;
+  }
+
+  .track-row:hover {
+    background: rgba(255, 215, 0, 0.05);
+  }
+
+  .track-number {
+    width: 50px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+  }
+
+  .track-info-col {
+    min-width: 250px;
+  }
+
+  .track-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .track-cover-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+  }
+
+  .track-title {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .track-artist {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+  }
+
+  .duration-col, .genre-col {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    width: 100px;
+  }
+
+  .price-col {
+    width: 80px;
+  }
+
+  .price {
+    color: var(--accent-color-static);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .actions-col {
+    width: 100px;
+  }
+
+  .track-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .play-preview-btn, .download-track-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .play-preview-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .play-preview-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+    transform: scale(1.1);
+  }
+
+  .download-track-btn {
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    color: #000;
+    border: none;
+  }
+
+  .download-track-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  }
+
+  .download-track-btn.owned {
+    background: linear-gradient(45deg, #00d4aa, #00a085);
+    color: white;
+  }
+
+  .download-track-btn.owned:hover {
+    box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+  }
+
+  /* Pagination */
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+  }
+
+  .pagination-info {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+
+  .pagination-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .pagination-btn {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+  }
+
+  .pagination-btn:hover:not(.disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-color-static);
+  }
+
+  .pagination-btn.active {
+    background: var(--accent-color-static);
+    color: #000;
+    border-color: var(--accent-color-static);
+  }
+
+  .pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Download Benefits */
+  .download-benefits {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .download-benefits h3 {
+    color: var(--accent-color-static);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .benefits-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .benefits-list li {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .benefits-list li:before {
+    content: "✓";
+    color: var(--accent-color-static);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
   }
 
   .hidden {
     display: none !important;
   }
 
+  /* Mobile Responsiveness */
   @media (max-width: 768px) {
     .listen-section {
       padding: 1rem;
     }
+
     h1 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      font-size: 2rem;
     }
-    
-    .premium-status {
+
+    .tab-navigation {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      padding: 1.5rem 1rem;
+    }
+
+    .list-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .search-box {
+      max-width: none;
+    }
+
+    .tracks-table-container {
+      overflow-x: auto;
+    }
+
+    .tracks-table {
+      min-width: 600px;
+    }
+
+    .track-info-col {
+      min-width: 200px;
+    }
+
+    .pagination-container {
+      flex-direction: column;
+      gap: 1rem;
       text-align: center;
+    }
+
+    .benefits-list {
+      grid-template-columns: 1fr;
     }
   }
 
+  @media (max-width: 480px) {
+    .listen-section {
+      padding: 0.75rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    .tab-btn {
+      padding: 1.25rem 0.75rem;
+    }
+
+    .tracks-table {
+      min-width: 500px;
+    }
+
+    .track-cover-small {
+      width: 32px;
+      height: 32px;
+    }
+
+    .track-title {
+      font-size: 0.9rem;
+    }
+
+    .track-artist {
+      font-size: 0.8rem;
+    }
+
+    .tracks-table th,
+    .tracks-table td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+</style>
+
   <script>
-    // Premium Access Management for Listen Page
+    // Tab Navigation and Listen Page Management
     document.addEventListener('DOMContentLoaded', () => {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const contentSections = document.querySelectorAll('.content-section');
       const gateContainer = document.getElementById('premium-gate-container');
-      const playerContainer = document.getElementById('audio-player-container');
-      const expiresEl = document.getElementById('premium-expires');
+      const streamingContainer = document.getElementById('streaming-player-container');
 
-      function checkPremiumAccess() {
-        const premiumData = localStorage.getItem('gz-premium-access');
-        
-        if (!premiumData) {
-          showPremiumGate();
-          return;
-        }
-
-        try {
-          const data = JSON.parse(premiumData);
-          const expiresAt = new Date(data.expiresAt);
-          const now = new Date();
-
-          if (expiresAt > now) {
-            showAudioPlayer(expiresAt);
-          } else {
-            // Premium expired
-            localStorage.removeItem('gz-premium-access');
-            showPremiumGate();
+      // Tab switching functionality
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.dataset.tab;
+          
+          // Update active tab button
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          
+          // Update active content section
+          contentSections.forEach(section => section.classList.remove('active'));
+          document.getElementById(`${targetTab}-section`).classList.add('active');
+          
+          // Handle specific tab logic
+          if (targetTab === 'online') {
+            initializeFreeStreaming();
+          } else if (targetTab === 'offline') {
+            initializeTrackList();
+            initializeSearch();
+            initializeDownloadButtons();
           }
-        } catch (error) {
-          console.error('Error checking premium access:', error);
-          showPremiumGate();
-        }
-      }
-
-      function showPremiumGate() {
-        gateContainer?.classList.remove('hidden');
-        playerContainer?.classList.add('hidden');
-      }
-
-      function showAudioPlayer(expiresAt) {
-        gateContainer?.classList.add('hidden');
-        playerContainer?.classList.remove('hidden');
-        
-        // Update expires text
-        if (expiresEl) {
-          const daysLeft = Math.ceil((expiresAt - new Date()) / (1000 * 60 * 60 * 24));
-          expiresEl.textContent = `Expires in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}`;
-        }
-      }
-
-      // Listen for premium access events
-      window.addEventListener('premium:granted', (event) => {
-        const { expiresAt } = event.detail;
-        showAudioPlayer(new Date(expiresAt));
+        });
       });
 
-      // Initial check
-      checkPremiumAccess();
+      function initializeFreeStreaming() {
+        // Streaming is always free - just show the player
+        if (streamingContainer) streamingContainer.classList.remove('hidden');
+      }
+
+      // Track list management
+      let allTracks = [];
+      let filteredTracks = [];
+      let currentPage = 1;
+      const tracksPerPage = 10;
+
+      function initializeTrackList() {
+        // Get tracks data from the page
+        const trackRows = document.querySelectorAll('.track-row');
+        allTracks = Array.from(trackRows).map((row, index) => ({
+          element: row,
+          id: row.dataset.trackId,
+          title: row.querySelector('.track-title').textContent.toLowerCase(),
+          artist: row.querySelector('.track-artist').textContent.toLowerCase(),
+          genre: row.querySelector('.genre-col').textContent.toLowerCase(),
+          index: index
+        }));
+        filteredTracks = [...allTracks];
+        updateTrackDisplay();
+        initializePagination();
+      }
+
+      function initializeDownloadButtons() {
+        const downloadBtns = document.querySelectorAll('.download-track-btn');
+        const previewBtns = document.querySelectorAll('.play-preview-btn');
+        
+        downloadBtns.forEach(btn => {
+          // Remove existing listeners to avoid duplicates
+          const newBtn = btn.cloneNode(true);
+          btn.parentNode.replaceChild(newBtn, btn);
+          
+          const trackId = newBtn.dataset.trackId;
+          const trackTitle = newBtn.dataset.trackTitle;
+          const trackArtist = newBtn.dataset.trackArtist;
+          
+          // Check if user already owns this track
+          if (window.PremiumGate && window.PremiumGate.hasTrackAccess(trackId)) {
+            newBtn.classList.add('owned');
+            newBtn.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+            `;
+            newBtn.title = 'Download Owned Track';
+            newBtn.addEventListener('click', () => {
+              if (window.downloadHandler) {
+                const track = window.downloadHandler.getTrackData(trackId);
+                if (track) {
+                  window.downloadHandler.downloadTrack(track);
+                }
+              }
+            });
+          } else {
+            // Trigger payment modal for purchase
+            newBtn.addEventListener('click', () => {
+              if (window.paymentModal) {
+                window.paymentModal.open({
+                  type: 'track',
+                  amount: 50,
+                  trackId: trackId,
+                  title: `Buy "${trackTitle}"`,
+                  trackTitle: trackTitle,
+                  trackArtist: trackArtist,
+                  items: null
+                });
+              }
+            });
+          }
+        });
+
+        // Initialize preview buttons
+        previewBtns.forEach(btn => {
+          // Remove existing listeners to avoid duplicates
+          const newBtn = btn.cloneNode(true);
+          btn.parentNode.replaceChild(newBtn, btn);
+          
+          const trackIndex = parseInt(newBtn.dataset.trackIndex);
+          newBtn.addEventListener('click', () => {
+            // Trigger audio player to play preview (30 seconds)
+            if (window.audioPlayer) {
+              window.audioPlayer.playTrack(trackIndex, true); // true for preview mode
+            }
+          });
+        });
+      }
+
+      function initializeSearch() {
+        const searchInput = document.getElementById('track-search');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query === '') {
+              filteredTracks = [...allTracks];
+            } else {
+              filteredTracks = allTracks.filter(track => 
+                track.title.includes(query) || 
+                track.artist.includes(query) || 
+                track.genre.includes(query)
+              );
+            }
+            
+            currentPage = 1;
+            updateTrackDisplay();
+            updatePagination();
+          });
+        }
+      }
+
+      function updateTrackDisplay() {
+        const tbody = document.getElementById('tracks-tbody');
+        const tracksCount = document.getElementById('tracks-count');
+        
+        if (!tbody) return;
+        
+        // Hide all tracks first
+        allTracks.forEach(track => {
+          track.element.style.display = 'none';
+        });
+        
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * tracksPerPage;
+        const endIndex = startIndex + tracksPerPage;
+        const tracksToShow = filteredTracks.slice(startIndex, endIndex);
+        
+        // Show current page tracks
+        tracksToShow.forEach(track => {
+          track.element.style.display = '';
+        });
+        
+        // Update counts
+        if (tracksCount) {
+          tracksCount.textContent = `${filteredTracks.length} tracks`;
+        }
+        
+        const paginationInfo = document.getElementById('pagination-info');
+        if (paginationInfo) {
+          const showing = Math.min(tracksToShow.length, tracksPerPage);
+          const start = startIndex + 1;
+          const end = startIndex + showing;
+          paginationInfo.textContent = `Showing ${start}-${end} of ${filteredTracks.length} tracks`;
+        }
+      }
+
+      function initializePagination() {
+        updatePagination();
+      }
+
+      function updatePagination() {
+        const paginationControls = document.getElementById('pagination-controls');
+        if (!paginationControls) return;
+        
+        const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
+        
+        if (totalPages <= 1) {
+          paginationControls.innerHTML = '';
+          return;
+        }
+        
+        let paginationHTML = '';
+        
+        // Previous button
+        paginationHTML += `
+          <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" data-page="prev">
+            ← Previous
+          </button>
+        `;
+        
+        // Page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        if (endPage - startPage < maxVisiblePages - 1) {
+          startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+          paginationHTML += `
+            <button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+              ${i}
+            </button>
+          `;
+        }
+        
+        // Next button
+        paginationHTML += `
+          <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" data-page="next">
+            Next →
+          </button>
+        `;
+        
+        paginationControls.innerHTML = paginationHTML;
+        
+        // Add event listeners
+        paginationControls.querySelectorAll('.pagination-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const page = btn.dataset.page;
+            
+            if (btn.classList.contains('disabled')) return;
+            
+            if (page === 'prev') {
+              currentPage = Math.max(1, currentPage - 1);
+            } else if (page === 'next') {
+              currentPage = Math.min(totalPages, currentPage + 1);
+            } else {
+              currentPage = parseInt(page);
+            }
+            
+            updateTrackDisplay();
+            updatePagination();
+          });
+        });
+      }
+
+      // No premium events needed since streaming is free
+
+      // Listen for track purchase events to update button states
+      window.addEventListener('track:purchased', (event) => {
+        const { trackId } = event.detail;
+        updateDownloadButton(trackId);
+      });
+
+      function updateDownloadButton(trackId) {
+        const btn = document.querySelector(`[data-track-id="${trackId}"]`);
+        if (btn) {
+          btn.classList.add('owned');
+          btn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+            Download Owned Track
+          `;
+          
+          // Remove old event listeners and add new download functionality
+          const newBtn = btn.cloneNode(true);
+          btn.parentNode.replaceChild(newBtn, btn);
+          
+          newBtn.addEventListener('click', () => {
+            if (window.downloadHandler) {
+              const track = window.downloadHandler.getTrackData(trackId);
+              if (track) {
+                window.downloadHandler.downloadTrack(track);
+              }
+            }
+          });
+        }
+      }
+
+      // Initialize the default tab (free streaming)
+      initializeFreeStreaming();
+      
+      // Initialize offline functionality (even if not active, for when user switches)
+      initializeTrackList();
+      initializeSearch();
     });
   </script>
 </style>
