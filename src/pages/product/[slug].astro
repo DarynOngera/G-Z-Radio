@@ -12,305 +12,286 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 ---
 
-<MainLayout title={`${product.name} - G'z Radio Merch`}>
-  <div class="product-detail-page">
-    <div class="container">
-      <div class="product-detail-content">
-        <!-- Product Images -->
-        <div class="product-images">
-          <div class="main-image">
-            <img id="mainProductImage" src={product.images[0]} alt={product.name} />
-          </div>
-          <div class="image-thumbnails">
+<MainLayout title={`${product.name} - G'z Radio`}>
+  <section class="product-page fade-in-section">
+    <a href="/" class="back-link">← Back to Main</a>
+    
+    <div class="product-container">
+      <div class="product-gallery">
+        <div class="main-image">
+          <img id="mainProductImage" src={product.images[0]} alt={product.name} />
+        </div>
+        {product.images.length > 1 && (
+          <div class="thumbnails">
             {product.images.map((image, index) => (
-              <button class={`thumbnail ${index === 0 ? 'active' : ''}`} data-image={image}>
-                <img src={image} alt={`${product.name} view ${index + 1}`} />
+              <button class={`thumb ${index === 0 ? 'active' : ''}`} data-image={image}>
+                <img src={image} alt={`${product.name} ${index + 1}`} />
               </button>
             ))}
           </div>
-        </div>
+        )}
+      </div>
 
-        <!-- Product Info -->
-        <div class="product-info">
-          <h1 class="product-title">{product.name}</h1>
-          <p class="product-price">${product.price.toFixed(2)} {product.currency}</p>
-          <p class="product-description">{product.description}</p>
-
-          <!-- Product Features -->
-          <div class="product-features">
-            <h3>Features:</h3>
-            <ul>
-              {product.features.map(feature => (
-                <li>{feature}</li>
-              ))}
-            </ul>
-          </div>
-
-          <!-- Size Selection -->
-          <div class="size-selection">
-            <label>Size:</label>
-            <div class="size-options">
+      <div class="product-details">
+        <h1>{product.name}</h1>
+        <div class="price-line"></div>
+        <p class="price">{product.price.toFixed(2)} {product.currency}</p>
+        
+        <div class="options">
+          <div class="option-group">
+            <span class="option-label">Size</span>
+            <div class="size-grid">
               {product.sizes.map((size, index) => (
-                <button class={`size-btn ${index === 0 ? 'selected' : ''}`} data-size={size}>
+                <button class={`size-option ${index === 0 ? 'selected' : ''}`} data-size={size}>
                   {size}
                 </button>
               ))}
             </div>
           </div>
 
-          <!-- Color Selection -->
-          <div class="color-selection">
-            <label>Color:</label>
-            <div class="color-options">
+          <div class="option-group">
+            <span class="option-label">Color</span>
+            <div class="color-grid">
               {product.colors.map((color, index) => (
                 <button 
                   class={`color-option ${index === 0 ? 'selected' : ''}`}
                   data-color={color.name}
-                  style={`background-color: ${color.hex}`}
+                  style={`background: ${color.hex}`}
                   title={color.name}
                 ></button>
               ))}
             </div>
           </div>
-
-          <!-- Stock Info -->
-          <div class="stock-info">
-            {product.inStock ? (
-              <span class="in-stock">✓ In Stock ({product.stockCount} available)</span>
-            ) : (
-              <span class="out-of-stock">✗ Out of Stock</span>
-            )}
-          </div>
-
-          <!-- Actions -->
-          <div class="product-actions">
-            <button 
-              class="add-to-cart-btn primary-btn" 
-              data-product-id={product.id}
-              disabled={!product.inStock}
-            >
-              {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </button>
-            <button class="back-btn secondary-btn" onclick="history.back()">
-              ← Back to Shop
-            </button>
-          </div>
         </div>
+
+        <div class="stock-status">
+          {product.inStock ? (
+            <span class="available">Available</span>
+          ) : (
+            <span class="unavailable">Out of Stock</span>
+          )}
+        </div>
+
+        <button 
+          class="add-to-cart" 
+          data-product-id={product.id}
+          disabled={!product.inStock}
+        >
+          {product.inStock ? 'Add to Cart' : 'Unavailable'}
+        </button>
       </div>
     </div>
-  </div>
+  </section>
 </MainLayout>
 
 <style>
-  .product-detail-page {
+  .product-page {
     min-height: 100vh;
-    padding: 2rem 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 2rem;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   }
 
-  .container {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color-static);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+  }
+
+  .back-link:hover {
+    color: #fff;
+    transform: translateX(-5px);
+  }
+
+  .product-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .product-detail-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    margin-top: 2rem;
+    align-items: start;
   }
 
-  /* Product Images */
-  .product-images {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  .product-gallery {
+    position: sticky;
+    top: 2rem;
   }
 
   .main-image {
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 12px;
+    border-radius: 20px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: #000;
+    margin-bottom: 1rem;
   }
 
   .main-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
-  .image-thumbnails {
+  .main-image:hover img {
+    transform: scale(1.02);
+  }
+
+  .thumbnails {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.8rem;
     justify-content: center;
   }
 
-  .thumbnail {
-    width: 80px;
-    height: 80px;
+  .thumb {
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
     overflow: hidden;
     border: 2px solid transparent;
-    background: rgba(255, 255, 255, 0.05);
+    background: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    opacity: 0.6;
   }
 
-  .thumbnail.active {
+  .thumb.active {
     border-color: var(--accent-color-static);
+    opacity: 1;
   }
 
-  .thumbnail:hover {
-    border-color: rgba(255, 215, 0, 0.5);
+  .thumb:hover {
+    opacity: 1;
+    transform: scale(1.05);
   }
 
-  .thumbnail img {
+  .thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  /* Product Info */
-  .product-info {
+  .product-details {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
-  .product-title {
-    font-size: 2.5rem;
-    font-weight: 700;
+  .product-details h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     color: var(--accent-color-static);
     margin: 0;
-    
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
   }
 
-  .product-price {
-    font-size: 2rem;
-    font-weight: 600;
+  .price-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
+    margin: 0.5rem 0;
+  }
+
+  .price {
+    font-size: 1.8rem;
+    font-weight: 300;
     color: #fff;
     margin: 0;
+    letter-spacing: 0.02em;
   }
 
-  .product-description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
-  .product-features h3 {
-    color: var(--accent-color-static);
-    margin: 0 0 0.5rem 0;
-    font-size: 1.2rem;
+  .option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
   }
 
-  .product-features ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .product-features li {
-    color: rgba(255, 255, 255, 0.8);
-    padding: 0.25rem 0;
-    position: relative;
-    padding-left: 1rem;
-  }
-
-  .product-features li:before {
-    content: "•";
-    color: var(--accent-color-static);
-    position: absolute;
-    left: 0;
-  }
-
-  /* Size Selection */
-  .size-selection label,
-  .color-selection label {
-    display: block;
+  .option-label {
+    font-size: 0.9rem;
     color: var(--accent-color-static);
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
-  .size-options {
+  .size-grid {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
     flex-wrap: wrap;
   }
 
-  .size-btn {
-    padding: 0.75rem 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.05);
+  .size-option {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
+    min-width: 50px;
+    text-align: center;
   }
 
-  .size-btn:hover,
-  .size-btn.selected {
+  .size-option:hover,
+  .size-option.selected {
     border-color: var(--accent-color-static);
-    background: rgba(255, 215, 0, 0.1);
     color: var(--accent-color-static);
+    background: rgba(255, 215, 0, 0.05);
   }
 
-  /* Color Selection */
-  .color-options {
+  .color-grid {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
 
   .color-option {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
   }
 
   .color-option:hover,
   .color-option.selected {
     border-color: var(--accent-color-static);
     transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
   }
 
-  /* Stock Info */
-  .stock-info {
-    padding: 1rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .stock-status {
+    padding: 1rem 0;
   }
 
-  .in-stock {
+  .available {
     color: #4ade80;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.95rem;
   }
 
-  .out-of-stock {
+  .unavailable {
     color: #f87171;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.95rem;
   }
 
-  /* Actions */
-  .product-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  .primary-btn {
-    flex: 1;
-    padding: 1rem 2rem;
+  .add-to-cart {
+    padding: 1.2rem 2rem;
     background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
     border: none;
     border-radius: 8px;
@@ -319,191 +300,123 @@ const { product } = Astro.props;
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1rem;
   }
 
-  .primary-btn:hover:not(:disabled) {
+  .add-to-cart:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
   }
 
-  .primary-btn:disabled {
+  .add-to-cart:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  .secondary-btn {
-    padding: 1rem 2rem;
     background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    border-radius: 8px;
-    color: var(--accent-color-static);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.5);
   }
 
-  .secondary-btn:hover {
-    background: rgba(255, 215, 0, 0.1);
-    border-color: var(--accent-color-static);
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .product-container {
+      gap: 3rem;
+    }
   }
 
-  /* Mobile Responsiveness */
   @media (max-width: 768px) {
-    .container {
-      padding: 0 1rem;
+    .product-page {
+      padding: 1rem;
     }
 
-    .product-detail-content {
+    .product-container {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
 
-    .product-title {
-      font-size: 2rem;
+    .product-gallery {
+      position: static;
     }
 
-    .product-price {
+    .back-link {
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .product-details h1 {
+      font-size: clamp(1.8rem, 8vw, 2.5rem);
+    }
+
+    .price {
       font-size: 1.5rem;
     }
 
-    .product-actions {
-      flex-direction: column;
+    .options {
+      gap: 1.5rem;
     }
 
-    .image-thumbnails {
-      justify-content: flex-start;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      gap: 0.375rem;
+    .thumbnails {
+      gap: 0.6rem;
     }
 
-    .thumbnail {
-      width: 70px;
-      height: 70px;
-      flex-shrink: 0;
+    .thumb {
+      width: 50px;
+      height: 50px;
     }
   }
 
   @media (max-width: 480px) {
-    .product-detail-page {
-      padding: 1rem 0;
+    .product-page {
+      padding: 0.8rem;
     }
 
-    .container {
-      padding: 0 0.75rem;
-    }
-
-    .product-detail-content {
+    .product-container {
       gap: 1.5rem;
-      margin-top: 1rem;
     }
 
-    .product-title {
-      font-size: 1.75rem;
-      line-height: 1.2;
+    .product-details {
+      gap: 1.5rem;
     }
 
-    .product-price {
-      font-size: 1.375rem;
+    .product-details h1 {
+      font-size: clamp(1.5rem, 10vw, 2rem);
     }
 
-    .product-description {
-      font-size: 1rem;
-      line-height: 1.5;
+    .price {
+      font-size: 1.3rem;
     }
 
-    .product-info {
-      gap: 1.25rem;
-    }
-
-    .product-features h3 {
-      font-size: 1.1rem;
-    }
-
-    .size-options {
-      gap: 0.375rem;
-    }
-
-    .size-btn {
-      padding: 0.625rem 0.75rem;
+    .size-option {
+      padding: 0.7rem 1rem;
       font-size: 0.9rem;
     }
 
     .color-option {
-      width: 35px;
-      height: 35px;
+      width: 30px;
+      height: 30px;
     }
 
-    .stock-info {
-      padding: 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .product-actions {
-      margin-top: 1.5rem;
-      gap: 0.75rem;
-    }
-
-    .primary-btn, .secondary-btn {
-      padding: 0.875rem 1.5rem;
+    .add-to-cart {
+      padding: 1rem 1.5rem;
       font-size: 1rem;
     }
 
-    .image-thumbnails {
-      gap: 0.25rem;
+    .thumbnails {
+      gap: 0.4rem;
     }
 
-    .thumbnail {
-      width: 60px;
-      height: 60px;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .container {
-      padding: 0 0.5rem;
-    }
-
-    .product-title {
-      font-size: 1.5rem;
-    }
-
-    .product-price {
-      font-size: 1.25rem;
-    }
-
-    .product-description {
-      font-size: 0.95rem;
-    }
-
-    .size-btn {
-      padding: 0.5rem 0.625rem;
-      font-size: 0.85rem;
-    }
-
-    .color-option {
-      width: 32px;
-      height: 32px;
-    }
-
-    .primary-btn, .secondary-btn {
-      padding: 0.75rem 1.25rem;
-      font-size: 0.95rem;
-    }
-
-    .thumbnail {
-      width: 50px;
-      height: 50px;
+    .thumb {
+      width: 45px;
+      height: 45px;
     }
   }
 </style>
 
 <script>
-  // Product detail functionality
   document.addEventListener('DOMContentLoaded', () => {
     const mainImage = document.getElementById('mainProductImage');
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    const addToCartBtn = document.querySelector('.add-to-cart-btn');
+    const thumbnails = document.querySelectorAll('.thumb');
+    const addToCartBtn = document.querySelector('.add-to-cart');
 
     // Image thumbnail functionality
     thumbnails.forEach(thumbnail => {
@@ -520,7 +433,7 @@ const { product } = Astro.props;
     });
 
     // Size selection
-    const sizeButtons = document.querySelectorAll('.size-btn');
+    const sizeButtons = document.querySelectorAll('.size-option');
     sizeButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         sizeButtons.forEach(b => b.classList.remove('selected'));
@@ -541,7 +454,7 @@ const { product } = Astro.props;
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', () => {
         // Get selected size and color
-        const selectedSize = document.querySelector('.size-btn.selected')?.dataset.size;
+        const selectedSize = document.querySelector('.size-option.selected')?.dataset.size;
         const selectedColor = document.querySelector('.color-option.selected')?.dataset.color;
 
         if (!selectedSize || !selectedColor) {
@@ -552,8 +465,8 @@ const { product } = Astro.props;
         // Get product data from the page
         const productData = {
           id: addToCartBtn.dataset.productId,
-          name: document.querySelector('.product-title').textContent,
-          price: parseFloat(document.querySelector('.product-price').textContent.replace(/[^0-9.]/g, '')),
+          name: document.querySelector('.product-details h1').textContent,
+          price: parseFloat(document.querySelector('.price').textContent.replace(/[^0-9.]/g, '')),
           images: [document.getElementById('mainProductImage').src],
           slug: window.location.pathname.split('/').pop()
         };
