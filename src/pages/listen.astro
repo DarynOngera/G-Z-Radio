@@ -468,22 +468,54 @@ import tracks from '@/data/tracks.json';
     
     document.body.appendChild(particleContainer);
     
-    // Create subtle floating particles
-    for (let i = 0; i < 20; i++) {
+    // Create enhanced floating particles for background
+    const particleCount = window.innerWidth <= 768 ? 40 : window.innerWidth <= 1024 ? 60 : 80;
+    
+    for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
       particle.className = 'audio-particle';
+      
+      // Varied particle sizes and types
+      const size = Math.random() * 3 + 0.5;
+      const isLarger = Math.random() > 0.8;
+      const finalSize = isLarger ? size * 2 : size;
+      
       particle.style.cssText = `
         position: absolute;
-        width: ${Math.random() * 2 + 1}px;
-        height: ${Math.random() * 2 + 1}px;
-        background: rgba(255, 215, 0, ${Math.random() * 0.3 + 0.1});
+        width: ${finalSize}px;
+        height: ${finalSize}px;
+        background: rgba(255, 215, 0, ${Math.random() * 0.4 + 0.1});
         border-radius: 50%;
         left: ${Math.random() * 100}%;
         top: ${Math.random() * 100}%;
-        animation: smoothFloat ${Math.random() * 8 + 12}s infinite ease-in-out;
-        opacity: 0.6;
+        animation: smoothFloat ${Math.random() * 12 + 15}s infinite ease-in-out;
+        opacity: ${Math.random() * 0.5 + 0.3};
+        box-shadow: 0 0 ${finalSize * 2}px rgba(255, 215, 0, 0.2);
       `;
+      
+      // Add delayed animation start for more organic feel
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+      
       particleContainer.appendChild(particle);
+    }
+    
+    // Add some larger ambient particles
+    for (let i = 0; i < 10; i++) {
+      const ambientParticle = document.createElement('div');
+      ambientParticle.className = 'ambient-particle';
+      ambientParticle.style.cssText = `
+        position: absolute;
+        width: ${Math.random() * 4 + 2}px;
+        height: ${Math.random() * 4 + 2}px;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 165, 0, 0.1) 70%, transparent 100%);
+        border-radius: 50%;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        animation: ambientFloat ${Math.random() * 20 + 25}s infinite ease-in-out;
+        opacity: 0.4;
+      `;
+      ambientParticle.style.animationDelay = `${Math.random() * 10}s`;
+      particleContainer.appendChild(ambientParticle);
     }
   }
 
@@ -522,6 +554,21 @@ import tracks from '@/data/tracks.json';
         75% {
           transform: translateY(-30px) translateX(15px);
           opacity: 0.9;
+        }
+      }
+      
+      @keyframes ambientFloat {
+        0%, 100% {
+          transform: translateY(0px) translateX(0px) scale(1);
+          opacity: 0.3;
+        }
+        33% {
+          transform: translateY(-40px) translateX(20px) scale(1.2);
+          opacity: 0.6;
+        }
+        66% {
+          transform: translateY(-20px) translateX(-30px) scale(0.8);
+          opacity: 0.4;
         }
       }
       
