@@ -43,7 +43,7 @@ function setupResponsiveCanvas() {
 // Device performance detection
 const devicePerformance = {
   level: 'high',
-  particleLimit: 30,
+  particleLimit: Math.round(30 * 1.15), // 35 particles
   spectrumBars: 32,
   animationQuality: 1.0
 };
@@ -54,12 +54,12 @@ function detectDevicePerformance() {
   
   if (isMobile || isLowEnd) {
     devicePerformance.level = 'low';
-    devicePerformance.particleLimit = 15;
+    devicePerformance.particleLimit = Math.round(15 * 1.15); // 17 particles
     devicePerformance.spectrumBars = 16;
     devicePerformance.animationQuality = 0.7;
   } else if (window.innerWidth <= 1024) {
     devicePerformance.level = 'medium';
-    devicePerformance.particleLimit = 20;
+    devicePerformance.particleLimit = Math.round(20 * 1.15); // 23 particles
     devicePerformance.spectrumBars = 24;
     devicePerformance.animationQuality = 0.85;
   }
