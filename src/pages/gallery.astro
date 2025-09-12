@@ -2,7 +2,15 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 ---
 
-<MainLayout title="Gallery - G'z Radio">
+<MainLayout 
+	title="Gallery - G'z Radio"
+	ogTitle="Gallery - TheGzKe"
+	ogDescription="Explore the visual journey of TheGzKe. Discover stunning photography, behind-the-scenes moments, and the vibrant hip-hop culture that defines our community."
+	ogImage="https://gzradio.netlify.app/assets/Gz.jpg"
+	twitterTitle="Gallery - TheGzKe"
+	twitterDescription="Explore the visual journey of TheGzKe. Discover stunning photography, behind-the-scenes moments, and the vibrant hip-hop culture that defines our community."
+	twitterImage="https://gzradio.netlify.app/assets/Gz.jpg"
+>
   <section class="gallery-section">
     <a href="/" class="back-link">← Back to Main</a>
     
@@ -423,27 +431,29 @@ import MainLayout from '@/layouts/MainLayout.astro';
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const galleryItems = document.querySelectorAll('.gallery-item');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const closeBtn = document.querySelector('.lightbox-close');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const lightbox = document.getElementById('lightbox') as HTMLElement;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const closeBtn = document.querySelector('.lightbox-close') as HTMLElement;
+    const prevBtn = document.getElementById('prev-btn') as HTMLElement;
+    const nextBtn = document.getElementById('next-btn') as HTMLElement;
     
     let currentIndex = 0;
-    let images = [];
+    let images: {src: string, alt: string}[] = [];
 
     // Collect all images
     galleryItems.forEach((item, index) => {
-      const img = item.querySelector('img');
-      images.push({
-        src: img.src,
-        alt: img.alt
-      });
+      const img = item.querySelector('img') as HTMLImageElement;
+      if (img) {
+        images.push({
+          src: img.src,
+          alt: img.alt
+        });
 
-      item.addEventListener('click', () => {
-        currentIndex = index;
-        openLightbox();
-      });
+        item.addEventListener('click', () => {
+          currentIndex = index;
+          openLightbox();
+        });
+      }
     });
 
     function openLightbox() {

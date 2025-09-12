@@ -3,4 +3,5 @@ export interface Track {
   artist: string;
   src: string;
   cover: string;
+  duration: string;
 }
