@@ -15,7 +15,16 @@ export async function getStaticPaths() {
 const { artist } = Astro.props;
 ---
 
-<MainLayout title={`${artist.name} - The G'z Radio`} showFooter={false}>
+<MainLayout 
+	title={`${artist.name} - The G'z Radio`} 
+	showFooter={false}
+	ogTitle={`${artist.name} - TheGzKe`}
+	ogDescription={`Discover ${artist.name}, featured artist on TheGzKe. ${artist.bio.slice(0, 150)}...`}
+	ogImage={`https://gzradio.netlify.app${artist.image}`}
+	twitterTitle={`${artist.name} - TheGzKe`}
+	twitterDescription={`Discover ${artist.name}, featured artist on TheGzKe. ${artist.bio.slice(0, 150)}...`}
+	twitterImage={`https://gzradio.netlify.app${artist.image}`}
+>
 
   <div class="artist-page-container">
     <div class="artist-profile-grid">

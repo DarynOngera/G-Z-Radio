@@ -5,20 +5,55 @@ import PaymentModal from '../components/PaymentModal.astro';
 export interface Props {
 	title: string;
 	showFooter?: boolean;
+	ogTitle?: string;
+	ogDescription?: string;
+	ogImage?: string;
+	twitterTitle?: string;
+	twitterDescription?: string;
+	twitterImage?: string;
 }
 
-const { title, showFooter = true } = Astro.props;
+const { 
+	title, 
+	showFooter = true,
+	ogTitle,
+	ogDescription,
+	ogImage,
+	twitterTitle,
+	twitterDescription,
+	twitterImage
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="The G'z Radio Official Website" />
+		<meta name="description" content="TheGzKe - Official website, get exclusive releases, merchendise and news updates." />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="TheGzKe" />
+		<meta property="og:url" content="https://gzradio.netlify.app" />
+		<meta property="og:title" content={ogTitle || "TheGzKe"} />
+		<meta property="og:description" content={ogDescription || "TheGzKe - Official website, get exclusive releases, merchendise and news updates."} />
+		<meta property="og:image" content={ogImage || "https://gzradio.netlify.app/assets/Gz.jpg"} />
+		<meta property="og:image:alt" content="TheGzKe - Official website, get exclusive releases, merchendise and news updates." />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={twitterTitle || "TheGzKe"} />
+		<meta name="twitter:description" content={twitterDescription || "TheGzKe - Official website, get exclusive releases, merchendise and news updates."} />
+		<meta name="twitter:image" content={twitterImage || "https://gzradio.netlify.app/assets/Gz.jpg"} />
+		<meta name="twitter:image:alt" content="TheGzKe - Official website, get exclusive releases, merchendise and news updates." />
+
+		<!-- Additional SEO and Social Media Meta Tags -->
+		<meta name="theme-color" content="#FFD700" />
+		<meta name="keywords" content="hip-hop, radio, Kenya, music, streaming, artists, interviews, merch, G'z Radio, TheGzKe" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">

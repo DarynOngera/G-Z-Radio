@@ -129,7 +129,7 @@ import ClothingCard from './ClothingCard.astro';
 
 <script>
   document.addEventListener('scroll', () => {
-    const clothingSection = document.querySelector('.clothing-section');
+    const clothingSection = document.querySelector('.clothing-section') as HTMLElement;
     if (!clothingSection) return;
 
     const rect = clothingSection.getBoundingClientRect();
