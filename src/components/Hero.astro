@@ -8,11 +8,13 @@ const brandDescription = "Your source for the realest sounds in the game. Curate
     <source src="/assets/gallery/sikua_na_rada_1.mp4" type="video/mp4">
   </video>
   <div class="hero-content">
-    <h1 class="rugged-headline" data-text="The G'z Radio">The G'z Radio</h1>
+    <h1 class="rubik-glitch-regular" data-text="The G'z Radio">The G'z Radio</h1>
   </div>
 </section>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
+
   #hero {
     min-height: 100vh;
     display: flex;
@@ -86,11 +88,17 @@ const brandDescription = "Your source for the realest sounds in the game. Curate
     z-index: 1;
   }
 
-  .hero-content h1 {
+  .rubik-glitch-regular {
+    font-family: "Rubik Glitch", system-ui !important;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(3rem, 10vw, 6rem);
     margin-bottom: 1rem;
     color: var(--accent-color-static);
     text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    letter-spacing: 0.05em;
+    transform: rotate(-2deg) skewX(-5deg);
+    display: inline-block;
   }
 
   .hero-content p {
