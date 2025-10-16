@@ -13,6 +13,8 @@ import Navigation from './Navigation.astro';
 </header>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
+
   header {
     display: flex;
     justify-content: space-between;
@@ -27,16 +29,23 @@ import Navigation from './Navigation.astro';
   }
 
   .logo a {
-     font-family: Impact, Haettenschweiler, 'Arial Black', sans-serif;
-  font-size: 1.5rem;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  line-height: 1.2;
-  color: var(--accent-color-static); /* fallback color */
-  display: inline-block;
-  transform: rotate(-2deg) skewX(-5deg);
-   }
+    font-family: "Rubik Glitch", system-ui !important;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.5rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.2;
+    color: var(--accent-color-static);
+    display: inline-block;
+    transform: rotate(-2deg) skewX(-5deg);
+    transition: transform 0.3s ease;
+  }
+
+  .logo a:hover {
+    transform: rotate(-2deg) skewX(-5deg) scale(1.05);
+  }
 
   .header-actions {
     display: flex;
