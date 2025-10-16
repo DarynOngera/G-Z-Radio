@@ -326,18 +326,31 @@
 <script>
   // Payment Modal Management
   class PaymentModal {
+    modal: HTMLElement | null;
+    overlay: Element | null;
+    closeBtn: HTMLElement | null;
+    phoneInput: HTMLInputElement | null;
+    paymentBtn: HTMLButtonElement | null;
+    titleEl: HTMLElement | null;
+    badgeEl: HTMLElement | null;
+    summaryEl: HTMLElement | null;
+    totalEl: HTMLElement | null;
+    btnText: Element | null;
+    btnLoader: Element | null;
+    currentPayment: any;
+
     constructor() {
       this.modal = document.getElementById('payment-modal');
-      this.overlay = this.modal?.querySelector('.payment-overlay');
+      this.overlay = this.modal?.querySelector('.payment-overlay') || null;
       this.closeBtn = document.getElementById('close-payment');
-      this.phoneInput = document.getElementById('phone-number');
-      this.paymentBtn = document.getElementById('initiate-payment');
+      this.phoneInput = document.getElementById('phone-number') as HTMLInputElement;
+      this.paymentBtn = document.getElementById('initiate-payment') as HTMLButtonElement;
       this.titleEl = document.getElementById('payment-title');
       this.badgeEl = document.getElementById('payment-type-badge');
       this.summaryEl = document.getElementById('payment-summary');
       this.totalEl = document.getElementById('payment-total');
-      this.btnText = this.paymentBtn?.querySelector('.btn-text');
-      this.btnLoader = this.paymentBtn?.querySelector('.btn-loader');
+      this.btnText = this.paymentBtn?.querySelector('.btn-text') || null;
+      this.btnLoader = this.paymentBtn?.querySelector('.btn-loader') || null;
       
       this.currentPayment = null;
       this.init();
@@ -354,7 +367,8 @@
 
       // Phone number formatting
       this.phoneInput?.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\D/g, '');
+        const target = e.target as HTMLInputElement;
+        let value = target.value.replace(/\D/g, '');
         if (value.length > 0 && !value.startsWith('254')) {
           if (value.startsWith('0')) {
             value = '254' + value.substring(1);
@@ -362,7 +376,7 @@
             value = '254' + value;
           }
         }
-        e.target.value = value.substring(0, 12);
+        target.value = value.substring(0, 12);
         this.validateForm();
       });
     }
@@ -524,6 +538,13 @@
       this.phoneInput.value = '';
       this.validateForm();
       this.currentPayment = null;
+    }
+  }
+
+  // Extend Window interface
+  declare global {
+    interface Window {
+      paymentModal: PaymentModal;
     }
   }
 
