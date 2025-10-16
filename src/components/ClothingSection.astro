@@ -25,6 +25,8 @@ import ClothingCard from './ClothingCard.astro';
 </section>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
+
   .clothing-section {
     position: relative;
     min-height: 100vh;
@@ -50,10 +52,14 @@ import ClothingCard from './ClothingCard.astro';
     width: 100%;
   }
 
-  h2 {
+  .clothing-section h2 {
+    font-family: "Rubik Glitch", system-ui !important;
+    font-weight: 400;
+    font-style: normal;
     font-size: 2.5rem;
     margin-bottom: 3rem;
     color: var(--accent-color-static);
+    transform: none !important;
   }
 
   .clothing-grid {
