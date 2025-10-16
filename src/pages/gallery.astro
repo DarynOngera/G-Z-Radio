@@ -85,6 +85,8 @@ import MainLayout from '@/layouts/MainLayout.astro';
 </MainLayout>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
+
   .gallery-section {
     min-height: 100vh;
     padding: 2rem;
@@ -114,16 +116,15 @@ import MainLayout from '@/layouts/MainLayout.astro';
   }
 
   .gallery-header h1 {
-    font-family: 'Anton', sans-serif;
+    font-family: "Rubik Glitch", system-ui !important;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(3rem, 8vw, 6rem);
     color: var(--accent-color-static);
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    background: linear-gradient(45deg, var(--accent-color-static), #ffa500);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    transform: none !important;
   }
 
   .header-line {
