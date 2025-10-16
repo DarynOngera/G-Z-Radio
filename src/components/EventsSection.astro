@@ -22,7 +22,8 @@ import InteractiveCalendar from './InteractiveCalendar.astro';
 <style>
   .events-section {
     position: relative;
-    padding: 6rem 0;
+    min-height: 100vh;
+    padding: 8rem 0 6rem 0;
     text-align: center;
     /* Note: Add a placeholder image named 'events-bg.jpg' to public/assets/ */
     background-image: url('/assets/events-bg.jpg');
@@ -33,26 +34,15 @@ import InteractiveCalendar from './InteractiveCalendar.astro';
     margin: 0;
     width: 100vw;
     margin-left: calc(-50vw + 50%);
-  }
-
-  /* Add a dark overlay for text readability */
-  .events-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    display: flex;
+    align-items: center;
   }
 
   .section-content {
-    position: relative;
-    z-index: 2;
     padding: 0 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
   }
 
   h2 {
@@ -68,8 +58,7 @@ import InteractiveCalendar from './InteractiveCalendar.astro';
   }
 
   .event-item {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 1.5rem;
     border-left: 4px solid var(--accent-color-static);
     text-align: left;
@@ -78,7 +67,7 @@ import InteractiveCalendar from './InteractiveCalendar.astro';
 
   .event-item:hover {
     transform: translateY(-5px);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.85);
   }
 
   .event-date {
